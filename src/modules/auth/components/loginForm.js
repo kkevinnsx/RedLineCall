@@ -28,6 +28,8 @@ export default function LoginForm() {
                 router.push('/HomePage');
             } else if (result.idPerfil === 'B') {
                 router.push('/policeHomePage');
+            } else if (result.idPerfil === 'A'){
+                router.push('/admCrud')
             }
         } catch (error) {
             console.error(error);

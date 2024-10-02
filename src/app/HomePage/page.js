@@ -1,7 +1,7 @@
 import styles from "../styles/homePage.module.css";
 import NavBar from "../components/nav";
 import SOSbutton from "../components/SOSbutton";
-import { TiLocation } from "react-icons/ti";
+import Location from "../components/locationComponent";
 
 export default function HomePage() {
   return (
@@ -9,18 +9,7 @@ export default function HomePage() {
         <div>
             <h1 className={styles.text}>SISTEMA DE OCORRÊNCIAS E DENÚNCIAS</h1>
         </div>
-            <div className={styles.locationContainer}>
-                <TiLocation className={styles.location} />
-                <input
-                  type="checkbox"
-                  id="sliderLoc"
-                  className={styles.input}
-                />
-                <label
-                  htmlFor="sliderLoc"
-                  className={styles.slider}
-                />
-            </div>
+        <Location />
         <SOSbutton />
         <NavBar />
     </div>

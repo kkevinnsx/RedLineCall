@@ -5,7 +5,7 @@
 .locationContainer{
     z-index: 888;
     position: absolute;
-    top: 18%;
+    top: 5%;
     left: 28%;
     transform: translate(-50%, -50%);
     width: 50%; 
@@ -53,8 +53,8 @@
 @media screen and
 (min-width: 300px) and (max-width: 400px){
     .locationContainer{
-        left: 83%;
-        top: 5%;
+        left: 15%;
+        top: 20%;
         width: 28%;
     }
     
@@ -68,8 +68,8 @@
 @media screen and
 (min-width: 401px) and (max-width: 576px){
     .locationContainer{
-        left: 83%;
-        top: 5%;
+        left: 15%;
+        top: 20%;
         width: 28%;
     }
     
@@ -82,8 +82,8 @@
 @media screen and
 (min-width: 767px) and (max-width: 1000px){
     .locationContainer{
-        left: 85%;
-        top: 5%;
+        left: 15%;
+        top: 20%;
         width: 20%;
     }
     
@@ -100,8 +100,8 @@
 @media screen and
 (min-width: 1001px) and (max-width: 1280px){
     .locationContainer{
-        left: 90%;
-        top: 5%;
+        left: 15%;
+        top: 20%;;
         width: 20%;
     }
     

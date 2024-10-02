@@ -43,6 +43,7 @@ async function createAccount(data) {
 
     redirect('/LogIn');
 }
+
 async function loginAcess(data) {
     const { cpf, password } = data;
 
@@ -72,5 +73,8 @@ async function loginAcess(data) {
     return { idPerfil: user.idPerfil };
 }
 
+async function createPoliceCar(data){
+
+}
 
 export {createAccount, loginAcess};

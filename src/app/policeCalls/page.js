@@ -1,7 +1,7 @@
-import { TiLocation } from "react-icons/ti";
 import styles from "../styles/Calls.module.css";
 import NavBar from "../components/navPolice";
 import { BiError } from "react-icons/bi";
+import Location from "../components/locationComponent";
 
 export default function policeCalls (){
     return (
@@ -9,18 +9,7 @@ export default function policeCalls (){
         <div>
             <h1 className={styles.text}>SISTEMA DE OCORRÊNCIAS E DENÚNCIAS</h1>
         </div>
-            <div className={styles.locationContainer}>
-                <TiLocation className={styles.location} />
-                <input
-                  type="checkbox"
-                  id="sliderLoc"
-                  className={styles.input}
-                />
-                <label
-                  htmlFor="sliderLoc"
-                  className={styles.slider}
-                />
-            </div>
+        <Location />
             <div className={styles.boxError}>
                 <BiError className={styles.BiError}/>
             </div>

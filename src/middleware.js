@@ -15,8 +15,9 @@ const publicRoutes = [
 ];
 
 const restrictedRoutes = {
+    'A': ['/admControl', '/admCrud'],
     'B': ['/policeHomePage', '/policeCalls', '/policeSettings'],
-    'C': ['/HomePage', '/Calls', '/Settings', '/test']
+    'C': ['/HomePage', '/Calls', '/Settings']
 };
 
 export async function middleware(req) {
