@@ -1,0 +1,50 @@
+.button {
+    height: 3rem;
+    width: 15rem;
+    padding: 1.6rem;
+    border-radius: 1vh;
+    margin-top: 1rem;
+    border: none;
+    font-size: 1.4rem;
+    background-color: #FF101F;
+    color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    cursor: pointer;
+    box-shadow: inset #880B0B .20rem .30rem .55rem;
+}
+
+.button:hover {
+    background-color: #d6000e;
+    transition: ease-in-out .2s;
+    color: #e2e2e2;
+}
+
+.text{
+    filter: drop-shadow(0 .23rem .20rem #3f0404);
+    letter-spacing: .1vw;
+}
+
+@media (max-width: 1024px) {
+    .button {
+        width: 13.5rem;
+        padding: 1.5rem;
+    }
+}
+  
+@media (max-width: 768px) {
+    .button{
+        height: 2.8rem;
+        width: 12rem;
+    }
+}
+  
+@media (max-width: 480px) {
+    .button{
+        height: 2.75rem;
+        padding: 0rem;
+        width: 10rem;
+    }
+}

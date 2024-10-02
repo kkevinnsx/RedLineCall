@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id          Int          @id @default(autoincrement())
+  cpf         String       @unique
+  fullName    String
+  password    String
+  email       String       @unique
+  cep         String
+  number      String
+  idPerfil    String       @db.VarChar(1)
+  birthDay    DateTime
+  chats       chat[]
+  ocorrencias ocorrencia[]
+}
+
+model viatura {
+  id            Int          @id @default(autoincrement())
+  enderecoDP    String
+  numeroViatura Int
+  modeloViatura String
+  placaViatura  String       @unique
+  identificacao String       @unique
+  status        String
+  chats         chat[]
+  ocorrencias   ocorrencia[]
+}
+
+model localizacao {
+  id          Int          @id @default(autoincrement())
+  latitude    Float
+  longitude   Float
+  ocorrencias ocorrencia[]
+}
+
+model ocorrencia {
+  id            Int         @id @default(autoincrement())
+  data          DateTime
+  motivo        String
+  idLocalizacao Int
+  idUsuario     Int
+  idViatura     Int
+  localizacao   localizacao @relation(fields: [idLocalizacao], references: [id])
+  user          user        @relation(fields: [idUsuario], references: [id])
+  viatura       viatura     @relation(fields: [idViatura], references: [id])
+
+  @@index([idLocalizacao], map: "ocorrencia_idLocalizacao_fkey")
+  @@index([idUsuario], map: "ocorrencia_idUsuario_fkey")
+  @@index([idViatura], map: "ocorrencia_idViatura_fkey")
+}
+
+model chat {
+  id        Int        @id @default(autoincrement())
+  conteudo  String
+  data      DateTime
+  idUsuario Int
+  idViatura Int
+  user      user       @relation(fields: [idUsuario], references: [id])
+  viatura   viatura    @relation(fields: [idViatura], references: [id])
+  mensagens mensagem[]
+
+  @@index([idUsuario], map: "chat_idUsuario_fkey")
+  @@index([idViatura], map: "chat_idViatura_fkey")
+}
+
+model mensagem {
+  id      Int    @id @default(autoincrement())
+  texto   String
+  audio   String
+  ligacao String
+  idChat  Int
+  chat    chat   @relation(fields: [idChat], references: [id])
+
+  @@index([idChat], map: "mensagem_idChat_fkey")
+}

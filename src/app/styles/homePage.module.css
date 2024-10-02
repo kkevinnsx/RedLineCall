@@ -1,0 +1,131 @@
+.text{
+    margin-top: 2%;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: 0 .2rem .2rem #8d8d8d9d;
+    text-align: center;
+    align-items: center;
+}
+
+.locationContainer{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%; 
+}
+
+.location {
+    font-size: 2.2rem;
+    margin-right: .2rem;
+}
+
+.input {
+    display: none;
+}
+
+.slider {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    background-color: #ffffff;
+    box-shadow: inset 0 0 .2rem #000000;
+    border-radius: 34px;
+    cursor: pointer;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    width: 45%;
+    height: 80%;
+    background-color: #FF101F;
+    box-shadow: inset 0 0 .4rem #880B0B;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.input:checked + .slider::before {
+    transform: translate(40%, -50%);
+}
+
+.input:checked + .slider {
+    background-color: #16425B;
+    box-shadow: inset 0 0 1.2rem #032333;
+}
+
+@media screen and
+(min-width: 300px) and (max-width: 400px){
+        .locationContainer {
+        top: 20%;
+        left: 30%;
+        width: 40%;
+    }
+
+    .text{
+        top: 5%;
+        width: 100%;
+        font-size: 1.25em;
+    }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 576px){
+    .locationContainer {
+        top: 20%;
+        left: 30%;
+        width: 40%;
+    }
+
+    .text{
+        text-align: center;
+        margin-left: 10%;
+        margin-top: 5%;
+        width: 80%;
+        font-size: 1.35em;
+    }
+}
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .locationContainer {
+        top: 20%;
+        left: 30%;
+        width: 40%;
+    }
+
+    .text{
+        top: 5%;
+        width: 100%;
+        font-size: 2em;
+    }
+}
+
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .locationContainer {
+        top: 20%;
+        left: 30%;
+        width: 30%;
+    }
+
+    .text{
+        margin-left: 10%;
+        width: 80%;
+        font-size: 3em;
+    }
+    
+    .location {
+        font-size: 3.5em;
+    }
+
+    .slider {
+        width: 90px;
+        height: 50px;
+    }
+}

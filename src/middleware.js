@@ -1,0 +1,62 @@
+import { NextRequest, NextResponse } from "next/server";
+import { isSessionValid } from "@/modules/auth/services/authService";
+import { getUserProfile } from "@/modules/auth/services/userService";
+
+export const config = {
+    matcher: '/((?!_next/static|_next/image|favicon.ico|/api/).*)', 
+};
+
+const publicRoutes = [
+    '/',
+    '/SignIn',
+    '/LogIn',
+    '/401',
+    '/api/logout',
+];
+
+const restrictedRoutes = {
+    'B': ['/policeHomePage', '/policeCalls', '/policeSettings'],
+    'C': ['/HomePage', '/Calls', '/Settings', '/test']
+};
+
+export async function middleware(req) {
+    const pathname = req.nextUrl.pathname;
+
+    if (publicRoutes.includes(pathname)) {
+        return NextResponse.next();
+    }
+
+    const sessionValid = await isSessionValid(req);
+    if (!sessionValid) {
+        console.warn(`Sessão inválida, redirecionando para LogIn.`);
+        return NextResponse.redirect(new URL('/LogIn', req.url));
+    }
+
+    let userProfile;
+    try {
+        userProfile = await getUserProfile(req);
+    } catch (error) {
+        console.error("Erro ao obter perfil do usuário:", error);
+        return NextResponse.redirect(new URL('/401', req.url));
+    }
+    
+    if (!userProfile) {
+        console.warn(`Perfil do usuário não encontrado, redirecionando para 401.`);
+        return NextResponse.redirect(new URL('/401', req.url));
+    }
+
+    const allowedRoutes = restrictedRoutes[userProfile] || [];
+    
+    if (!allowedRoutes.includes(pathname)) {
+        console.warn(`Acesso negado para o perfil '${userProfile}' à rota '${pathname}'`);
+        return NextResponse.redirect(new URL('/401', req.url));
+    }
+
+    const res = NextResponse.next();
+
+    res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.headers.set('Expires', '0');
+    res.headers.set('Surrogate-Control', 'no-store');
+
+    return res;
+}

@@ -1,0 +1,266 @@
+.text{
+    filter: drop-shadow(0 .23rem .20rem #3f0404);
+    letter-spacing: .1vw;
+}
+
+.vigilance{
+    position: absolute;
+    top: 30%;
+    left: 18%;
+    font-weight: bold;
+    font-size: x-large;
+    transform: translate(-50%, -50%);
+}
+
+.carName{
+    position: absolute;
+    top: 25%;
+    left: 18%;
+    font-weight: bold;
+    font-size: x-large;
+    transform: translate(-50%, -50%);
+}
+
+.carImg{
+    position: absolute;
+    left: 22%;
+    top: 45%;
+    transform: translate(-40%, -50%);
+    transform: rotate(90deg);
+    width: 15%;
+    height: 15%;
+}
+
+.button {
+    position: absolute;
+    top: 55%;
+    left: 17.5%;
+    transform: translate(-50%, -50%);
+    background-color: #16425B;
+    filter:drop-shadow(0 0 .5rem #032333);
+    padding: 3%;
+    height: 22%;
+    border-radius: 100%;
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+    animation: pulsate 2s ease-in-out infinite;
+}
+
+.buttonText{
+    font-weight: bold;
+    color: #f1f1f1;
+    font-size: xx-large;
+}
+
+.button::before, .button::after{
+    content: '';
+    display: block;
+    position: absolute;
+    border: 1% solid #ff102000;
+    border-radius: 50%;
+    left: -5%;
+    right: -5%;
+    top: -5%;
+    bottom: -5%;
+    box-shadow: 0 0 1.2rem #16425B;
+    filter: drop-shadow(.50rem 0.5rem 1.2rem #032333);
+    animation: pulse 1.2s linear infinite;
+}
+
+@keyframes pulse {
+    0%{
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    50%{
+        opacity: 1;
+    }
+
+    100%{
+        transform: scale(1.1);
+        opacity: 0;
+    }
+}
+
+
+@media screen and
+(min-width: 300px) and (max-width: 400px){
+    .button{
+        top: 77%;
+        left: 50%;
+        height: 13.5%;
+        padding: 5%;
+    }
+
+    .buttonText{
+        font-size:large;
+    }
+
+    .vigilance{
+        position: absolute;
+        font-weight: bold;
+        text-align: center;
+        font-size: medium;
+        width: 80%;
+        top: 63%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carName{
+        position: absolute;
+        font-weight: bold;
+        font-size: medium;
+        top: 60%;
+        width: 95%;
+        left: 52%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carImg{
+        position: absolute;
+        left: -5%;
+        top: 65%;
+        transform: translate(0%, -50%);
+        transform: rotate(90deg);
+        width: 40%;
+        height: 10%;
+    }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 576px){
+    .button{
+        top: 75%;
+        left: 50%;
+        height: 12%;
+        padding: 5%;
+    }
+
+    .buttonText{
+        font-size:large;
+    }
+
+    .vigilance{
+        position: absolute;
+        font-weight: bold;
+        text-align: center;
+        font-size: medium;
+        width: 80%;
+        top: 63.5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carName{
+        position: absolute;
+        font-weight: bold;
+        font-size: large;
+        top: 60%;
+        width: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carImg{
+        position: absolute;
+        left: -5%;
+        top: 65%;
+        transform: translate(0%, -50%);
+        transform: rotate(90deg);
+        width: 40%;
+        height: 10%;
+    }
+}
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .button{
+        top: 75%;
+        left: 50%;
+        height: 15%;
+        padding: 5%;
+    }
+
+    .buttonText{
+        font-size:x-large;
+    }
+
+    .vigilance{
+        position: absolute;
+        font-weight: bold;
+        text-align: center;
+        font-size: x-large;
+        width: 80%;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carName{
+        position: absolute;
+        font-weight: bold;
+        font-size: xx-large;
+        top: 55%;
+        width: 90%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carImg{
+        position: absolute;
+        left: -5%;
+        top: 65%;
+        transform: translate(0%, -50%);
+        transform: rotate(90deg);
+        width: 40%;
+        height: 10%;
+    }
+}
+  
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .button{
+        top: 75%;
+        left: 50%;
+        height: 18%;
+        padding: 5%;
+    }
+
+    .buttonText{
+        font-size:2.5rem;
+    }
+
+    .vigilance{
+        position: absolute;
+        font-weight: bold;
+        text-align: center;
+        font-size: xx-large;
+        width: 80%;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carName{
+        position: absolute;
+        font-weight: bold;
+        font-size: 2.5rem;
+        top: 55%;
+        width: 90%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .carImg{
+        position: absolute;
+        left: -5%;
+        top: 65%;
+        transform: translate(0%, -50%);
+        transform: rotate(90deg);
+        width: 40%;
+        height: 10%;
+    }
+}

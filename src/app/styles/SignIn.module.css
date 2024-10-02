@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.imgLayout {
+    display: flex;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 100%;
+
+    & .imgBackground {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .imgLayout {
+        right: -20%;
+        height: 50%;
+        width: 0%;
+
+        & .imgBackground {
+            width: 0%;
+            height: 0%;
+        }
+    }
+}
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .imgLayout {
+        right: -20%;
+        height: 50%;
+        width: 0%;
+
+        & .imgBackground {
+            width: 0%;
+            height: 0%;
+        }
+    }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 766px){
+    .imgLayout {
+        right: -20%;
+        height: 50%;
+        width: 0%;
+
+        & .imgBackground {
+            width: 0%;
+            height: 0%;
+        }
+    }
+}
+
+@media screen and
+(min-width: 50px) and (max-width: 400px){
+    .imgLayout {
+        right: -20%;
+        height: 50%;
+        width: 0%;
+
+        & .imgBackground {
+            width: 0%;
+            height: 0%;
+        }
+    }
+}

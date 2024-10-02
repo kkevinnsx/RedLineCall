@@ -1,0 +1,76 @@
+'use server';
+
+import { PrismaClient } from "@prisma/client";
+import * as bcrypt from 'bcrypt';
+import { redirect } from "next/navigation";
+import * as AuthService from "@/modules/auth/services/authService";
+import {createSessionToken} from "@/modules/auth/services/authService";
+import { revalidatePath } from "next/cache";
+
+const prisma = new PrismaClient();
+
+async function createAccount(data) {
+    const {
+        fullName,
+        cpf,
+        birthDay,
+        cep,
+        number,
+        password,
+        email
+    } = data;
+
+    if (!password) {
+        throw new Error('Password is required');
+    }
+
+    const formattedBirthDay = new Date(birthDay).toISOString();
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.create({
+        data: {
+            fullName,
+            cpf,
+            birthDay: formattedBirthDay,
+            cep,
+            number,
+            password: hashPassword,
+            email,
+            idPerfil: 'C',
+        },
+    });
+
+    redirect('/LogIn');
+}
+async function loginAcess(data) {
+    const { cpf, password } = data;
+
+    const user = await prisma.user.findFirst({
+        where: { cpf },
+    });
+
+    if (!user) {
+        console.log('Usuário não encontrado!');
+        throw new Error('Usuário não encontrado!');
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+        console.log('CPF ou SENHA incorretos!');
+        throw new Error('CPF ou SENHA incorretos!');
+    }
+
+    await AuthService.createSessionToken({
+        sub: user.id,
+        idPerfil: user.idPerfil,
+        email: user.email,
+        cpf: user.cpf
+    });
+
+    return { idPerfil: user.idPerfil };
+}
+
+
+export {createAccount, loginAcess};

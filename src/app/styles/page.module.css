@@ -1,0 +1,146 @@
+.container {
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.redLineLogo {
+  width: 50%;
+  margin-top: -10%;
+  margin-bottom: -15%;
+}
+
+.link {
+  border: none;
+  text-decoration: none;
+}
+
+.signInText {
+  color: #091933;
+  font-size: 1.2rem;
+  letter-spacing: 0.3vw;
+  text-align: center;
+}
+
+.signInBot{
+  color: #0050c7;
+  margin-top: -.25rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.3vw;
+  text-align: center;
+}
+
+.linkSignIn {
+  text-decoration: none;
+}
+
+.formSignIn_Button {
+  width: 15rem;
+  padding: 1.25vh;
+  border: none;
+  outline: none;
+  font-size: 1.4rem;
+  border-radius: 1vh;
+  color: #f1f1f1;
+  background-color: #0050c7;
+  box-shadow: inset #091933 .20rem 1.2rem 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: ease-in .2s;
+}
+
+.formSignIn_Button:hover {
+  background-color: #091933;
+  color: #e2e2e2;
+}
+
+@media screen and
+(min-width: 300px) and (max-width: 400px){
+  .redLineLogo {
+    width: 100%;
+    height: auto;
+  }
+  
+  .signInText {
+    width: 100%;
+    color: #091933;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .formSignIn_Button {
+  }
+
+  .signInBot{
+   }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 576px){
+  .redLineLogo {
+    width: 100%;
+    height: auto;
+  }
+  
+  .signInText {
+    width: 100%;
+    color: #091933;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .formSignIn_Button {
+  }
+
+  .signInBot{
+   }
+}
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+  .redLineLogo {
+    width: 100%;
+    height: auto;
+  }
+  
+  .signInText {
+    width: 100%;
+    color: #091933;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .formSignIn_Button {
+  }
+
+  .signInBot{
+   }
+}
+
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+  .redLineLogo {
+    width: 100%;
+    height: auto;
+  }
+  
+  .signInText {
+    width: 100%;
+    color: #091933;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .formSignIn_Button {
+  }
+
+  .signInBot{
+   }
+}

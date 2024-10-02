@@ -1,0 +1,248 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.alert{
+    position: fixed;
+    font-size: 1.8em;
+    letter-spacing: -.17rem;
+    font-weight: bold;
+    text-align: center;
+    top: 0;
+    width: 0;
+    height: 0;
+    color: #f1f1f1;
+    overflow: hidden;
+    background-color: transparent;
+    z-index: 100;
+}
+
+.active{
+    background-color: #032f72;
+    width: 100%;
+    height: 5%;
+    transition: height .50s ease-in-out;
+}
+
+.title{
+    color: #032f72 !important;
+    text-align: center;
+    letter-spacing: -.15rem;
+    font-weight: bold;
+    font-size: 2.3em;
+}
+
+.imgLayout {
+    display: flex;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 100%;
+
+    & .imgBackground {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.form {
+    position: absolute;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    background-color: #0f0f0f2a;
+    box-shadow: 0 0 .3rem #0f0f0f6c;
+    width: 35%;
+    height:100%;
+    z-index: 10;
+
+    & .title{
+        margin-top: 25%;
+        color: #f1f1f1;
+    }
+}
+
+.logTexts {
+    margin-top: .3rem;
+    margin-right: 60%;
+    align-items: start !important;
+    font-size: large;
+    color: #f1f1f1;
+}
+
+.logInputs{
+    background-color: #f8f8f8bd;
+    backdrop-filter: blur(50%);
+    width: 65%;
+    text-align: center;
+    height: 3.5rem;
+    color: #000;
+    border: none;
+    filter: drop-shadow(.2rem .2rem .2rem #666666);
+    border-radius: .45rem;
+    outline: none;
+    transition: 300ms ease-in-out;
+    font-size: 1.15rem;
+}
+
+.formInputs:focus{
+    background-color: #f1f1f1;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+
+.button {
+    height: 3rem;
+    width: 66%;
+    padding: 1.25vh;
+    border: none;
+    outline: none;
+    font-size: 1.4rem;
+    border-radius: 1vh;
+    color: #f1f1f1;
+    background-color: #0050c7;
+    box-shadow: inset #091933 .20rem 1.2rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: ease-in .2s;
+}
+
+.button:hover {
+    transform: scale(1.05);
+    background-color: #091933;
+    color: #e2e2e2;
+}
+
+.text{
+    filter: drop-shadow(0 .23rem .20rem #3f0404);
+    letter-spacing: .1vw;
+}
+
+.link{
+    display: flex;
+    border: none;
+    text-decoration: none;
+}
+
+.startButton {
+    position: absolute;
+    top: 5%;
+    left: 15%;
+    color: #f1f1f1;
+    font-size: 3rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: 300ms ease-in;
+}
+
+.startButton:hover {
+    color: #091933;
+}
+
+@media (max-width: 1024px){
+    .form{
+        width: 100%;
+        height:100%;
+        z-index: 10;
+        box-shadow: 000;
+        background-color: #00000000;
+        & .title{
+            margin-top: 25%;
+            color: #f1f1f1;
+            width: 65%;
+        }
+    }
+
+    .imgLayout {
+        right: -20%;
+        height: 50%;
+        width: 0%;
+
+        & .imgBackground {
+            width: 0%;
+            height: 0%;
+    }
+}
+
+    .logInputs{
+        height: 7%;
+    }
+
+    .button{
+        height: 7%;
+    }
+}
+
+@media (max-width:768px){
+    .form{
+        width: 100%;
+        height:100%;
+        z-index: 10;
+        box-shadow: 000;
+        background-color: transparent;
+
+        & .title{
+            margin-top: 25%;
+            color: #f1f1f1;
+            width: 65%;
+        }
+    }
+
+    .imgLayout {
+        right: -20%;
+        height: 50%;
+        width: 0%;
+
+        & .imgBackground {
+            width: 0%;
+            height: 0%;
+    }
+}
+
+    .logInputs{
+        height: 8%;
+    }
+}
+
+@media (max-width:480px){
+    .form{
+        width: 100%;
+        height:100%;
+        z-index: 10;
+        box-shadow: 000;
+        background-color: transparent;
+
+        & .title{
+            margin-top: 25%;
+            color: #f1f1f1;
+            width: 65%;
+        }
+    }
+
+    .imgLayout {
+        right: -20%;
+        height: 50%;
+        width: 0%;
+
+        & .imgBackground {
+            width: 0%;
+            height: 0%;
+    }
+}
+
+    .logInputs{
+        height: 8%;
+    }
+}

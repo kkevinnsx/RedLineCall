@@ -1,0 +1,249 @@
+.headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 80%;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+.headerText {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: bold;
+    font-size: 1.75rem;
+}
+
+.headerIcon{
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    padding: .15rem;
+    font-size: 3rem;
+}
+
+.settingBox {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+}
+
+.historyBox {
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%;
+}
+
+.boxCircle {
+    display: flex;
+    align-items: center; 
+}
+
+.boxIcons {
+    color: #f1f1f1;
+    border-radius: 50%;
+    background-color: #E90322;
+    margin-right: 1.2rem;
+    font-size: 2rem;
+    padding: .5rem;
+}
+
+.boxText {
+    color: #000;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 1.2rem;
+}
+
+.boxArrow {
+    color: #000;
+    font-size: 2rem;
+}
+
+.userInfoBox {
+    padding: .5rem;
+}
+
+.userTermsBox {
+    padding: .5rem;
+}
+
+.desconectBox {
+    padding: .5rem;
+}
+
+.deleteBox {
+    padding: .5rem;
+}
+
+
+@media screen and
+(min-width: 300px) and (max-width: 400px){
+    .headerContainer {
+        width: 68%;
+        padding-left: 3rem;
+    }   
+    
+    .headerText {
+        font-size: 1.25rem;
+        margin-right:2rem ;
+    }
+
+    .headerIcon {
+        font-size: 3rem;
+        width: 10rem;
+        border-radius: 100%;
+    }
+
+    .settingBox {
+        width: 80%;
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .boxIcons {
+        border-radius: 100%;
+        font-size: x-large;
+        width: 2rem;
+    }
+
+    .boxText {
+        font-weight: bold;
+        font-size: 1rem;
+        padding-top: .75rem;
+        padding-bottom: .75rem;
+    }
+
+    .boxArrow {
+        font-size: 1.5rem;
+    }
+
+    .historyBox {
+        padding: 0;
+    }
+
+    .userInfoBox {
+        padding: 0;
+    }
+    
+    .userTermsBox {
+        padding: 0;
+    }
+    
+    .desconectBox {
+        padding: 0;
+    }
+    
+    .deleteBox {
+        padding: 0;
+    }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 576px){
+    .headerContainer {
+        width: 70%;
+        padding-left: 3rem;
+    }
+    
+    .headerText {
+        font-size: 1.25rem;
+        margin-right: 3rem ;
+    }
+
+    .headerIcon {
+        font-size: 3rem;
+        width: 5rem;
+        border-radius: 100%;
+    }
+
+    .settingBox {
+        width: 80%;
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .boxIcons {
+        border-radius: 100%;
+        font-size: xx-large;
+        width: 2.25rem;
+    }
+
+    .boxText {
+        font-weight: bold;
+        font-size: 1rem;
+        padding-top: .50rem;
+        padding-bottom: .50rem;
+    }
+
+    .boxArrow {
+        font-size: 2rem;
+    }
+
+    .historyBox {
+        padding: 0;
+    }
+
+    .userInfoBox {
+        padding: 0;
+    }
+    
+    .userTermsBox {
+        padding: 0;
+    }
+    
+    .desconectBox {
+        padding: 0;
+    }
+    
+    .deleteBox {
+        padding: 0;
+    }
+}
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .boxIcons{
+        font-size: 2.5rem;
+        width: 2.80rem;
+    }
+
+    .boxText {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .headerIcon {
+        font-size: 6.5rem;
+    }
+
+    .headerText {
+        font-size: 3rem;
+        margin-right: 3rem ;
+    }
+
+    .boxIcons{
+        font-size: 3rem;
+        width: 3.5rem;
+    }
+
+    .boxText {
+        font-size: 2.25rem;
+    }
+}

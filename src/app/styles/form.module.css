@@ -1,0 +1,379 @@
+.stepSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+    backdrop-filter: blur(8px);
+    background-color: #9c9c9c60;
+    box-shadow: 0 0 .2rem #0f0f0f6c;
+    height: 100%;
+    width: 35%;
+    display: flex;
+    justify-content: center;
+}
+
+.stepList{
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 10%;
+    width: 80%;
+    list-style-type: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.progressLabel {
+    color: #f1f1f1;
+    text-align: center;
+    position: relative;
+    top: 25%;
+}
+
+.stepItens{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+}
+
+.progressCount{
+    background-color: #0050c7;
+    box-shadow: inset -1rem .1rem 3rem #091933;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 600;
+    margin: 0 auto;
+    position: relative;
+    z-index:10;
+    color: transparent;
+}
+
+.stepIcons{
+    color: #f1f1f1;
+    font-size: large;
+}
+
+.currentItem .progressCount{
+    top: -10%;
+    margin-bottom: -15%;
+    background-color: #0050c7;
+    box-shadow: inset -1rem .1rem 3rem #091933;
+    height: 40px;
+    width:40px;
+    color: #f1f1f1;
+    z-index: -10;
+    transition: 300ms ease-in;
+    transform: scale(1.25);
+}
+
+.formItems {
+    width: 65%;
+    position: absolute;
+    top:20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formTitle {
+    color: #f1f1f1;
+    font-weight: bold;
+}
+
+.formSubTitle {
+    color: #f1f1f1;
+    font-weight: bold;
+    margin-top: 0%;
+}
+
+.formContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.formText {
+    color: #f1f1f1;
+    margin: .5vh;
+}
+
+.formInput {
+    margin: .35vh;
+    background-color: #ffffffbd;
+    backdrop-filter: blur(50%);
+    width: 100%;
+    text-align: center;
+    height: 5vh;
+    color: #000;
+    border: none;
+    filter: drop-shadow(.2rem .2rem .2rem #666666);
+    border-radius: .45rem;
+    font-size: 1.15rem;
+    outline: none;
+    transition: 300ms ease-in-out;
+}
+
+.formInput:focus {
+    background-color: #f1f1f1;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+.arrowContainer {
+    margin: 2vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navigationButton {
+    content: "";
+    height: 50px;
+    width: 50px;
+    border: none;
+    outline: none;
+    border-radius: 100%;
+    background-color: #0050c7;
+    box-shadow: inset -1rem .1rem 1.1rem #091933;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+}
+
+.navigationButton:hover{
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 .15rem #091933);
+}
+
+.formSignIn_Button {
+    width: 80%;
+    padding: 1.25vh;
+    border: none;
+    outline: none;
+    font-size: 1.4rem;
+    border-radius: 1vh;
+    color: #f1f1f1;
+    background-color: #0050c7;
+    box-shadow: inset #091933 .20rem 1.2rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: ease-in .2s;
+}
+
+.formSignIn_Button:hover {
+    transform: scale(1.05);
+    background-color: #091933;
+    color: #e2e2e2;
+}
+
+.link {
+    width:75%;
+    border: none;
+    text-decoration: none;
+}
+
+@media screen and
+(min-width: 50px) and (max-width: 400px){
+    .stepSection{
+        width: 100%;
+    }
+
+    .stepList{
+        width: 100%;
+        gap: .1rem;
+        left: 47.5%;
+    }
+    
+    .progressLabel {
+        font-size: 3.75vw;
+        margin: 5px;
+    }
+
+    
+    .formItems {
+        width: 75%;
+    }
+
+    .arrowContainer {
+        margin-top: 20px;
+    }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 766px){
+    .stepSection{
+        width: 100%;
+    }
+
+    .stepList{
+        width: 100%;
+        gap: .1rem;
+        left: 47.5%;
+    }
+    
+    .progressLabel {
+        font-size: 4vw;
+        margin: 5px;
+    }
+
+    .progressCount {
+        height: 30px;
+        width: 30px;
+    }
+
+    .currentItem .progressCount{
+        width: 45px;
+        height: 45px;
+        font-size: 1.25rem;
+    }
+    
+    .formItems {
+        width: 75%;
+    }
+
+    .arrowContainer {
+        margin-top: 20px;
+    }
+
+    .navigationButton {
+        width: 57px;
+        height: 57px;
+    }
+}
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .stepSection{
+        width: 100%;
+    }
+
+    .formTitle{
+        font-size: 2.5rem;
+        margin: 0px;
+    }
+
+    .formSubTitle{
+        font-size: 1.25rem;
+    }
+
+    .stepList{
+        width: 80%;
+        gap: .1rem;
+        left: 45%;
+    }
+    
+    .progressLabel {
+        font-size: 3.2vw;
+        margin: 5px;
+    }
+
+    .progressCount {
+        height: 30px;
+        width: 30px;
+    }
+
+    .currentItem .progressCount{
+        width: 56px;
+        height: 56px;
+        font-size: 1.5rem;
+    }
+    
+    .formItems {
+        width: 75%;
+    }
+
+    .formInput {
+        font-size: 1.5rem;
+    }
+
+    .arrowContainer {
+        margin-top: 20px;
+    }
+
+    .navigationButton {
+        width: 70px;
+        height: 70px;
+        font-size: 2.25rem;
+    }
+}
+
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .stepSection{
+        width: 100%;
+    }
+
+    .formTitle{
+        font-size: 3rem;
+        margin: 0px;
+    }
+
+    .formSubTitle{
+        font-size: 1.75rem;
+    }
+
+    .stepList{
+        width: 80%;
+        gap: .1rem;
+        left: 45%;
+    }
+    
+    .progressLabel {
+        font-size: 3.2vw;
+        margin: 5px;
+    }
+
+    .progressCount {
+        height: 40px;
+        width: 40px;
+    }
+
+    .currentItem .progressCount{
+        width: 75px;
+        height: 75px;
+        font-size: 2.25rem;
+    }
+    
+    .formItems {
+        width: 75%;
+    }
+
+    .formInput {
+        font-size: 2rem;
+    }
+
+    .formText{
+        font-size: 1.75rem;
+    }
+
+    .arrowContainer {
+        margin-top: 20px;
+    }
+
+    .navigationButton {
+        width: 100px;
+        height: 100px;
+        font-size: 3rem;
+    }
+
+    .formSignIn_Button {
+        height: 5.5rem;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+}

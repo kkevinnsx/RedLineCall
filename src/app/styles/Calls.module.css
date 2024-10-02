@@ -1,0 +1,262 @@
+.text{
+    margin-top: 2%;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: 0 .2rem .2rem #8d8d8d9d;
+    text-align: center;
+    align-items: center;
+}
+
+.locationContainer{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%; 
+}
+
+.location {
+    font-size: 2.2rem;
+    margin-right: .2rem;
+}
+
+.input {
+    display: none;
+}
+
+.slider {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    background-color: #ffffff;
+    box-shadow: inset 0 0 .2rem #000000;
+    border-radius: 34px;
+    cursor: pointer;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    width: 45%;
+    height: 80%;
+    background-color: #FF101F;
+    box-shadow: inset 0 0 .4rem #880B0B;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.input:checked + .slider::before {
+    transform: translate(40%, -50%);
+}
+
+.input:checked + .slider {
+    background-color: #16425B;
+    box-shadow: inset 0 0 1.2rem #032333;
+}
+
+.boxError {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.5rem;
+    border-radius: 50%;
+    border: none;
+    filter: drop-shadow(0 0 .2rem #880B0B);
+    background-color: #FF101F;
+}
+
+.BiError{
+    color: #f1f1f1;
+    font-size: 5.5rem;
+    font-weight: bold;
+}
+
+.Alert {
+    color: #FF101F;
+    font-size: 2.75rem;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: bold;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.AlertText{
+    color: #000000;
+    font-family: "JetBrains Mono", monospace;
+    text-align: center;
+    font-size: 1.45rem;
+    width: 20%;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media screen and
+(min-width: 300px) and (max-width: 400px){
+        .locationContainer {
+        top: 20%;
+        left: 30%;
+        width: 45%;
+    }
+
+    .text{
+        top: 5%;
+        margin-left: 5%;
+        width: 90%;
+        font-size: 1.40em;
+    }
+
+    .BiError{
+        font-size: 2rem;
+    }
+
+    .boxError{
+        border-radius: 100%;
+        top: 33%;
+        padding: 1rem;
+    }
+
+    .Alert{
+        top: 44%;
+        font-size: 2.25rem;
+    }
+
+    .AlertText{
+        top: 58%;
+        width: 75%;
+        font-size: 1.25rem;
+    }
+}
+
+@media screen and
+(min-width: 390px) and (max-width: 576px){
+    .locationContainer {
+        top: 20%;
+        left: 30%;
+        width: 45%;
+    }
+
+    .text{
+        top: 5%;
+        margin-left: 5%;
+        width: 90%;
+        font-size: 1.40em;
+    }
+
+    .BiError{
+        font-size: 4.5rem;
+    }
+
+    .boxError{
+        border-radius: 100%;
+        top: 32%;
+        padding: 1.35rem;
+    }
+
+    .Alert{
+        top: 42.5%;
+        font-size: 2.25rem;
+    }
+
+    .AlertText{
+        top: 55%;
+        width: 75%;
+        font-size: 1.40rem;
+    }
+}
+
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .locationContainer {
+        top: 20%;
+        left: 35%;
+        width: 50%;
+    }
+
+    .text{
+        position: absolute;
+        top: 2.5%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 80%;
+    }
+
+    .BiError{
+        font-size: 8.5rem;
+    }
+
+    .boxError{
+        top: 30%;
+        padding: 2rem;
+    }
+
+    .Alert{
+        top: 40%;
+        font-size: 2.75rem;
+    }
+
+    .AlertText{
+        top: 52%;
+        font-size: 2rem;
+        width: 70%;
+    }
+}
+
+
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .locationContainer {
+        top: 20%;
+        left: 35%;
+        width: 50%;
+    }
+
+    .text{
+        position: absolute;
+        top: 2.5%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 80%;
+        font-size: 3rem;
+    }
+
+    .location {
+        font-size: 4.5rem;
+    }
+
+    .slider {
+        width: 100px;
+        height: 60px;
+    }
+
+
+    .BiError{
+        font-size: 11rem;
+    }
+
+    .boxError{
+        top: 30%;
+        padding: 3rem;
+    }
+
+    .Alert{
+        top: 42.5%;
+        font-size: 5rem;
+    }
+
+    .AlertText{
+        top: 57.5%;
+        font-size: 3rem;
+        width: 75%;
+    }
+}

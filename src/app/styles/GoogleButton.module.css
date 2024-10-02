@@ -1,0 +1,49 @@
+.button{
+    width: 66%;
+    background-color: #f1f1f1;
+    height: 3.5rem;
+    border:none;
+    padding: 1rem;
+    border-radius: .45rem;
+    margin-top: 1.3rem;
+    font-size: x-large;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5rem;
+    cursor: pointer;
+}
+
+.button:hover{
+    background: #d4d4d4c7;
+    backdrop-filter: blur(10px);
+    border: none;
+    transition: ease-in-out all .2s;
+}
+
+@media (max-width: 1024px) {
+    .button {
+        padding: 2%;
+        gap: 25%;
+        height: 7%;
+    }
+}
+  
+@media (max-width: 768px) {
+    .button{
+        padding: 2%;
+        gap: 25%;
+        height: 7%;
+        font-size: large;
+    }
+}
+  
+@media (max-width: 480px) {
+    .button{
+        padding: 2%;
+        gap: 25%;
+        height: 7%;
+        font-size: large;
+    }
+}
