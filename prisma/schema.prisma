@@ -23,7 +23,8 @@ model user {
 
 model viatura {
   id            Int          @id @default(autoincrement())
-  enderecoDP    String
+  cepDP         String
+  numeroDP      String
   numeroViatura Int
   modeloViatura String
   placaViatura  String       @unique

@@ -1,0 +1,35 @@
+.text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.formCad {
+    width: 50%;
+    height: 65%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cadInputs{
+    background-color: #f8f8f8bd;
+    backdrop-filter: blur(50%);
+    width: 50%;
+    text-align: center;
+    height: 3.5rem;
+    color: #000;
+    border: none;
+    filter: drop-shadow(.2rem .2rem .2rem #666666);
+    border-radius: .45rem;
+    outline: none;
+    transition: 300ms ease-in-out;
+    font-size: 1.15rem;
+}
+
+.cadInputs:focus{
+    background-color: #f1f1f1;
+    font-weight: bold;
+    transform: scale(1.05);
+}
