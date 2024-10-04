@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { destroySession } from "@/modules/auth/services/authService";
+import { destroySession } from "../../../modules/auth/services/authService";
 
 export async function POST(req) {
     try {

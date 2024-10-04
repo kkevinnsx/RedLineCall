@@ -19,19 +19,24 @@ model user {
   birthDay    DateTime
   chats       chat[]
   ocorrencias ocorrencia[]
+  viaturas    viatura[]
 }
 
 model viatura {
   id            Int          @id @default(autoincrement())
-  cepDP         String
-  numeroDP      String
   numeroViatura Int
   modeloViatura String
   placaViatura  String       @unique
-  identificacao String       @unique
+  identificacao String?      @unique
   status        String
+  cepDP         String
+  numeroDP      String
+  responsavelId Int?
   chats         chat[]
   ocorrencias   ocorrencia[]
+  responsavel   user?        @relation(fields: [responsavelId], references: [id])
+
+  @@index([responsavelId], map: "viatura_responsavelId_fkey")
 }
 
 model localizacao {

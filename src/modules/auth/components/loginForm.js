@@ -4,7 +4,7 @@ import styles from '../../../app/styles/LogIn.module.css';
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { loginAcess } from "@/modules/auth/actions/authActions";
+import { loginAcess } from "../actions/authActions";
 import { useForm } from "react-hook-form";
 import MaskedInput, { Masks } from '../../../app/masks/maskedInputs';
 import { useRouter } from 'next/navigation'; 

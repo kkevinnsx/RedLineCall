@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isSessionValid } from "@/modules/auth/services/authService";
-import { getUserProfile } from "@/modules/auth/services/userService";
+import { isSessionValid } from './modules/auth/services/authService'
+import { getUserProfile } from './modules/auth/services/userService'
 
 export const config = {
     matcher: '/((?!_next/static|_next/image|favicon.ico|/api/).*)', 
@@ -12,6 +12,7 @@ const publicRoutes = [
     '/LogIn',
     '/401',
     '/api/logout',
+    '/api/policeList'
 ];
 
 const restrictedRoutes = {

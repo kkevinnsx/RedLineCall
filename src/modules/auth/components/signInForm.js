@@ -7,8 +7,8 @@ import { IoLocationSharp } from "react-icons/io5";
 import { GiPadlock } from "react-icons/gi";
 import React, { useState } from "react";
 import { useForm, useFormContext } from 'react-hook-form';
-import { createAccount } from "@/modules/auth/actions/authActions";
-import MaskedInput, { Masks } from "@/app/masks/maskedInputs";
+import { createAccount } from "../actions/authActions";
+import MaskedInput, { Masks } from "../../../app/masks/maskedInputs";
 import axios from "axios";
 
 const steps = [

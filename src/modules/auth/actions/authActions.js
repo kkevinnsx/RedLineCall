@@ -3,8 +3,8 @@
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from 'bcrypt';
 import { redirect } from "next/navigation";
-import * as AuthService from "@/modules/auth/services/authService";
-import {createSessionToken} from "@/modules/auth/services/authService";
+import * as AuthService from "../services/authService";
+import {createSessionToken} from "../services/authService";
 import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
@@ -73,8 +73,28 @@ async function loginAcess(data) {
     return { idPerfil: user.idPerfil };
 }
 
-async function createPoliceCar(data){
+async function createPoliceCar(policeData) {
+    const {
+        cepDP,
+        numeroDP,
+        numeroViatura,
+        modeloViatura,
+        placaViatura,
+        responsavelId,
+    } = policeData;
 
+    await prisma.viatura.create({
+        data: {
+            cepDP,
+            numeroDP,
+            numeroViatura,
+            modeloViatura,
+            placaViatura,
+            responsavelId,
+            status: 'off',
+        },
+    });
 }
 
-export {createAccount, loginAcess};
+
+export {createAccount, loginAcess, createPoliceCar};
