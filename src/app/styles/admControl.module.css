@@ -6,7 +6,7 @@
 
 .formCad {
     width: 50%;
-    height: 65%;
+    height: 75%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -61,4 +61,162 @@
 .formButton:hover{
     background-color: #880B0B;
     transform: scale(1.025);
+}
+
+@media screen and
+(min-width: 300px) and (max-width: 400px){
+    .formCad {
+        width: 95%;
+        height: 80%;
+        top: 48%;
+        gap: 2px;
+    }
+
+    .text {
+        font-size: 1.65em;
+    }
+    
+    .cadInputs{
+        width: 75%;
+        text-align: center;
+        height: 2.55rem;
+        font-size: 1rem;
+    }
+    
+    .cadInputs:focus{
+        background-color: #f1f1f1;
+        font-weight: bold;
+        transform: scale(1.05);
+    }
+    
+    .cadText {
+        font-size: 1em;
+        text-align: center;
+    }
+    
+    .formButton {
+        width: 75%;
+        height: 3rem;
+        margin-top:10px;
+        transition: ease-in .2s;
+    }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 576px){
+    .formCad {
+        width: 95%;
+        height: 80%;
+        top: 48%;
+        gap: 2px;
+    }
+
+    .text {
+        font-size: 1.65em;
+    }
+    
+    .cadInputs{
+        width: 75%;
+        text-align: center;
+        height: 2.55rem;
+        font-size: 1rem;
+    }
+    
+    .cadInputs:focus{
+        background-color: #f1f1f1;
+        font-weight: bold;
+        transform: scale(1.05);
+    }
+    
+    .cadText {
+        font-size: 1em;
+        text-align: center;
+    }
+    
+    .formButton {
+        width: 75%;
+        height: 3rem;
+        margin-top:10px;
+        transition: ease-in .2s;
+    }
+}
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .formCad {
+        width: 95%;
+        height: 80%;
+        top: 48%;
+        gap: 8px;
+    }
+
+    .text {
+        font-size: 1.65em;
+    }
+    
+    .cadInputs{
+        width: 75%;
+        text-align: center;
+        height: 3.5rem;
+        font-size: 1.25rem;
+    }
+    
+    .cadInputs:focus{
+        background-color: #f1f1f1;
+        font-weight: bold;
+        transform: scale(1.05);
+    }
+    
+    .cadText {
+        font-size: 1.25em;
+        text-align: center;
+    }
+    
+    .formButton {
+        width: 75%;
+        height: 3.5rem;
+        margin-top:10px;
+        transition: ease-in .2s;
+    }
+}
+  
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .formCad {
+        width: 95%;
+        height: 80%;
+        top: 50%;
+        gap: 10px;
+    }
+
+    .text {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+    
+    .cadInputs{
+        width: 75%;
+        text-align: center;
+        height: 5rem;
+        font-size: 2em;
+    }
+    
+    .cadInputs:focus{
+        background-color: #f1f1f1;
+        font-weight: bold;
+        transform: scale(1.05);
+    }
+    
+    .cadText {
+        font-size: 2em;
+        text-align: center;
+    }
+    
+    .formButton {
+        width: 75%;
+        height: 6rem;
+        font-size: 2em;
+        margin-top:10px;
+        transition: ease-in .2s;
+    }
 }
