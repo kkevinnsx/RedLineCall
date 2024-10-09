@@ -28,7 +28,7 @@ model viatura {
   modeloViatura String
   placaViatura  String       @unique
   identificacao String?      @unique
-  status        String
+  status        Boolean
   cepDP         String
   numeroDP      String
   responsavelId Int?

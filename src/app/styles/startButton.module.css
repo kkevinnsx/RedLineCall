@@ -1,0 +1,169 @@
+.btnAtivo{
+    position: absolute;
+    top: 55%;
+    left: 17.5%;
+    transform: translate(-50%, -50%);
+    background-color: #FF101F;
+    filter:drop-shadow(0 0 .5rem #ff102075);
+    padding: 3%;
+    height: 22%;
+    cursor: pointer;
+    border-radius: 100%;
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+    animation: pulsate 2s ease-in-out infinite;
+}
+
+.btnAtivo::before, .btnAtivo::after{
+    content: '';
+    display: block;
+    position: absolute;
+    border: 1% solid #ff102000;
+    border-radius: 50%;
+    left: -5%;
+    right: -5%;
+    top: -5%;
+    bottom: -5%;
+    box-shadow: 0 0 1.2rem #ff102075;
+    filter: drop-shadow(.50rem 0.5rem 1.2rem #ff102075);
+    animation: pulse 1.2s linear infinite;
+}
+
+.btnDesativo{
+    position: absolute;
+    top: 55%;
+    left: 17.5%;
+    transform: translate(-50%, -50%);
+    background-color: #16425B;
+    filter:drop-shadow(0 0 .5rem #032333);
+    padding: 3%;
+    height: 22%;
+    cursor: pointer;
+    border-radius: 100%;
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+    animation: pulsate 2s ease-in-out infinite;
+}
+
+.btnDesativo::before, .btnDesativo::after{
+    content: '';
+    display: block;
+    position: absolute;
+    border: 1% solid #ff102000;
+    border-radius: 50%;
+    left: -5%;
+    right: -5%;
+    top: -5%;
+    bottom: -5%;
+    box-shadow: 0 0 1.2rem #16425B;
+    filter: drop-shadow(.50rem 0.5rem 1.2rem #032333);
+    animation: pulse 1.2s linear infinite;
+}
+
+.buttonText{
+    font-weight: bold;
+    color: #f1f1f1;
+    font-size: xx-large;
+}
+
+@keyframes pulse {
+    0%{
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    50%{
+        opacity: 1;
+    }
+
+    100%{
+        transform: scale(1.1);
+        opacity: 0;
+    }
+}
+
+@media screen and
+(min-width: 300px) and (max-width: 400px){
+    .btnAtivo{
+        top: 77%;
+        left: 50%;
+        height: 17.5%;
+        width: 35%;
+        padding: 5%;
+    }
+
+    .btnDesativo{
+        top: 77%;
+        left: 50%;
+        height: 17.5%;
+        width: 35%;
+        padding: 5%;
+    }
+}
+
+@media screen and
+(min-width: 401px) and (max-width: 576px){
+    .btnAtivo{
+        top: 72%;
+        left: 50%;
+        height: 15.5%;
+        width: 32%;
+        padding: 5%;
+    }
+
+    .btnDesativo{
+        top: 72%;
+        left: 50%;
+        height: 15.5%;
+        width: 32%;
+        padding: 5%;
+    }
+
+    .buttonText{
+        font-size:large;
+    }
+}
+
+@media screen and
+(min-width: 767px) and (max-width: 1000px){
+    .btnAtivo{
+        top: 75%;
+        left: 50%;
+        height: 15%;
+        padding: 5%;
+    }
+
+    .btnDesativo{
+        top: 75%;
+        left: 50%;
+        height: 15%;
+        padding: 5%;
+    }
+
+    .buttonText{
+        font-size:x-large;
+    }
+}
+
+@media screen and
+(min-width: 1001px) and (max-width: 1280px){
+    .btnAtivo{
+        top: 75%;
+        left: 50%;
+        height: 18%;
+        padding: 5%;
+    }
+
+    .btnDesativo{
+        top: 75%;
+        left: 50%;
+        height: 18%;
+        padding: 5%;
+    }
+
+    .buttonText{
+        font-size:2.5rem;
+    }
+}

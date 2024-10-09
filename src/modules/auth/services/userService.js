@@ -12,8 +12,8 @@ export async function getUserProfile(req) {
 
     try {
         const { payload } = await jwtVerify(value, secret);
-        return payload.idPerfil; 
-    } catch (error) {
+        return {  id: payload.sub, idPerfil: payload.idPerfil };
+        } catch (error) {
         console.error("Token inválido:", error);
         throw new Error("Token inválido");
     }

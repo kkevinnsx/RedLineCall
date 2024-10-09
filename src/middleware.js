@@ -17,7 +17,7 @@ const publicRoutes = [
 
 const restrictedRoutes = {
     'A': ['/admControl', '/admCrud'],
-    'B': ['/policeHomePage', '/policeCalls', '/policeSettings'],
+    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance'],
     'C': ['/HomePage', '/Calls', '/Settings']
 };
 
@@ -42,12 +42,12 @@ export async function middleware(req) {
         return NextResponse.redirect(new URL('/401', req.url));
     }
     
-    if (!userProfile) {
+    if (!userProfile || !userProfile.idPerfil) {
         console.warn(`Perfil do usuário não encontrado, redirecionando para 401.`);
         return NextResponse.redirect(new URL('/401', req.url));
     }
 
-    const allowedRoutes = restrictedRoutes[userProfile] || [];
+    const allowedRoutes = restrictedRoutes[userProfile.idPerfil] || [];
     
     if (!allowedRoutes.includes(pathname)) {
         console.warn(`Acesso negado para o perfil '${userProfile}' à rota '${pathname}'`);
