@@ -7,7 +7,7 @@ import MapComponent from '../components/mapComponent';
 import StartButton from "../components/startButton";
 import { useEffect, useState } from "react";
 
-export default function policeHomePage() {
+export default function PoliceHomePage() {
     const [viatura, setViatura] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError]     = useState(null);
