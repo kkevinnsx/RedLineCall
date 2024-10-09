@@ -25,33 +25,33 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-    try {
+    try { 
         const userProfile = await getUserProfile(request);
 
-        if (!userProfile) {
-            return NextResponse.json({ error: 'Usuário não encontrado!' }, { status: 401 });
+        if (!userProfile){
+            return NextResponse.json({error: "Usuario não encontrado"}, {status: 401});
         }
 
-        const usuario = await prisma.user.findFirst({
+        const viatura = await prisma.viatura.findFirst({
             where: {
-                id: userProfile.id,
+                responsavelId: userProfile.id,
             },
         });
 
-        if (!usuario) {
-            console.log("Nenhum usuario foi cadastrada para esse usuario");
-            return NextResponse.json({ error: "Nenhum usuario foi cadastrada para esse usuario" });
+        if (!viatura) {
+            console.log("Nenhuma viatura foi cadastrada para esse usuario");
+            return NextResponse.json({ error: "Nenhuma viatura foi cadastrada para esse usuario"});
         }
 
-        const updateStatus = !usuario.statusChat; 
+        const updateStatus = !viatura.status;
 
-        await prisma.user.update({
-            where: { id: userProfile.id },
-            data: { statusChat: updateStatus },
+        await prisma.viatura.update({
+            where: { id: viatura.id },
+            data: { status: updateStatus },
         });
 
-        return NextResponse.json({ statusChat: updateStatus });
+        return NextResponse.json({ status: updateStatus });
     } catch (error) {
-        return NextResponse.json({ error: "Erro ao atualizar o status do usuário", details: error.message }, { status: 500 });
+        return NextResponse.json({ error: "Erro ao atualizar a viatura", details: error.message}, {status: 500});
     }
 }

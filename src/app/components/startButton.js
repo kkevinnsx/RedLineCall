@@ -3,7 +3,7 @@
 import { useState } from "react";
 import styles from "../styles/startButton.module.css";
 
-export default function StartButton({ viatura, onStatusChange }) {
+export default function StartButton({ viatura }) {
     const [error, setError] = useState(null);
     const [status, setStatus] = useState(viatura.status);
     const [loading, setLoading] = useState(false);
@@ -25,7 +25,6 @@ export default function StartButton({ viatura, onStatusChange }) {
             }
 
             const data = await response.json();
-            onStatusChange(data.status);
             if (data.status !== undefined) {
                 setStatus(data.status);
             } else {
@@ -40,7 +39,7 @@ export default function StartButton({ viatura, onStatusChange }) {
     };
 
     const buttonClass = status ? styles.btnAtivo : styles.btnDesativo; 
-    const buttonText = loading ? 'Atualizando.' : (status ? 'Em Vigilância' : 'Ativar Vigilância');
+    const buttonText = loading ? 'Atualizando.' : (status ? 'Em vigilância' : 'Iniciar vigilância');
 
     return (
         <div>
