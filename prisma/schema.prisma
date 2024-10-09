@@ -12,6 +12,7 @@ model user {
   cpf         String       @unique
   fullName    String
   password    String
+  statusChat  Boolean
   email       String       @unique
   cep         String
   number      String
@@ -29,6 +30,7 @@ model viatura {
   placaViatura  String       @unique
   identificacao String?      @unique
   status        Boolean
+  statusChat    Boolean
   cepDP         String
   numeroDP      String
   responsavelId Int?
@@ -63,14 +65,15 @@ model ocorrencia {
 }
 
 model chat {
-  id        Int        @id @default(autoincrement())
-  conteudo  String
-  data      DateTime
-  idUsuario Int
-  idViatura Int
-  user      user       @relation(fields: [idUsuario], references: [id])
-  viatura   viatura    @relation(fields: [idViatura], references: [id])
-  mensagens mensagem[]
+  id             Int        @id @default(autoincrement())
+  conteudo       String
+  data           DateTime
+  statusLiberado Boolean
+  idUsuario      Int
+  idViatura      Int
+  user           user       @relation(fields: [idUsuario], references: [id])
+  viatura        viatura    @relation(fields: [idViatura], references: [id])
+  mensagens      mensagem[]
 
   @@index([idUsuario], map: "chat_idUsuario_fkey")
   @@index([idViatura], map: "chat_idViatura_fkey")

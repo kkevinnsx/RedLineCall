@@ -7,6 +7,7 @@
     filter:drop-shadow(0 0 .5rem #ff102075);
     padding: 3.5%;
     border-radius: 50%;
+    cursor: pointer;
     border: none;
     display: inline-block;
     text-decoration: none;

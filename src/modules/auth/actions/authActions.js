@@ -35,6 +35,7 @@ async function createAccount(data) {
             birthDay: formattedBirthDay,
             cep,
             number,
+            statusChat: false,
             password: hashPassword,
             email,
             idPerfil: 'C',
@@ -91,7 +92,8 @@ async function createPoliceCar(policeData) {
             modeloViatura,
             placaViatura,
             responsavelId,
-            status: 'off',
+            statusChat: false,
+            status: false,
         },
     });
 }
