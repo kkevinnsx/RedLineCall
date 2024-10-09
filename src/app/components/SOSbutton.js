@@ -59,7 +59,9 @@ export default function SOSbutton() {
                 onClick={handleClickSOS}
                 disabled={loading}
             >
-                <h1 className={styles.sosText}>{loading ? "....." : "S.O.S"}</h1>
+                <h1 className={styles.sosText}>
+                    {loading ? "....." : "S.O.S"}
+                </h1>
             </button>
         </div>
     );
