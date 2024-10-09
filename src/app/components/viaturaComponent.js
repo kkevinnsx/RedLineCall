@@ -4,7 +4,7 @@ const ViaturaComponent = ({ viatura }) => {
     console.log("Viatura recebida:", viatura);
     return (
         <div>
-            <StartButton viaturas={[viatura]} /> 
+            <StartButton viatura={viatura} /> 
         </div>
     );
 };

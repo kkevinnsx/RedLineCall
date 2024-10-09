@@ -6,7 +6,8 @@
     background-color: #FF101F;
     filter:drop-shadow(0 0 .5rem #ff102075);
     padding: 3%;
-    height: 22%;
+    height: 25%;
+    min-width: 15%;
     cursor: pointer;
     border-radius: 100%;
     border: none;
@@ -37,8 +38,9 @@
     transform: translate(-50%, -50%);
     background-color: #16425B;
     filter:drop-shadow(0 0 .5rem #032333);
-    padding: 3%;
-    height: 22%;
+    padding: 1.5%;
+    height: 25%;
+    min-width: 15%;
     cursor: pointer;
     border-radius: 100%;
     border: none;
@@ -63,9 +65,14 @@
 }
 
 .buttonText{
-    font-weight: bold;
     color: #f1f1f1;
     font-size: xx-large;
+}
+
+.textStatus{
+    position: absolute;
+    top: 55%;
+    font-size: x-large;
 }
 
 @keyframes pulse {
