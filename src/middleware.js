@@ -12,13 +12,13 @@ const publicRoutes = [
     '/LogIn',
     '/401',
     '/api/logout',
-    '/api/policeList'
+    '/api/policeList',
 ];
 
 const restrictedRoutes = {
     'A': ['/admControl', '/admCrud'],
-    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/updateLocation'],
-    'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS']
+    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance'],
+    'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS', '/api/updateLocation']
 };
 
 export async function middleware(req) {

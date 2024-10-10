@@ -18,8 +18,8 @@ model user {
   idPerfil    String       @db.VarChar(1)
   birthDay    DateTime
   statusChat  Boolean
-  latitude    String?
-  longitude   String?
+  latitude    Float?
+  longitude   Float?
   chats       chat[]
   ocorrencias ocorrencia[]
   viaturas    viatura[]
@@ -36,8 +36,8 @@ model viatura {
   numeroDP      String
   responsavelId Int?
   statusChat    Boolean
-  latitude      String?
-  longitude     String?
+  latitude      Float?
+  longitude     Float?
   chats         chat[]
   ocorrencias   ocorrencia[]
   responsavel   user?        @relation(fields: [responsavelId], references: [id])
