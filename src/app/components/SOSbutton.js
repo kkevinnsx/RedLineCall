@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/SOSbutton.module.css";
 import { toast } from "react-toastify";
+import useSendLocation from "../utils/sendLocation";
 
 export default function SOSbutton() {
     const [loading, setLoading] = useState(false);
+    const [statusChat, setStatusChat] = useState(false);
+    const { startSendingLocation, stopSendingLocation } = useSendLocation();
 
     const UserActiveSOS = async () => {
         setLoading(true);
@@ -19,7 +22,6 @@ export default function SOSbutton() {
             });
             
             const text = await response.text();
-
             
             if (!response.ok) {
                 throw new Error(`HTTP ERROR! status: ${response.status}`);
@@ -34,6 +36,7 @@ export default function SOSbutton() {
     
             if (data.statusChat !== undefined) {
                 toast.success('Status do chat atualizado com sucesso!');
+                setStatusChat(data.statusChat);
             } else {
                 throw new Error('Status não retornado pela API');
             }
@@ -44,12 +47,18 @@ export default function SOSbutton() {
             setLoading(false);
         }
     };
-    
-    
 
     const handleClickSOS = async () => {
         await UserActiveSOS();
     };
+
+    useEffect(() => {
+        if (statusChat) {
+            startSendingLocation();
+        } else {
+            stopSendingLocation();
+        }
+    }, [statusChat, startSendingLocation, stopSendingLocation]);
 
     return (
         <div>

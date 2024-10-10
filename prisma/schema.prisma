@@ -12,12 +12,14 @@ model user {
   cpf         String       @unique
   fullName    String
   password    String
-  statusChat  Boolean
   email       String       @unique
   cep         String
   number      String
   idPerfil    String       @db.VarChar(1)
   birthDay    DateTime
+  statusChat  Boolean
+  latitude    String?
+  longitude   String?
   chats       chat[]
   ocorrencias ocorrencia[]
   viaturas    viatura[]
@@ -30,10 +32,12 @@ model viatura {
   placaViatura  String       @unique
   identificacao String?      @unique
   status        Boolean
-  statusChat    Boolean
   cepDP         String
   numeroDP      String
   responsavelId Int?
+  statusChat    Boolean
+  latitude      String?
+  longitude     String?
   chats         chat[]
   ocorrencias   ocorrencia[]
   responsavel   user?        @relation(fields: [responsavelId], references: [id])
@@ -68,9 +72,9 @@ model chat {
   id             Int        @id @default(autoincrement())
   conteudo       String
   data           DateTime
-  statusLiberado Boolean
   idUsuario      Int
   idViatura      Int
+  statusLiberado Boolean
   user           user       @relation(fields: [idUsuario], references: [id])
   viatura        viatura    @relation(fields: [idViatura], references: [id])
   mensagens      mensagem[]

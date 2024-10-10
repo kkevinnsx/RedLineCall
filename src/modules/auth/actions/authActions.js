@@ -38,6 +38,8 @@ async function createAccount(data) {
             statusChat: false,
             password: hashPassword,
             email,
+            latitude: '',
+            longitude: '',
             idPerfil: 'C',
         },
     });
@@ -92,6 +94,8 @@ async function createPoliceCar(policeData) {
             modeloViatura,
             placaViatura,
             responsavelId,
+            latitude: '',
+            longitude: '',
             statusChat: false,
             status: false,
         },

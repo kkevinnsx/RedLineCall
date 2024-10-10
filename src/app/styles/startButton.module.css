@@ -5,7 +5,7 @@
     transform: translate(-50%, -50%);
     background-color: #FF101F;
     filter:drop-shadow(0 0 .5rem #ff102075);
-    padding: 3.5%;
+    padding: 3%;
     height: 25%;
     min-width: 15%;
     cursor: pointer;
@@ -38,7 +38,7 @@
     transform: translate(-50%, -50%);
     background-color: #16425B;
     filter:drop-shadow(0 0 .5rem #032333);
-    padding: 3.5%;
+    padding: 1.5%;
     height: 25%;
     min-width: 15%;
     cursor: pointer;
