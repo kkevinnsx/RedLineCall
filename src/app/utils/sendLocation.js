@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { watchLocation } from "./requestLocation";
 
 const sendLocation = async ({ latitude, longitude }) => {
     try { 
@@ -12,43 +11,71 @@ const sendLocation = async ({ latitude, longitude }) => {
             },
             body: JSON.stringify({ latitude, longitude }),
         });
+        console.log(`Localização enviada: Latitude ${latitude}, Longitude ${longitude}`);
     } catch (error) {
         console.error('Erro ao enviar localização', error);
     }
 };
 
+
 const useSendLocation = () => {
     const [location, setLocation] = useState({ latitude: null, longitude: null });
     const [error, setError] = useState(null);
-    const [watchId, setWatchId] = useState(null);
+    const [intervalId, setIntervalId] = useState(null);
+    const [statusChat, setStatusChat] = useState(true); 
+
+    const updateLocation = useCallback(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    if (statusChat) {
+                        setLocation({ latitude, longitude });
+                        sendLocation({ latitude, longitude });
+                    } else {
+                        setLocation({ latitude: null, longitude: null });
+                        sendLocation({ latitude: null, longitude: null });
+                    }
+                },
+                (err) => {
+                    console.error('Erro ao obter localização:', err);
+                    setError(err);
+                }
+            );
+        }
+    }, [statusChat]);
 
     const startSendingLocation = useCallback(() => {
-        if (!watchId) {
-            const id = watchLocation(setError, (newLocation) => {
-                const { latitude, longitude } = newLocation;
-                setLocation({ latitude, longitude });
-                sendLocation({ latitude, longitude });
-            });
-            setWatchId(id);
+        if (!intervalId) {
+            updateLocation(); 
+            const id = setInterval(updateLocation, 5000); 
+            setIntervalId(id);
         }
-    }, [watchId]);
+    }, [intervalId, updateLocation]);
 
     const stopSendingLocation = useCallback(() => {
-        if (watchId) {
-            navigator.geolocation.clearWatch(watchId);
-            setWatchId(null);
+        if (intervalId) {
+            clearInterval(intervalId);
+            setIntervalId(null);
         }
-    }, [watchId]);
+    }, [intervalId]);
 
     useEffect(() => {
         return () => {
-            if (watchId) {
-                navigator.geolocation.clearWatch(watchId);
+            if (intervalId) {
+                clearInterval(intervalId);
             }
         };
-    }, [watchId]);
+    }, [intervalId]);
+
+    useEffect(() => {
+        if (!statusChat) {
+            setLocation({ latitude: null, longitude: null });
+            sendLocation({ latitude: null, longitude: null });
+        }
+    }, [statusChat]);
     
-    return { location, error, startSendingLocation, stopSendingLocation };
+    return { location, error, startSendingLocation, stopSendingLocation, setStatusChat };
 };
 
 export default useSendLocation;

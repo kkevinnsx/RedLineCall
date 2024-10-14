@@ -32,9 +32,13 @@ export async function POST(request) {
             return NextResponse.json({error: "Usuario não encontrado"}, {status: 401});
         }
 
+        const body = await request.json();
+        const { id, latitude, longitude } = body;
+
         const viatura = await prisma.viatura.findFirst({
             where: {
                 responsavelId: userProfile.id,
+                id,
             },
         });
 
@@ -47,11 +51,16 @@ export async function POST(request) {
 
         await prisma.viatura.update({
             where: { id: viatura.id },
-            data: { status: updateStatus },
+            data: {
+                status: updateStatus,
+                latitude: latitude ?? null, 
+                longitude: longitude ?? null 
+            },
         });
 
         return NextResponse.json({ status: updateStatus });
     } catch (error) {
+        console.error("Erro ao atualizar a viatura", error);
         return NextResponse.json({ error: "Erro ao atualizar a viatura", details: error.message}, {status: 500});
     }
 }

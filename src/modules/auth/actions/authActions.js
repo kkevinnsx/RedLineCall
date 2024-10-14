@@ -15,6 +15,8 @@ async function createAccount(data) {
         cpf,
         birthDay,
         cep,
+        latitude,
+        longitude,
         number,
         password,
         email
@@ -34,8 +36,8 @@ async function createAccount(data) {
             cpf,
             birthDay: formattedBirthDay,
             cep,
-            latitude: '',
-            longitude: '',
+            latitude: null,
+            longitude: null,
             number,
             statusChat: false,
             password: hashPassword,
@@ -83,6 +85,8 @@ async function createPoliceCar(policeData) {
         numeroViatura,
         modeloViatura,
         placaViatura,
+        latitude,
+        longitude,
         responsavelId,
     } = policeData;
 
@@ -94,13 +98,12 @@ async function createPoliceCar(policeData) {
             modeloViatura,
             placaViatura,
             responsavelId,
-            latitude: '',
-            longitude: '',
+            latitude: null,
+            longitude: null,
             statusChat: false,
             status: false,
         },
     });
 }
-
 
 export {createAccount, loginAcess, createPoliceCar};
