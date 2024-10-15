@@ -18,6 +18,7 @@ model user {
   idPerfil    String       @db.VarChar(1)
   birthDay    DateTime
   statusChat  Boolean
+  statusOcor  Boolean
   latitude    Float?
   longitude   Float?
   chats       chat[]
