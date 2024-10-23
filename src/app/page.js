@@ -18,7 +18,7 @@ export default function Home() {
         />
         <Link href="/LogIn" className={styles.link}>
           <button className={styles.formSignIn_Button} type="submit">
-            Sign In
+            Entrar
           </button>
         </Link>
         <h2 className={styles.signInText}>Não possui uma conta?</h2>

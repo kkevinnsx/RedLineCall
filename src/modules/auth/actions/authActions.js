@@ -40,6 +40,7 @@ async function createAccount(data) {
             longitude: null,
             number,
             statusChat: false,
+            statusOcor: false,
             password: hashPassword,
             email,
             idPerfil: 'C',

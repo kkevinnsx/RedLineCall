@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import styles from "../styles/policeHome.module.css";
 import NavBar from "../components/navPolice";
@@ -10,38 +10,38 @@ import { useEffect, useState } from "react";
 export default function PoliceHomePage() {
     const [viatura, setViatura] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError]     = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchViatura = async () => {
             try {
                 const response = await fetch('/api/startVigilance');
-                if(!response.ok){
+                if (!response.ok) {
                     throw new Error(`Erro ao buscar viatura: ${response.status}`);
                 }
 
                 const data = await response.json();
-                if(data.length > 0){
+                if (data.length > 0) {
                     setViatura(data[0]);
                 } else {
-                    throw new Error ('Usuario não encontrado')
+                    throw new Error('Usuario não encontrado');
                 }
-            } catch (crash){
+            } catch (crash) {
                 console.log(crash);
                 setError('Usuario não encontrado.');
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         };
-    
+
         fetchViatura();
     }, []);
 
     const handleStatusChange = (newStatus) => {
-        setViatura((prevViatura) =>({
+        setViatura((prevViatura) => ({
             ...prevViatura,
             status: newStatus,
-        }))
+        }));
     };
 
     const loadingMessage = "Carregando informações da viatura...";
@@ -55,16 +55,17 @@ export default function PoliceHomePage() {
             {viatura && (
                 <>
                     <p className={styles.carName}>
-                        Viatura N°: {viatura.numeroViatura } | Você está {viatura.status ? 'online' : 'offline'}
+                        Viatura N°: {viatura.numeroViatura} | Você está {viatura.status ? 'online' : 'offline'}
                     </p>
                     <p className={styles.vigilance}>
                         {viatura.status ? 'Deseja parar vigilância?' : 'Deseja iniciar vigilância?'}
                     </p>
                     <StartButton viatura={viatura} onStatusChange={handleStatusChange} />
+                    
+                    <MapComponent selectedViatura={viatura} />
                 </>
             )}
-            <MapComponent />
-            <NavBar/>
+            <NavBar />
         </>
     );
 }

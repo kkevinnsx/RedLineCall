@@ -12,10 +12,10 @@ import MaskedInput, { Masks } from "../../../app/masks/maskedInputs";
 import axios from "axios";
 
 const steps = [
-    { id: 'Step-1', name: 'Individual', icon: <FaUser /> },
-    { id: 'Step-2', name: 'Address', icon: <IoLocationSharp /> },
-    { id: 'Step-3', name: 'Password', icon: <GiPadlock /> },
-    { id: 'Step-4', name: 'Complete', icon: <FaCheck /> }
+    { id: 'Step-1', name: 'Pessoal', icon: <FaUser /> },
+    { id: 'Step-2', name: 'Endereço',    icon: <IoLocationSharp /> },
+    { id: 'Step-3', name: 'Segurança',   icon: <GiPadlock /> },
+    { id: 'Step-4', name: 'Completo',   icon: <FaCheck /> }
 ];
 
 export default function SignInForm() {
@@ -101,15 +101,16 @@ export default function SignInForm() {
             <form onSubmit={handleSubmit(onSubmit)} className={styles.formItems}>
                 {currentStep === 0 && (
                     <>
-                        <h2 className={styles.formTitle}>Personal Information</h2>
-                        <p className={styles.formSubTitle}>Individual Details</p>
+                        <h2 className={styles.formTitle}>Campo de Informações Pessoais</h2>
+                        <p className={styles.formSubTitle}>Detalhes Individuais</p>
                         <div className={styles.formContent}>
-                            <label className={styles.formText}>Full Name</label>
+                            <label className={styles.formText}>Nome Completo</label>
                             <input
                                 type="text"
                                 className={styles.formInput}
                                 id="fullName"
                                 name="fullName"
+                                placeholder="Digite seu nome"
                                 {...register("fullName", { required: "Full Name is required" })}
                                 required={true}
                             />
@@ -124,7 +125,7 @@ export default function SignInForm() {
                                 {...register('cpf', { required: "CPF is required" })}
                                 required={true}
                             />
-                            <label className={styles.formText}>Date of Birth</label>
+                            <label className={styles.formText}>Data de Nascimento</label>
                             <input
                                 type="date"
                                 className={styles.formInput}
@@ -136,7 +137,7 @@ export default function SignInForm() {
                         </div>
                         <div className={styles.arrowContainer}>
                             <Link href="/" className={styles.link}>
-                                <button className={styles.formSignIn_Button}>back to start page</button>
+                                <button className={styles.formSignIn_Button}>Voltar para Tela Principal</button>
                             </Link>
                             <button
                                 type="button"
@@ -152,8 +153,8 @@ export default function SignInForm() {
 
                 {currentStep === 1 && (
                     <>
-                        <h2 className={styles.formTitle}>Address</h2>
-                        <p className={styles.formSubTitle}>Address Details</p>
+                        <h2 className={styles.formTitle}>Campo de Endereço</h2>
+                        <p className={styles.formSubTitle}>Detalhes do Endereço</p>
                         <div className={styles.formContent}>
                             <label className={styles.formText}>CEP</label>
                             <MaskedInput
@@ -173,7 +174,7 @@ export default function SignInForm() {
                                 }}
                             />
 
-                            <label className={styles.formText}>State</label>
+                            <label className={styles.formText}>Estado</label>
                             <input
                                 type="text"
                                 className={styles.formInput}
@@ -183,7 +184,7 @@ export default function SignInForm() {
                                 readOnly
                                 required={true}
                             />
-                            <label className={styles.formText}>City</label>
+                            <label className={styles.formText}>Cidade</label>
                             <input
                                 type="text"
                                 className={styles.formInput}
@@ -193,7 +194,7 @@ export default function SignInForm() {
                                 readOnly
                                 required={true}
                             />
-                            <label className={styles.formText}>Street</label>
+                            <label className={styles.formText}>Rua</label>
                             <input
                                 type="text"
                                 className={styles.formInput}
@@ -203,7 +204,7 @@ export default function SignInForm() {
                                 readOnly
                                 required={true}
                             />
-                            <label className={styles.formText}>Number</label>
+                            <label className={styles.formText}>Número da Casa</label>
                             <input
                                 type="text"
                                 className={styles.formInput}
@@ -236,10 +237,10 @@ export default function SignInForm() {
 
                 {currentStep === 2 && (
                     <>
-                        <h2 className={styles.formTitle}>Password</h2>
-                        <p className={styles.formSubTitle}>Email & Password</p>
+                        <h2 className={styles.formTitle}>Campo de Segurança</h2>
+                        <p className={styles.formSubTitle}>Detalhes da Senha e Email</p>
                         <div className={styles.formContent}>
-                            <label className={styles.formText}>Password</label>
+                            <label className={styles.formText}>Senha</label>
                             <input
                                 type="password"
                                 className={styles.formInput}
@@ -248,7 +249,7 @@ export default function SignInForm() {
                                 {...register("password", { required: "Password is required" })}
                                 required={true}
                             />
-                            <label className={styles.formText}>Email Address</label>
+                            <label className={styles.formText}>Endereço de Email</label>
                             <input
                                 type="email"
                                 className={styles.formInput}
@@ -281,8 +282,8 @@ export default function SignInForm() {
 
                 {currentStep === 3 && (
                     <>
-                        <h2 className={styles.formTitle}>Sign In</h2>
-                        <p className={styles.formSubTitle}>Complete</p>
+                        <h2 className={styles.formTitle}>Entrar</h2>
+                        <p className={styles.formSubTitle}>Completo</p>
                         <div className={styles.arrowContainer}>
                             <button
                                 type="button"
@@ -293,7 +294,7 @@ export default function SignInForm() {
                                 <FaArrowAltCircleLeft />
                             </button>
                             <button className={styles.formSignIn_Button} type="submit">
-                                Sign In
+                                Cadastrar
                             </button>
                         </div>
                     </>

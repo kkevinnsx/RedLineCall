@@ -81,12 +81,12 @@
 }
 
 .formTitle {
-    color: #f1f1f1;
+    color: #091933;
     font-weight: bold;
 }
 
 .formSubTitle {
-    color: #f1f1f1;
+    color: #091933;
     font-weight: bold;
     margin-top: 0%;
 }
@@ -100,7 +100,8 @@
 }
 
 .formText {
-    color: #f1f1f1;
+    color: #000;
+    font-weight: bold;
     margin: .5vh;
 }
 
