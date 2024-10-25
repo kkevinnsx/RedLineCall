@@ -1,5 +1,4 @@
-// pages/api/SOSbutton.js
-import { pusher } from "../../services/pusher";
+import { pusher } from "../../../modules/auth/services/pusher";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
