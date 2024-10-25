@@ -1,6 +1,6 @@
 import { prisma } from '../../lib/prisma'; // Supondo que o Prisma esteja configurado
 
-export default async function handler(req, res) {
+export async function POST(request) {
   if (req.method === "POST") {
     const { viaturaId } = req.body;
 
