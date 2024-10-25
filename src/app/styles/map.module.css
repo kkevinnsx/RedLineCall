@@ -7,11 +7,18 @@
     height: 100vh;
 }
 
-.carElement{
-    background-color: transparent;
-    background-image: url(../img/policeCar.png);
-    width: 75px;
-    height: 75px;
+.userElement {
+    background-color: blue;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+.viaturaElement{
+    background-color: red;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
     background-repeat: no-repeat;
     background-size: contain;
 }

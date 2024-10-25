@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
+import { useEffect, useState } from "react";
 import styles from "../styles/policeHome.module.css";
 import NavBar from "../components/navPolice";
 import Location from "../components/locationComponent";
 import MapComponent from '../components/mapComponent';
 import StartButton from "../components/startButton";
-import { useEffect, useState } from "react";
+import CancelOccurrenceButton from "../components/cancelOcorrence"; // Importa o novo componente
 
 export default function PoliceHomePage() {
     const [viatura, setViatura] = useState(null);
@@ -44,6 +45,15 @@ export default function PoliceHomePage() {
         }));
     };
 
+    // Função que será chamada ao cancelar a ocorrência
+    const handleCancel = () => {
+        setViatura((prevViatura) => ({
+            ...prevViatura,
+            statusChat: false,
+        }));
+        // Aqui você pode adicionar a lógica para limpar a rota do mapa
+    };
+
     const loadingMessage = "Carregando informações da viatura...";
 
     return (
@@ -63,6 +73,9 @@ export default function PoliceHomePage() {
                     <StartButton viatura={viatura} onStatusChange={handleStatusChange} />
                     
                     <MapComponent selectedViatura={viatura} />
+
+                    {/* Botão de cancelar ocorrência */}
+                    <CancelOccurrenceButton viatura={viatura} onCancel={handleCancel} />
                 </>
             )}
             <NavBar />

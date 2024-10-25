@@ -14,9 +14,10 @@ export default function SOSbutton() {
   const { startSendingLocation, stopSendingLocation } = useSendLocation();
 
   useEffect(() => {
+    // Inicializa a conexão com o servidor Socket.IO
     socket = io({
-      path: "/socket.io", // Certifique-se de que o caminho corresponde ao servidor Socket.IO
-      transports: ["websocket"], // Define transportes
+      path: "/socket.io",
+      transports: ["websocket"],
     });
 
     socket.on("connect", () => {
@@ -24,13 +25,14 @@ export default function SOSbutton() {
     });
 
     return () => {
-      socket.disconnect();
+      socket.disconnect(); // Desconecta ao desmontar o componente
     };
   }, []);
 
   const UserActiveSOS = async () => {
     setLoading(true);
     try {
+      // Faz uma requisição para buscar as viaturas disponíveis
       const viaturasResponse = await fetch("/api/getVehicles");
 
       if (!viaturasResponse.ok) {
@@ -39,18 +41,21 @@ export default function SOSbutton() {
 
       const viaturas = await viaturasResponse.json();
 
+      // Verifica se há viaturas disponíveis
       if (viaturas.length === 0) {
         toast.warn("Nenhuma viatura disponível no momento. Por favor, ligue para o 190");
 
+        // Atualiza o status do usuário se não houver viaturas
         await fetch("/api/updateUserStatus", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ statusChat: false, statusOcor: false }),
         });
 
-        return;
+        return; // Sai da função
       }
 
+      // Ativa o SOS e atualiza o status do usuário
       const response = await fetch("/api/userActiveSOS", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,6 +68,7 @@ export default function SOSbutton() {
       const data = await response.json();
       setStatusChat(data.statusChat);
 
+      // Emite um evento SOS via Socket.IO
       socket.emit("sos", { message: "SOS ativado", userId: data.userId, location: data.location });
 
       toast.success("SOS ativado com sucesso!");
@@ -74,6 +80,7 @@ export default function SOSbutton() {
     }
   };
 
+  // Controle de envio de localização com base no status do chat
   useEffect(() => {
     if (statusChat) {
       startSendingLocation();

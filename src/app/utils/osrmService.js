@@ -1,4 +1,4 @@
-import Pusher from 'pusher-js';
+import Pusher from '../../modules/auth/services/pusher';
 
 export const getRoute = async (userLocation, viaturaLocation, map) => {
   const url = `http://router.project-osrm.org/route/v1/driving/${userLocation.longitude},${userLocation.latitude};${viaturaLocation.longitude},${viaturaLocation.latitude}?overview=full&geometries=geojson`;
