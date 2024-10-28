@@ -1,101 +1,122 @@
-'use client';
-
+"use client";
 import { useEffect, useState } from "react";
 import styles from "../styles/SOSbutton.module.css";
 import { toast } from "react-toastify";
-import { socket } from "../lib/socket"; // Importa a instância centralizada do WebSocket
 import useSendLocation from "../utils/sendLocation";
 
 export default function SOSbutton() {
-  const [loading, setLoading] = useState(false);
-  const [statusChat, setStatusChat] = useState(false);
-  const { startSendingLocation, stopSendingLocation } = useSendLocation();
+    const [loading, setLoading] = useState(false);
+    const [statusChat, setStatusChat] = useState(false);
+    const [userLocation, setUserLocation] = useState(null);
+    const [vehicleLocation, setVehicleLocation] = useState(null);
+    const { startSendingLocation, stopSendingLocation } = useSendLocation();
 
-  useEffect(() => {
-    if (!socket) return;
+    const UserActiveSOS = async () => {
+        setLoading(true);
 
-    // Escuta o evento de conexão do WebSocket
-    socket.on("connect", () => {
-      console.log("Conectado ao servidor WebSocket");
-    });
+        try {
+            const viaturasResponse = await fetch('/api/getVehicles');
 
-    return () => {
-      socket.off("connect"); // Remove o listener ao desmontar o componente
+            if (!viaturasResponse.ok) {
+                throw new Error(`Erro ao buscar viaturas: ${viaturasResponse.status}`);
+            }
+            const viaturas = await viaturasResponse.json();
+            if (viaturas.length === 0) {
+                toast.warn('Nenhuma viatura disponível no momento. Por favor, ligue para o 190');
+                // Trata o erro ao atualizar status
+                try {
+                    await fetch('/api/updateUserStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ statusChat: false, statusOcor: false }),
+                    });
+                } catch (error) {
+                    console.error('Erro ao atualizar o status do usuário:', error);
+                    toast.error('Erro ao atualizar o status do usuário');
+                }
+                return;
+            }
+            const response = await fetch('/api/userActiveSOS', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const text = await response.text();
+
+            if (!response.ok) {
+                throw new Error(`HTTP ERROR! status: ${response.status}`);
+            }
+
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (error) {
+                throw new Error('Resposta não é JSON');
+            }
+
+            if (data.statusChat !== undefined) {
+                toast.success('Status do chat atualizado com sucesso!');
+                setStatusChat(data.statusChat);
+            } else {
+                throw new Error('Status não retornado pela API');
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar o chatStatus", error);
+            toast.error("Erro ao atualizar o status do chat!");
+            console.error('Erro ao ativar SOS', error);
+            toast.error('Erro ao ativar o SOS!');
+        } finally {
+            setLoading(false);
+        }
     };
-  }, []);
 
-  const UserActiveSOS = async () => {
-    setLoading(true);
-    try {
-      // Faz uma requisição para buscar as viaturas disponíveis
-      const viaturasResponse = await fetch("/api/getVehicles");
+    useEffect(() => {
+        const fetchUsersLocation = async () => {
+            try {
+                const response = await fetch('/api/getUsersLocation');
 
-      if (!viaturasResponse.ok) {
-        throw new Error(`Erro ao buscar viaturas: ${viaturasResponse.status}`);
-      }
+                if (!response.ok) {
+                    throw new Error(`Erro ao obter localizações: ${response.status}`);
+                }
+                const data = await response.json();
+                setUserLocation(data.userLocation);
+                setVehicleLocation(data.vehicleLocation);
+            } catch (error) {
+                console.error('Erro ao obter a localização', error);
+                toast.error('Erro ao obter as localizações');
+            }
+        };
+        fetchUsersLocation();
+    }, []);
 
-      const viaturas = await viaturasResponse.json();
+    const handleClickSOS = async () => {
+        await UserActiveSOS();
+    };
 
-      // Verifica se há viaturas disponíveis
-      if (viaturas.length === 0) {
-        toast.warn("Nenhuma viatura disponível no momento. Por favor, ligue para o 190");
+    useEffect(() => {
+        if (statusChat) {
+            startSendingLocation();
+        } else {
+            stopSendingLocation();
+        }
+    }, [statusChat, startSendingLocation, stopSendingLocation]);
 
-        // Atualiza o status do usuário se não houver viaturas
-        await fetch("/api/updateUserStatus", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ statusChat: false, statusOcor: false }),
-        });
-
-        return; // Sai da função
-      }
-
-      // Ativa o SOS e atualiza o status do usuário
-      const response = await fetch("/api/userActiveSOS", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erro ao ativar SOS: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setStatusChat(data.statusChat);
-
-      // Emite um evento SOS via WebSocket
-      socket.emit("sos", { message: "SOS ativado", userId: data.userId, location: data.location });
-
-      toast.success("SOS ativado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao ativar SOS", error);
-      toast.error("Erro ao ativar o SOS!");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Controle de envio de localização com base no status do chat
-  useEffect(() => {
-    if (statusChat) {
-      startSendingLocation();
-    } else {
-      stopSendingLocation();
-    }
-  }, [statusChat, startSendingLocation, stopSendingLocation]);
-
-  return (
-    <div>
-      <button
-        type="button"
-        className={styles.sosButton}
-        onClick={UserActiveSOS}
-        disabled={loading}
-      >
-        <h1 className={styles.sosText}>
-          {loading ? "....." : "S.O.S"}
-        </h1>
-      </button>
-    </div>
-  );
+    return (
+        <div>
+            <button
+                type="button"
+                className={styles.sosButton}
+                onClick={handleClickSOS}
+                disabled={loading}
+            >
+                <h1 className={styles.sosText}>
+                    {loading ? "....." : "S.O.S"}
+                </h1>
+            </button>
+        </div>
+    );
 }

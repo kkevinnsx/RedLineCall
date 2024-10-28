@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'; // Importando NextResponse para construir a resposta da API
-import { pusher } from '../../../modules/auth/services/pusher'; // Ajuste o caminho conforme necessário
+import { pusher } from '../../lib/pusher'; // Ajuste o caminho conforme necessário
 
 export async function POST(request) {
     try {
