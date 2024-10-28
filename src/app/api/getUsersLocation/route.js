@@ -4,18 +4,14 @@ import { NextResponse } from "next/server";
 
 export async function GET(request) {
   const sessionCookie = request.cookies.get('session');
-
   if (!sessionCookie) {
     return NextResponse.json({ error: 'Usuário não autenticado' }, { status: 401 });
   }
-
   const { value } = sessionCookie;
   const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
-
   try {
     const { payload } = await jwtVerify(value, secret);
     const userId = payload.sub;
-
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -32,13 +28,10 @@ export async function GET(request) {
         }
       }
     });
-
     if (!user) {
       return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 401 });
     }
-
     const vehicle = user.viaturas.length > 0 ? user.viaturas[0] : null;
-
     return NextResponse.json({
       userLocation: {
         latitude: user.latitude,

@@ -1,0 +1,8 @@
+.cancelButtonContainer {
+    z-index: 999;
+}
+
+.cancelButton {
+    background-color: red;
+    color: #fff;
+}

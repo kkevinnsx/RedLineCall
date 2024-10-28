@@ -1,23 +1,20 @@
-import { NextResponse } from 'next/server'; // Importando NextResponse para construir a resposta da API
-import { pusher } from '../../lib/pusher'; // Ajuste o caminho conforme necessário
+import { NextResponse } from 'next/server';
+import { pusher } from '../../lib/pusher';
 
 export async function POST(request) {
-    try {
-        const { route } = await request.json(); // Extraindo a rota do corpo da requisição
-        console.log('Tentando atualizar a rota:', route); // Log para depuração
+  try {
+    const { route } = await request.json();
+    console.log('Tentando atualizar a rota:', route);
 
-        // Verificando se a rota está definida
-        if (!route) {
-            throw new Error('A rota não foi fornecida.');
-        }
-
-        // Acionando o Pusher para atualizar a rota
-        await pusher.trigger('vehicle-location', 'update-route', { newRoute: route });
-        console.log('Rota atualizada com sucesso!'); // Log para depuração
-
-        return NextResponse.json({ message: 'Rota atualizada com sucesso!' }); // Retornando resposta de sucesso
-    } catch (error) {
-        console.error('Erro ao atualizar a rota:', error); // Log do erro
-        return NextResponse.json({ error: 'Erro ao atualizar a rota', details: error.message }, { status: 500 }); // Retornando erro
+    if (!route) {
+      throw new Error('A rota não foi fornecida.');
     }
+
+    await pusher.trigger('vehicle-location', 'update-route', { newRoute: route });
+    console.log('Rota atualizada com sucesso!');
+    return NextResponse.json({ message: 'Rota atualizada com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao atualizar a rota:', error);
+    return NextResponse.json({ error: 'Erro ao atualizar a rota', details: error.message }, { status: 500 });
+  }
 }

@@ -1,7 +1,6 @@
 "use client";
-
 import { useState } from "react";
-import styles from '../styles/cancelButton.module.css'; // Crie um arquivo de estilos conforme necessário
+import styles from '../styles/cancelButton.module.css';
 
 const CancelOccurrenceButton = ({ viatura, onCancel }) => {
   const [loading, setLoading] = useState(false);
@@ -10,7 +9,6 @@ const CancelOccurrenceButton = ({ viatura, onCancel }) => {
   const handleCancelOccurrence = async () => {
     setLoading(true);
     setError(null);
-
     try {
       // Faz a requisição para atualizar os dados da viatura e do usuário
       const response = await fetch("/api/cancelOccurrence", {
@@ -20,14 +18,11 @@ const CancelOccurrenceButton = ({ viatura, onCancel }) => {
         },
         body: JSON.stringify({ viaturaId: viatura.id }), // Envia o ID da viatura
       });
-
       if (!response.ok) {
         throw new Error("Erro ao cancelar ocorrência.");
       }
-
       // Callback para limpar a rota no mapa (passado pela página)
       onCancel();
-
     } catch (error) {
       console.error("Erro ao cancelar a ocorrência:", error);
       setError("Erro ao cancelar a ocorrência.");

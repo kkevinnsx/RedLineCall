@@ -6,7 +6,7 @@ import NavBar from "../components/navPolice";
 import Location from "../components/locationComponent";
 import MapComponent from '../components/mapComponent';
 import StartButton from "../components/startButton";
-import CancelOccurrenceButton from "../components/cancelOcorrence"; // Importa o novo componente
+import CancelOccurrenceButton from "../components/cancelOcorrence"; 
 
 export default function PoliceHomePage() {
     const [viatura, setViatura] = useState(null);
@@ -74,7 +74,6 @@ export default function PoliceHomePage() {
                     
                     <MapComponent selectedViatura={viatura} />
 
-                    {/* Botão de cancelar ocorrência */}
                     <CancelOccurrenceButton viatura={viatura} onCancel={handleCancel} />
                 </>
             )}

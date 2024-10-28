@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 const sendLocation = async ({ latitude, longitude }) => {
     try { 
@@ -17,41 +17,38 @@ const sendLocation = async ({ latitude, longitude }) => {
     }
 };
 
-
 const useSendLocation = () => {
     const [location, setLocation] = useState({ latitude: null, longitude: null });
-    const [error, setError] = useState(null);
     const [intervalId, setIntervalId] = useState(null);
-    const [statusChat, setStatusChat] = useState(true); 
 
-    const updateLocation = useCallback(() => {
+    const updateLocation = useCallback(async () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    if (statusChat) {
-                        setLocation({ latitude, longitude });
-                        sendLocation({ latitude, longitude });
-                    } else {
-                        setLocation({ latitude: null, longitude: null });
-                        sendLocation({ latitude: null, longitude: null });
-                    }
+                    setLocation({ latitude, longitude });
                 },
-                (err) => {
-                    console.error('Erro ao obter localização:', err);
-                    setError(err);
+                (error) => {
+                    console.error('Erro ao obter localização:', error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0,
                 }
             );
         }
-    }, [statusChat]);
+    }, []);
 
     const startSendingLocation = useCallback(() => {
         if (!intervalId) {
-            updateLocation(); 
-            const id = setInterval(updateLocation, 5000); 
+            const id = setInterval(async () => {
+                await updateLocation(); // Atualiza localização antes de enviar
+                sendLocation(location);
+            }, 5000);
             setIntervalId(id);
         }
-    }, [intervalId, updateLocation]);
+    }, [intervalId, location, updateLocation]);
 
     const stopSendingLocation = useCallback(() => {
         if (intervalId) {
@@ -60,22 +57,7 @@ const useSendLocation = () => {
         }
     }, [intervalId]);
 
-    useEffect(() => {
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
-    }, [intervalId]);
-
-    useEffect(() => {
-        if (!statusChat) {
-            setLocation({ latitude: null, longitude: null });
-            sendLocation({ latitude: null, longitude: null });
-        }
-    }, [statusChat]);
-    
-    return { location, error, startSendingLocation, stopSendingLocation, setStatusChat };
+    return { location, updateLocation, startSendingLocation, stopSendingLocation };
 };
 
 export default useSendLocation;
