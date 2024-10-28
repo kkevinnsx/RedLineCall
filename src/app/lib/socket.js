@@ -1,14 +1,12 @@
 import { Server } from "socket.io";
 
-let io;
-
-export default function handler(req, res) {
-  if (!io) {
-    io = new Server(res.socket.server, {
+export function setupSocket(server) {
+  if (!server.io) {
+    const io = new Server(server, {
       path: "/socket.io",
       transports: ["websocket", "polling"],
     });
-    
+
     io.on("connection", (socket) => {
       console.log("Usuário conectado", socket.id);
 
@@ -21,8 +19,6 @@ export default function handler(req, res) {
       });
     });
 
-    res.socket.server.io = io;
+    server.io = io;
   }
-
-  res.end();
 }

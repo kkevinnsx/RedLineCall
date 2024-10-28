@@ -1,4 +1,4 @@
-import { prisma } from '../../lib/prisma'; // Supondo que o Prisma esteja configurado
+import prisma from '../../lib/prisma'; // Supondo que o Prisma esteja configurado
 
 export async function POST(request) {
   if (req.method === "POST") {

@@ -1,8 +1,13 @@
-import style from './styles/layout.module.css'
+import style from './styles/layout.module.css';
+import { setupSocket } from '../app/lib/socket';
 
 export const metadata = {
   title: 'RedLineCall',
-  description: 'Sistema de ocorrências e denúncias da policia',
+  description: 'Sistema de ocorrências e denúncias da polícia',
+};
+
+if (typeof window === "undefined") {
+  setupSocket(globalThis);
 }
 
 export default function RootLayout({ children }) {

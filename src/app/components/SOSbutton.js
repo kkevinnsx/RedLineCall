@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/SOSbutton.module.css";
 import { toast } from "react-toastify";
-import io from "socket.io-client";
+import { socket } from "../lib/socket"; // Importa a instância centralizada do WebSocket
 import useSendLocation from "../utils/sendLocation";
-
-let socket;
 
 export default function SOSbutton() {
   const [loading, setLoading] = useState(false);
@@ -14,18 +12,15 @@ export default function SOSbutton() {
   const { startSendingLocation, stopSendingLocation } = useSendLocation();
 
   useEffect(() => {
-    // Inicializa a conexão com o servidor Socket.IO
-    socket = io({
-      path: "/socket.io",
-      transports: ["websocket"],
-    });
+    if (!socket) return;
 
+    // Escuta o evento de conexão do WebSocket
     socket.on("connect", () => {
-      console.log("Conectado ao servidor Socket.IO");
+      console.log("Conectado ao servidor WebSocket");
     });
 
     return () => {
-      socket.disconnect(); // Desconecta ao desmontar o componente
+      socket.off("connect"); // Remove o listener ao desmontar o componente
     };
   }, []);
 
@@ -68,7 +63,7 @@ export default function SOSbutton() {
       const data = await response.json();
       setStatusChat(data.statusChat);
 
-      // Emite um evento SOS via Socket.IO
+      // Emite um evento SOS via WebSocket
       socket.emit("sos", { message: "SOS ativado", userId: data.userId, location: data.location });
 
       toast.success("SOS ativado com sucesso!");

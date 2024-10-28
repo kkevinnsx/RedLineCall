@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma"; // Importando o Prisma
+import prisma from "../../lib/prisma"; // Importando o Prisma
 import { pusher } from "../../../modules/auth/services/pusher";
 
 const calcularDistancia = (lat1, lon1, lat2, lon2) => {

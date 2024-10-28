@@ -17,8 +17,8 @@ const publicRoutes = [
 
 const restrictedRoutes = {
     'A': ['/admControl', '/admCrud'],
-    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/socket.io', '/api/socket', '/api/cancelOcorrence', '/api/updateRoute'],
-    'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS', '/api/updateLocation', '/api/getUsersLocation', '/api/getVehicles', '/api/socket', '/api/sosButton', '/api/updateUserStatus', '/socket.io']
+    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/api/cancelOcorrence', '/api/updateRoute'],
+    'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS', '/api/updateLocation', '/api/getUsersLocation', '/api/getVehicles', '/api/sosButton', '/api/updateUserStatus']
 };
 
 export async function middleware(req) {
