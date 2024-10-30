@@ -13,11 +13,12 @@ const publicRoutes = [
     '/401',
     '/api/logout',
     '/api/policeList',
+    '/api/updateRoute'
 ];
 
 const restrictedRoutes = {
     'A': ['/admControl', '/admCrud'],
-    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/api/cancelOcorrence', '/api/updateRoute'],
+    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/api/cancelOcorrence'],
     'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS', '/api/updateLocation', '/api/getUsersLocation', '/api/getVehicles', '/api/sosButton', '/api/updateUserStatus']
 };
 

@@ -11,19 +11,33 @@ export default function SOSbutton() {
     const [userLocation, setUserLocation] = useState(null);
     const { startSendingLocation, stopSendingLocation } = useSendLocation();
 
+    const fetchLocation = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocalização não suportada pelo navegador.");
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setUserLocation({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+            },
+            (error) => {
+                console.error("Erro ao obter localização:", error);
+                toast.error("Erro ao obter localização.");
+            }
+        );
+    };
+
     const sendInitialLocation = async () => {
         if (!userLocation) return;
 
         try {
             await fetch('/api/updateLocation', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    latitude: userLocation.latitude,
-                    longitude: userLocation.longitude
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userLocation),
             });
             console.log(`Localização inicial enviada: Latitude ${userLocation.latitude}, Longitude ${userLocation.longitude}`);
         } catch (error) {
@@ -35,26 +49,22 @@ export default function SOSbutton() {
     const UserActiveSOS = async () => {
         setLoading(true);
         try {
-            // 1 - Enviar localização inicial do usuário
-            await sendInitialLocation();
+            if (!userLocation?.latitude || !userLocation?.longitude) {
+                toast.error("Localização não disponível. Verifique as permissões.");
+                return;
+            }
 
-            // 2 - Acionar APIs relacionadas ao SOS
+            await sendInitialLocation();
             console.log("Chamando APIs para buscar viaturas e status do chat");
+
             const response = await fetch('/api/sosButton', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    latitude: userLocation.latitude,
-                    longitude: userLocation.longitude
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userLocation),
             });
 
             const text = await response.text();
-            if (!response.ok) {
-                throw new Error(`HTTP ERROR! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP ERROR! status: ${response.status}`);
 
             let data;
             try {
@@ -63,7 +73,6 @@ export default function SOSbutton() {
                 throw new Error('Resposta não é JSON');
             }
 
-            // 3 - Atualizar statusChat baseado na resposta da API
             if (data.statusChat !== undefined) {
                 toast.success('Status do chat atualizado com sucesso!');
                 setStatusChat(data.statusChat);
@@ -71,16 +80,13 @@ export default function SOSbutton() {
                 throw new Error('Status não retornado pela API');
             }
 
-            // 4 - Iniciar/Parar envio de localização periódico com base no status do chat
             if (data.statusChat) {
                 startSendingLocation();
             } else {
                 stopSendingLocation();
             }
         } catch (error) {
-            console.error("Erro ao atualizar o chatStatus:", error.message);
-            toast.error("Erro ao atualizar o status do chat!");
-            console.error('Erro ao ativar SOS:', error.message);
+            console.error("Erro ao ativar SOS:", error.message);
             toast.error('Erro ao ativar o SOS!');
         } finally {
             setLoading(false);
@@ -88,21 +94,7 @@ export default function SOSbutton() {
     };
 
     useEffect(() => {
-        const fetchUsersLocation = async () => {
-            try {
-                console.log("Buscando localização do usuário");
-                const response = await fetch('/api/getUsersLocation');
-                if (!response.ok) {
-                    throw new Error(`Erro ao obter localizações: ${response.status}`);
-                }
-                const data = await response.json();
-                setUserLocation(data.userLocation);
-            } catch (error) {
-                console.error('Erro ao obter a localização:', error.message);
-                toast.error('Erro ao obter as localizações');
-            }
-        };
-        fetchUsersLocation();
+        fetchLocation();
     }, []);
 
     const handleClickSOS = async () => {
