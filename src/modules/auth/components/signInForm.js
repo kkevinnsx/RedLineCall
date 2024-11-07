@@ -12,10 +12,10 @@ import MaskedInput, { Masks } from "../../../app/masks/maskedInputs";
 import axios from "axios";
 
 const steps = [
-    { id: 'Step-1', name: 'Pessoal', icon: <FaUser /> },
+    { id: 'Step-1', name: 'Pessoal',     icon: <FaUser /> },
     { id: 'Step-2', name: 'Endereço',    icon: <IoLocationSharp /> },
     { id: 'Step-3', name: 'Segurança',   icon: <GiPadlock /> },
-    { id: 'Step-4', name: 'Completo',   icon: <FaCheck /> }
+    { id: 'Step-4', name: 'Completo',    icon: <FaCheck /> }
 ];
 
 export default function SignInForm() {
