@@ -24,10 +24,88 @@ export default  function Settings (){
     const [userFullName, setUserFullName] = useState(null);
     const [currentEmail, setCurrentEmail] = useState("");
     const [newEmail, setNewEmail] = useState("");
-    const [message, setMessage] = useState(""); 
+    const [message, setMessage]   = useState(""); 
+    const [cep, setCep]           = useState("");
+    const [number, setNumber]     = useState("");
+    const [error, setError]       = useState(null);
     const [ocorrencias, setOcorrencias] = useState([]);
-    const [error, setError] = useState(null);
     const { register, handleSubmit, getValues, setValue, formState: { errors, isValid }, trigger } = useForm({ mode: 'onChange' });
+        
+    const handlePasswordChange = async (data) => {
+        const { cpf, newPassword, confirmPassword } = data;
+
+        if (newPassword !== confirmPassword) {
+            toast.error("As senhas não correspondem");
+            return;
+        }
+
+        try{
+            const res = await fetch("/api/getUser", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({cpf, newPassword, confirmPassword}),
+            });
+
+            const result = await res.json();
+
+            if(res.ok){
+                toast.success("Senha alterada com sucesso!");
+                setValue("cpf", "");
+                setValue("newPassword", "");
+                setValue("confirmPassword", "");
+            } else {
+                toast.error(result.error || "Erro ao alterar a senha");
+            }
+        } catch (error) {
+            console.error("Erro ao alterar a senha: ", error);
+            toast.error("Erro ao alterar a senha.")
+        }
+    };
+
+        const adressByCep = async (cep) => {
+            try {
+                const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+                if (response.data && !response.data.erro) {
+                    setValue('street', response.data.logradouro);
+                    setValue('city', response.data.localidade);
+                    setValue('state', response.data.uf);
+                } else {
+                    toast.error('CEP não encontrado.');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar o endereço:', error);
+                toast.error("Erro ao buscar endereço.");
+            }
+        };
+    
+        const handleAddressChange = async (e) => {
+            e.preventDefault();
+            const {cep, number} = getValues();
+    
+            try {
+                const res = await fetch("/api/getUser", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cep, number }),
+                });
+    
+                const data = await res.json();
+    
+                if (res.ok) {
+                    toast.success("Endereço atualizado com sucesso!");
+                    setValue('cep',"");
+                    setValue('number',"");
+                    setValue('state',"");
+                    setValue('city',"");
+                    setValue('street',"");
+                } else {
+                    toast.error(data.error || "Erro ao atualizar o endereço");
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar o endereço:", error);
+                toast.error("Erro ao atualizar o endereço.");
+            }
+        };
 
     const handleEmailChange = async (e) => {
         e.preventDefault();
@@ -152,21 +230,7 @@ export default  function Settings (){
         setCurrentStep(newStep);
     }
 
-    const adressByCep = async (cep) => {
-        try {
-            const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-            if (response.data && !response.data.erro) {
-                setValue('street', response.data.logradouro);
-                setValue('city',   response.data.localidade);
-                setValue('state',  response.data.uf);
-            } else {
-                console.error('CEP não encontrado.');
-            }
-        } catch (error) {
-            console.error('Erro ao buscar o endereço:', error);
-        }
-    };
-
+    
 return (
     <>
     <div className={styles.leftContainer}>
@@ -380,7 +444,8 @@ return (
 
         {currentStep === 'senha' && (
             <>
-                <form>
+                <ToastContainer />
+                <form onSubmit={handleSubmit(handlePasswordChange)}>
                     <p className={styles.boxOption}>Alterar a senha</p>
 
                     <label className={styles.changeInfo}>Confirme o seu CPF: </label>
@@ -398,27 +463,31 @@ return (
                         <input 
                             type="password"
                             placeholder="Nova senha"
-                            id="password"
-                            name="password"
+                            id="newPassword"
+                            name="newPassword"
                             className={styles.inputChange}
+                            {...register('newPassword', {required: "Nova senha é obrigatoria"})}
                         />
                     
                     <label className={styles.changeInfo}>Confirme a nova senha: </label>
                         <input 
                             type="password" 
                             placeholder="Nova senha"
-                            id="password"
-                            name="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
                             className={styles.inputChange}
+                            {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
                         />
 
+                    <button type="submit">Atualizar senha</button>
                 </form>
             </>
         )}
 
         {currentStep === 'endereco' && (
             <>
-            <form>
+            <ToastContainer />
+            <form onSubmit={handleAddressChange}>
                 <p className={styles.boxOption}>Alterar o endereco</p>
                     <label className={styles.changeInfo}>CEP</label>
                         <MaskedInput
@@ -474,9 +543,12 @@ return (
                             className={styles.inputChange}
                             id="number"
                             name="number"
+                            onChange={(e) => setNumber(e.target.value)}
                             {...register("number", { required: "number is required" })}
                             required={true}
                         />
+
+                        <button type="submit">Atualizar endereço</button>
             </form>
             </>
         )}

@@ -1,5 +1,6 @@
 import prisma from "../../lib/prisma";
 import { getUserProfile } from "../../../modules/auth/services/userService";
+import * as bcrypt from 'bcrypt';
 
 export async function GET(req) {
   try {
@@ -45,8 +46,10 @@ export async function POST(req) {
     const userProfile = await getUserProfile(req);
     const userId = parseInt(userProfile.id, 10);
 
-    const { currentEmail, newEmail } = await req.json();
+    const { currentEmail, newEmail, cep, number, cpf, newPassword, confirmPassword } = await req.json();
     
+
+    if(currentEmail && newEmail) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { email: true},
@@ -66,10 +69,48 @@ export async function POST(req) {
     });
 
     return new Response(JSON.stringify({ success: true}), {status:200});
-  } catch (error) {
-    console.error('Erro ao alterar o e-mail: ', error);
+  }
+  
+  if(cep && number) {
+    await prisma.user.update({
+      where: {id: userId},
+      data:  {cep, number },
+    });
+
+    return new Response(JSON.stringify({success: true, message: 'Endereço atualizado com sucesso!'}), {status: 200}); 
+  }
+
+  if(cpf && newPassword && confirmPassword) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {cpf: true},
+    });
+  
+  if (!user || user.cpf !== cpf) {
+    return new Response(JSON.stringify({error: 'CPF incorreto'}), {status: 400});
+  }
+
+  if(newPassword !== confirmPassword) {
+    return new Response(JSON.stringify({error: 'As senhas são correspondem'}), {status: 400});
+  }
+
+  const hashPassword = await bcrypt.hash(newPassword, 10);
+  await prisma.user.update({
+    where: {id: userId},
+    data: { password: hashPassword},
+  });
+
+    return new Response(JSON.stringify({success: true, message: 'senha alterada com sucesso!'}), {status:200})
+  }
+
     return new Response(
-      JSON.stringify({ error: 'Erro iterno ao servidor', details: error.message}),
+      JSON.stringify({ error: 'Dados insuficientes para atualização'}),
+      {status: 400}
+    );
+  } catch (error) {
+    console.error('Erro ao alterar os dados: ', error);
+    return new Response(
+      JSON.stringify({ error: 'Erro interno ao servidor', details: error.message}),
       {status: 500}
     );
   }
