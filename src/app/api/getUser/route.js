@@ -1,6 +1,8 @@
 import prisma from "../../lib/prisma";
 import { getUserProfile } from "../../../modules/auth/services/userService";
+import { destroySession } from "@/modules/auth/services/authService";
 import * as bcrypt from 'bcrypt';
+import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
@@ -46,7 +48,7 @@ export async function POST(req) {
     const userProfile = await getUserProfile(req);
     const userId = parseInt(userProfile.id, 10);
 
-    const { currentEmail, newEmail, cep, number, cpf, newPassword, confirmPassword } = await req.json();
+    const { currentEmail, newEmail, cep, number, cpf, newPassword, confirmPassword, deleteAccount} = await req.json();
     
 
     if(currentEmail && newEmail) {
@@ -100,7 +102,17 @@ export async function POST(req) {
     data: { password: hashPassword},
   });
 
-    return new Response(JSON.stringify({success: true, message: 'senha alterada com sucesso!'}), {status:200})
+    return new Response(JSON.stringify({success: true, message: 'senha alterada com sucesso!'}),{status:200})
+  }
+
+  if(deleteAccount){
+    await prisma.user.delete({
+      where: {id: userId},
+    });
+
+    await destroySession(req)
+
+    return new Response(JSON.stringify({ success: true, message: 'Conta deletada com sucesso!' }), { status: 200 });
   }
 
     return new Response(

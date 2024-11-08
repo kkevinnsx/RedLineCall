@@ -31,6 +31,29 @@ export default  function Settings (){
     const [ocorrencias, setOcorrencias] = useState([]);
     const { register, handleSubmit, getValues, setValue, formState: { errors, isValid }, trigger } = useForm({ mode: 'onChange' });
         
+    const handleDeleteAccount = async () => {
+        try{
+            const res = await fetch("/api/getUser", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ deleteAccount: true }),
+            });
+
+            const data = await res.json();
+            
+            if(res.ok){
+                toast.success("Conta deletada com sucesso!");
+                window.location.href = "/";
+            } else {
+                toast.error(data.error || "Erro ao deletar a conta");
+            }
+        
+        } catch (error) {
+            console.error("Erro ao deletar a conta: ", error);
+            toast.error("Erro ao deletar a conta");
+        }
+    };
+
     const handlePasswordChange = async (data) => {
         const { cpf, newPassword, confirmPassword } = data;
 
@@ -592,6 +615,7 @@ return (
                 
                 <button
                     type="button"
+                    onClick={handleDeleteAccount}
                     className={styles.desconectButtonTwo}
                 >
                 <p className={styles.desconectText}>Deletar a conta</p>
