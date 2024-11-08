@@ -14,21 +14,61 @@ import { AiOutlineMail } from "react-icons/ai";
 import LogoutButton from "../components/LogoutButton";
 import { useForm, useFormContext } from 'react-hook-form';
 import React, { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import MaskedInput, { Masks } from "../masks/maskedInputs";
 import axios from "axios";
 
 export default  function Settings (){
     let [currentStep, setCurrentStep] = useState('inicial');
     const [userFullName, setUserFullName] = useState(null);
+    const [currentEmail, setCurrentEmail] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [message, setMessage] = useState(""); 
+    const [ocorrencias, setOcorrencias] = useState([]);
     const [error, setError] = useState(null);
     const { register, handleSubmit, getValues, setValue, formState: { errors, isValid }, trigger } = useForm({ mode: 'onChange' });
 
-    const fetchUserFullName = async () => {
+    const handleEmailChange = async (e) => {
+        e.preventDefault();
+
+        try {
+            const res = await fetch("/api/getUser", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ currentEmail, newEmail }),
+            });
+
+            const data = await res.json();
+
+            if(res.ok) {
+                toast.success("E-mail atualizado com sucesso!");
+                setCurrentEmail("")
+                setNewEmail("")
+            } else {
+                toast.error(data.error || "Erro ao atualizar o e-mail");
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar o e-mail:", error);
+            toast.error("Erro ao atualizar o e-mail.");
+        }
+    };
+
+    const fetchUserData = async () => {
         try {
             const res = await fetch('/api/getUser');
             const data = await res.json();
+
             if(res.ok){
-                setUserFullName(data.fullName)
+                setUserFullName(data.fullName);
+
+                const adressOcorrence = await Promise.all(data.ocorrencias.map(async ocorrencia => {
+                    const { latitude, longitude } = ocorrencia.localizacao;
+                    const address = await fetchAdressFromCoordinates(latitude, longitude);
+                    return {...ocorrencia, address}
+                }));
+
+                setOcorrencias(adressOcorrence);
             } else {
                 setError(data.error || 'Erro desconhecido');
             }
@@ -37,8 +77,23 @@ export default  function Settings (){
         }
     }
 
+    const fetchAdressFromCoordinates = async(latitude, longitude) => {
+        try{
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const data = await response.json();
+
+            const { road, city, state } = data.address;
+            const formattedAddress = `${road || ''}, ${city || ''}, ${state || ''}`;
+
+            return formattedAddress.trim().replace(/(^,)|(,$)/g, "")
+        } catch (error) {
+            console.error("Erro ao buscar endereço: ", error);
+            return "Erro ao obter endereço";
+        }
+    };
+
     useEffect(() => {
-        fetchUserFullName();
+        fetchUserData();
     }, []);
 
     const initialButton = async () => {
@@ -224,15 +279,25 @@ return (
             <>
                 <p className={styles.boxOption}>Histórico de Ocorrêncais</p>
                 <table className={styles.tableHistory}>
-                    <th className={styles.tableTitle}>
-                        <p className={styles.titleMessage}>Últimas ocorrências</p>
-                    </th>
-                    <tr className={styles.trBox}>
-
-                    </tr>
-                    <td className={styles.tdBox}>
-
-                    </td>
+                    <thead>
+                        <tr>
+                            <th className={styles.tableTitle}>Últimas ocorrências</th>
+                        </tr>
+                        <tr className={styles.trBox}>
+                            <th>Data:        </th>
+                            <th>Motivo:      </th>
+                            <th>Localização: </th>
+                        </tr>
+                    </thead>
+                    <tbody className={styles.tbodyBox}>
+                        {ocorrencias.map((ocorrencia, index) => (
+                            <tr key={index} className={styles.trBox}>
+                                <td className={styles.tdBox}>{new Date(ocorrencia.data).toLocaleDateString()}</td>
+                                <td className={styles.tdBox}>{ocorrencia.motivo}</td>
+                                <td className={styles.tdBox}>{ocorrencia.address}</td>
+                            </tr>
+                        ))}
+                    </tbody>
                 </table>
             </>
         )}
@@ -283,15 +348,17 @@ return (
 
         {currentStep === 'email' && (
             <>
-                <form>
+                <ToastContainer />
+                <form onSubmit={handleEmailChange}>
                     <p className={styles.boxOption}>Alterar Email</p>
                     <label className={styles.changeInfo}>Digite o email atual: </label>
                     <input 
                         type="email"
                         placeholder="Email atual"
                         className={styles.inputChange}
-                        id="email"
-                        name="email"
+                        value={currentEmail}
+                        onChange={(e) => setCurrentEmail(e.target.value)}
+                        required
                     />
                     
                     <label className={styles.changeInfo}>Digite o novo email: </label>
@@ -299,10 +366,15 @@ return (
                         type="email"
                         placeholder="Novo email"
                         className={styles.inputChange}
-                        id="email"
-                        name="email"
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        required
                     />
+
+                    <button type="submit" className={styles.submitButton}>Atualizar o e-mail</button>
                 </form>
+
+                {message && <p className={styles.message}>{message}</p>}
             </>
         )}
 
@@ -450,6 +522,7 @@ return (
                     type="button"
                     className={styles.desconectButtonTwo}
                 >
+                <p className={styles.desconectText}>Deletar a conta</p>
                 </button>
             </>
         )}
