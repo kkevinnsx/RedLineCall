@@ -13,7 +13,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import MaskedInput, { Masks } from "../masks/maskedInputs";
 
-export default function admCrud (){
+export default function AdmCrud (){ 
     let [currentStep, setCurrentStep] = useState('inicial');
     const [cpf, setCpf]     = useState("");
     const [users, setUsers] = useState([]);
