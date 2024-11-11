@@ -31,6 +31,17 @@ export default function PoliceForm() {
     }, []);
 
     const onSubmit = async (policeData) => {
+        if (!policeData.cepDP || !policeData.numeroDP || !policeData.numeroViatura ||
+            !policeData.modeloViatura || !policeData.placaViatura || !policeData.policeList){
+                toast.error('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+        
+        if(policeData.policeList === ""){
+            toast.error('Por favor, selecione um policial.');
+            return;
+        }
+
         try {
             await createPoliceCar({
                 ...policeData,

@@ -107,4 +107,42 @@ async function createPoliceCar(policeData) {
     });
 }
 
-export {createAccount, loginAcess, createPoliceCar};
+async function createPoliceAccount(data) {
+    const {
+        fullName,
+        cpf,
+        birthDay,
+        cep,
+        latitude,
+        longitude,
+        number,
+        password,
+        email
+    } = data;        
+
+    if (!password) {
+        throw new Error('Password is required');
+    }
+        const formattedBirthDay = new Date(birthDay).toISOString();
+
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        await prisma.user.create({
+            data: {
+                fullName,
+                cpf,
+                birthDay: formattedBirthDay,
+                cep,
+                latitude: null,
+                longitude: null,
+                number,
+                statusChat: false,
+                statusOcor: false,
+                password: hashPassword,
+                email,
+                idPerfil: 'B',
+            },
+        });
+    }
+
+export {createAccount, loginAcess, createPoliceCar, createPoliceAccount};

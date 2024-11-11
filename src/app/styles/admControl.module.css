@@ -1,3 +1,20 @@
+.leftContainer{
+    height: 100%;
+    width: 40%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 .2rem #0f0f0f6c;
+}
+
+.rightContainer{
+    height: 100%;
+    width: 60%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 .text {
     position: absolute;
     left: 50%;
