@@ -1,5 +1,6 @@
 "use client";
 
+import styles from '../styles/cancelButton.module.css'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -26,7 +27,7 @@ const LogoutButton = () => {
     };
 
     return (
-        <button onClick={handleLogout} disabled={loading}>
+        <button onClick={handleLogout} disabled={loading} className={styles.desconectBase}>
             {loading ? 'Saindo...' : 'LogOut'}
         </button>
     );

@@ -7,6 +7,7 @@ import { RxExit } from "react-icons/rx";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; 
 import { useState, useEffect } from 'react';
+import LogoutButton from "./LogoutButton";
 
 const NavBar = () => {
     const pathname = usePathname(); 
@@ -29,11 +30,9 @@ const NavBar = () => {
                         </div>
                     </Link>
 
-                    <Link href="/api/logout" className={`${styles.link} ${isActive('/api/logout') ? `${styles.active} ${activeClass}` : ''}`}>
-                        <div className={`${styles.iconContainer} ${styles.iconBackground}`}>
-                            <RxExit className={styles.icons} />
-                        </div>
-                    </Link>
+                    <div className={`${styles.iconContainer} ${styles.iconBackground}`}>
+                    <LogoutButton />
+                    </div>
                 </div>
             </div>   
         </nav>
