@@ -227,7 +227,7 @@ export default function AdmCrud (){
                                 <th>Nome:                   </th>
                                 <th>Email:                  </th>
                                 <th>Endereço:               </th>
-                                <th>Motivo das Ocorrências: </th>
+                                <th>Motivo das ocorrências: </th>
                                 <th>Ações                   </th>
                             </tr>
                         </thead>

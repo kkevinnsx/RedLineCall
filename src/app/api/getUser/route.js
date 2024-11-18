@@ -93,7 +93,7 @@ export async function POST(req) {
   }
 
   if(newPassword !== confirmPassword) {
-    return new Response(JSON.stringify({error: 'As senhas são correspondem'}), {status: 400});
+    return new Response(JSON.stringify({error: 'As senhas não correspondem'}), {status: 400});
   }
 
   const hashPassword = await bcrypt.hash(newPassword, 10);

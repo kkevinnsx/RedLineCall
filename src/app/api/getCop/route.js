@@ -47,7 +47,52 @@ export async function POST(req) {
         const policeProfile = await getUserProfile(req);
         const policeId = parseInt(policeProfile.id, 10);
 
-        const { currentEmail, newEmail, cep, number, cpf, newPassword, confirmPassword} = await req.json();
+        const { currentEmail, newEmail, cpf, newPassword, confirmPassword} = await req.json();
+
+        if (currentEmail && newEmail) {
+            const police = await prisma.user.findUnique({
+                where: { id: policeId },
+                select: { email: true },
+            });
+
+            if(!police){
+                return new Response(JSON.stringify({ error: 'Usuário não encontrado '}), {status: 404});
+            }
+
+            if(user.email !== currentEmail) {
+                return new Response(JSON.stringify({ error: 'O e-mail atual está incorreto'}), {status: 400})
+            }
+
+            await prisma.user.update({
+                where: { id: policeId},
+                data:  { email: newEmail},
+            });
+
+            return new Response(JSON.stringify({ sucess: true}), {status:200});
+        }
+
+        if(cpf && newPassword && confirmPassword) {
+            const police = await prisma.user.findUnique({
+                where: { id: policeId},
+                select: { cpf: true},
+            });
+
+            if(!police || police.cpf !== cpf ){
+                return new Response(JSON.stringify({error: 'CPF incorreto'}), {status: 400});
+            }
+
+            if(newPassword !== confirmPassword) {
+                return new Response(JSON.stringify({error: 'As senhas não correspondem'}), {status: 400});
+            }
+
+            const hashPassword = await bcrypt.hash(newPassword, 10);
+            await prisma.user.update({
+                where: { id: policeId},
+                data: {password: hashPassword},
+            });
+
+            return new Response(JSON.stringify({success: true, message: 'senha alterada com sucesso!'}),{status: 200})
+        }
 
     } catch (error) {
         

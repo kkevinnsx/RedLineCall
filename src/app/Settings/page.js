@@ -276,7 +276,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiHistory className={styles.boxIcons} />
                         <p className={styles.boxText}>
-                            Histórico de Ocorrências
+                            Histórico de ocorrências
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -293,7 +293,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiSolidInfoCircle className={styles.boxIcons}/>
                         <p className={styles.boxText}>
-                            Editar Informações Pessoais
+                            Editar informações pessoais
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -310,7 +310,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiSolidUserCircle className={styles.boxIcons}/>
                         <p className={styles.boxText}>
-                            Termos de Uso
+                            Termos de uso
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -344,7 +344,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiSolidTrash className={styles.boxIcons}/>
                         <p className={styles.boxText}>
-                            Apagar a Conta
+                            Apagar a conta
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -355,8 +355,8 @@ return (
     <div className={styles.rightContainer}>
         {currentStep === 'inicial' && (
             <>
-                <p className={styles.boxOptionInitial}>Selecione uma Opção</p>
-                <p className={styles.boxOptionSecond}>Para Desbloquear a Página</p>
+                <p className={styles.boxOptionInitial}>Selecione uma opção</p>
+                <p className={styles.boxOptionSecond}>Para desbloquear a página</p>
                 <div className={styles.lockCircle}>
                     <FaLock className={styles.boxLock}/>
                 </div>
@@ -365,11 +365,11 @@ return (
 
         {currentStep === 'historico' && (
             <>
-                <p className={styles.boxOption}>Histórico de Ocorrêncais</p>
+                <p className={styles.boxOption}>Histórico de ocorrêncais</p>
                 <table className={styles.tableHistory}>
                     <thead>
                         <tr>
-                            <th className={styles.tableTitle}>Últimas Ocorrências</th>
+                            <th className={styles.tableTitle}>Últimas ocorrências</th>
                         </tr>
                         <tr className={styles.trBox}>
                             <th>Data:        </th>
@@ -392,14 +392,14 @@ return (
 
         {currentStep === 'informacao' && (
             <>
-                <p className={styles.boxOption}>Alterar Informações Pessoais</p>
+                <p className={styles.boxOption}>Alterar informações pessoais</p>
                 <div className={styles.boxEmail}>
                     <button
                         type='button'
                         onClick={changeEmail}
                         className={styles.boxNavigation}
                     >
-                        <p className={styles.navigationText}>Alterar Email</p>
+                        <p className={styles.navigationText}>Alterar email</p>
                         <div className={styles.navigationCircle}>
                             <AiOutlineMail className={styles.navigationIcons}/>
                         </div>
@@ -412,7 +412,7 @@ return (
                         onClick={changePassword}
                         className={styles.boxNavigation}
                     >
-                        <p className={styles.navigationText}>Alterar Senha</p>
+                        <p className={styles.navigationText}>Alterar senha</p>
                         <div className={styles.navigationCircle}>
                             <AiOutlineMail className={styles.navigationIcons}/>
                         </div>
@@ -425,7 +425,7 @@ return (
                         onClick={changeAdress}
                         className={styles.boxNavigation}
                     >
-                        <p className={styles.navigationText}>Alterar Endereço</p>
+                        <p className={styles.navigationText}>Alterar endereço</p>
                         <div className={styles.navigationCircle}>
                             <AiOutlineMail className={styles.navigationIcons}/>
                         </div>
@@ -438,8 +438,8 @@ return (
             <>
                 <ToastContainer />
                 <form onSubmit={handleEmailChange}>
-                    <p className={styles.boxOption}>Alterar Email</p>
-                    <label className={styles.changeInfo}>Digite o Email Atual: </label>
+                    <p className={styles.boxOption}>Alterar email</p>
+                    <label className={styles.changeInfo}>Digite o email atual: </label>
                     <input 
                         type="email"
                         placeholder="Email atual"
@@ -449,7 +449,7 @@ return (
                         required
                     />
                     
-                    <label className={styles.changeInfo}>Digite o Novo Email: </label>
+                    <label className={styles.changeInfo}>Digite o novo email: </label>
                     <input 
                         type="email"
                         placeholder="Novo email"
@@ -459,7 +459,7 @@ return (
                         required
                     />
 
-                    <button type="submit" className={styles.submitButton}>Atualizar o Email</button>
+                    <button type="submit" className={styles.submitButton}>Atualizar o email</button>
                 </form>
 
                 {message && <p className={styles.message}>{message}</p>}
@@ -483,7 +483,7 @@ return (
                         required={true}
                     />
 
-                    <label className={styles.changeInfo}>Digite a Nova Senha: </label>
+                    <label className={styles.changeInfo}>Digite a nova senha: </label>
                         <input 
                             type="password"
                             placeholder="Nova senha"
@@ -493,7 +493,7 @@ return (
                             {...register('newPassword', {required: "Nova senha é obrigatoria"})}
                         />
                     
-                    <label className={styles.changeInfo}>Confirme a Nova Senha: </label>
+                    <label className={styles.changeInfo}>Confirme a nova senha: </label>
                         <input 
                             type="password" 
                             placeholder="Nova senha"
@@ -512,7 +512,7 @@ return (
             <>
             <ToastContainer />
             <form onSubmit={handleAddressChange}>
-                <p className={styles.boxOption}>Alterar o Endereço</p>
+                <p className={styles.boxOption}>Alterar o endereço</p>
                     <label className={styles.changeInfo}>CEP</label>
                         <MaskedInput
                             mask={Masks.cep}
@@ -561,7 +561,7 @@ return (
                             readOnly
                             required={true}
                         />
-                        <label className={styles.changeInfo}>Número da Casa</label>
+                        <label className={styles.changeInfo}>Número da casa</label>
                         <input
                             type="text"
                             className={styles.inputChange}
@@ -579,20 +579,20 @@ return (
 
         {currentStep == 'termosUsuario' && (
             <>
-                <p className={styles.boxOption}> Termos de Uso - Red Line Call</p>
+                <p className={styles.boxOptionTitle}> Termos de Uso - Red Line Call</p>
                 <p className={styles.userTermsText}><p>1. Definições e Descrição do Serviço</p>
                     O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e
                     viaturas policiais, oferecendo serviços como visualização da localização das
                     viaturas, envio de solicitações de ajuda, notificação de ocorrências em tempo real,
-                    etc.. Nosso objetivo é promover  a segurança pública e a eficiência 
+                    etc. Nosso objetivo é promover  a segurança pública e a eficiência 
                     no atendimento emergencial, por meio da interação direta com a polícia.
-                <p className={styles.boxOption}>2. Aceitação dos Termos</p>    
+                <p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>    
                 <p className={styles.userTermsText}>Ao acessar, navegar ou usar qualquer 
-                    funcionalidade do Site, você reconhece que leu, entendeu e concorda em estar
-                    vinculado a estes Termos de Uso. Caso não concorde com algum item, você não 
-                    deverá utilizar o Site.
+                    funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
+                    vinculado a estes termos de uso. Caso não concorde com algum item, você não 
+                    deverá utilizar o site.
                 </p>
-                <p className={styles.boxOption}>3. </p>
+                <p className={styles.boxOptionTitle}>3. </p>
                 <p className={styles.userTermsText}> XDDD XDDDD XDDDD </p>
                 </p>
             </>

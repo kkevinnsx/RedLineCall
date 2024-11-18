@@ -138,7 +138,7 @@ export default function AdmControl () {
                         {...register('cpf', { required: "CPF é exigido" })}
                     />
 
-                    <label className={styles.changeInfo}>Data de Nascimento:</label>
+                    <label className={styles.changeInfo}>Data de nascimento:</label>
                     <input
                         type="date"
                         className={styles.inputChange}
@@ -194,7 +194,7 @@ export default function AdmControl () {
                         {...register('password', {required: "Senha é exigida"})}
                     />
 
-                    <button type="submit">Cadastrar Policial</button>
+                    <button type="submit">Cadastrar policial</button>
                 </form>
             </>
             )}
