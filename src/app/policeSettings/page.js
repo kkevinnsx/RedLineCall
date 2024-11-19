@@ -23,11 +23,17 @@ export default function PoliceSettings (){
     let [currentStep, setCurrentStep] = useState('Inicial');
     const [userFullName, setUserFullName] = useState(null);
     const [error, setError]       = useState(null);
+    const [enderecos, setEnderecos] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [ocorrencias, setOcorrencias] = useState([]);
     const { register, handleSubmit, getValues, setValue, formState: { errors, isValid }, trigger } = useForm({ mode: 'onChange' });
     const [message, setMessage]   = useState(""); 
     const [newEmail, setNewEmail] = useState("");
     const [currentEmail, setCurrentEmail] = useState("");
+
+    const initialButton = () => {
+        setCurrentStep('Inicial'); 
+    };
 
     const handleStepChange = (newStep) => {
         setCurrentStep(newStep);
@@ -35,54 +41,55 @@ export default function PoliceSettings (){
 
     const handlePasswordChange = async (data) => {
         const { cpf, newPassword, confirmPassword } = data;
-
-        if(newPassword !== confirmPassword) {
+        
+        if (newPassword !== confirmPassword) {
             toast.error('As senhas não correspondem');
             return;
         }
-
-        try{
+    
+        try {
             const res = await fetch('/api/getCop', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({cpf, newPassword, confirmPassword}),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cpf, newPassword, confirmPassword }),  
             });
-
-            const result = await res.json();
-        
-            if(res.ok){
-                toast.success('Senha alterada com sucesso!');
-                setValue('cpf', '');
-                setValue('newPassword', '');
-                setValue('confirmPassword', '');
-            } else {
+    
+            if (!res.ok) {
+                const result = await res.json();
                 toast.error(result.error || 'Erro ao alterar a senha');
+                return;
             }
+    
+            toast.success('Senha alterada com sucesso!');
+            setValue('cpf', '');
+            setValue('newPassword', '');
+            setValue('confirmPassword', '');
         } catch (error) {
+            toast.error('Erro ao alterar a senha.');
             console.error('Erro ao alterar a senha: ', error);
-            toast.error('Erro ao alterar a senha.')
-        } 
+        }
     };
 
     const handleEmailChange = async (e) => {
         e.preventDefault();
-
+    
         try {
-            const res = await fetch('/api/getCop', {
+            const res = await fetch('/api/getCop', {  
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ currentEmail, newEmail}),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ currentEmail, newEmail }), 
             });
-
-            const data = await res.json();
-
-            if(res.ok) {
-                toast.success('E-mail atualizado com sucesso!');
-                setCurrentEmail('')
-                setNewEmail('')
-            } else {
+    
+            if (!res.ok) {
+                const data = await res.json();
                 toast.error(data.error || 'Erro ao atualizar o e-mail');
+                return;
             }
+    
+            toast.success('E-mail atualizado com sucesso!');
+            setCurrentEmail(''); 
+            setNewEmail('');
+    
         } catch (error) {
             console.error('Erro ao atualizar o e-mail:', error);
             toast.error('Erro ao atualizar o e-mail');
@@ -90,46 +97,72 @@ export default function PoliceSettings (){
     }
 
     const fetchUserData = async () => {
-        try{ 
-            const res = await fetch('/api/getCop');
-            const data = await res.json();
-
-            if (res.ok) {
-                setUserFullName(data.fullName);
-
-                const AdressOcorrence = await Promise.all(data.ocorrencias.map(async ocorrencia => {
-                    const { latitude, longitude } = ocorrencia.localizacao;
-                    const address = await fetchAdressFromCoordinates(latitude, longitude);
-                    return {...ocorrencia, address}
-                }));
-                
-                setOcorrencias(AdressOcorrence);
-            } else {
-                setError(data.error || 'Erro desconhecido');
-            }
+        setLoading(true);
+        try {
+          const res = await fetch('/api/getCop');
+          const data = await res.json();
+          console.log("Resposta da API:", data);
+      
+          if (data.ocorrencias && data.ocorrencias.length > 0) {
+            setOcorrencias(data.ocorrencias); 
+          } else {
+            console.log("Nenhuma ocorrência encontrada.");
+          }
+      
+          setUserFullName(data.fullName);
         } catch (error) {
-            console.error('Erro ao buscar informações do usuário');
+          console.error('Erro ao buscar informações do usuário', error);
+          setError('Erro ao buscar informações do usuário');
+        } finally {
+          setLoading(false);
         }
-    }
-
-    const fetchAdressFromCoordinates = async(latitude, longitude) => {
+      };
+      
+      const fetchAdressFromCoordinates = async (latitude, longitude) => {
+        if (!latitude || !longitude) {
+            return 'Localização não disponível';
+        }
+    
         try {
             const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
             const data = await response.json();
-
-            const { road, city, state } = data.address;
-            const formattedAddress = `${road || ''}, ${city || ''}, ${state || ''}`;
-
-            return formattedAddress.trim().replace(/(^,)|(,$)/g, "")
+    
+            if (data && data.address) {
+                const { road, city, state } = data.address;
+                const formattedAddress = `${road || ''}, ${city || ''}, ${state || ''}`;
+                return formattedAddress.trim().replace(/(^,)|(,$)/g, ""); 
+            } else {
+                return 'Endereço não encontrado';
+            }
         } catch (error) {
             console.error('Erro ao buscar endereço:', error);
             return 'Erro ao obter endereço';
         }
-    }
+    };
 
     useEffect(() => {
+        const loadEnderecos = async () => {
+            setLoading(true);
+            const novosEnderecos = await Promise.all(
+                ocorrencias.map(async (ocorrencia) => {
+                    const endereco = await fetchAdressFromCoordinates(
+                        ocorrencia.localizacao.latitude,
+                        ocorrencia.localizacao.longitude
+                    );
+                    return endereco;
+                })
+            );
+            setEnderecos(novosEnderecos);
+            setLoading(false);
+        };
+    
+        loadEnderecos();
+    }, [ocorrencias]);
+    
+    useEffect(() => {
         fetchUserData();
-    }, []);
+    },
+    []);
     
     return (
     <>
@@ -225,30 +258,31 @@ export default function PoliceSettings (){
             )}
 
             {currentStep === 'historico' && (
-                <>
-                <p className={styles.boxOption}>Histórico de ocorrêncais</p>
-                    <table className={styles.tableHistory}>
-                        <thead>
-                            <tr>
-                                <th className={styles.tableTitle}>Últimas ocorrências</th>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Últimas ocorrências</th>
+                        </tr>
+                        <tr>
+                            <th>Data:</th>
+                            <th>Motivo:</th>
+                            <th>Localização:</th>
+                            <th>Nome do Socorrido:</th>
+                            <th>CPF do Socorrido:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {ocorrencias.map((ocorrencia, index) => (
+                            <tr key={index}>
+                                <td>{new Date(ocorrencia.data).toLocaleDateString()}</td>
+                                <td>{ocorrencia.motivo}</td>
+                                <td>{enderecos[index] || 'Carregando endereço...'}</td>
+                                <td>{ocorrencia.user?.fullName || 'Nome não disponível'}</td>
+                                <td>{ocorrencia.user?.cpf || 'CPF não disponível'}</td>
                             </tr>
-                            <tr className={styles.trBox}>
-                                <th>Data:        </th>
-                                <th>Motivo:      </th>
-                                <th>Localização: </th>
-                            </tr>
-                        </thead>
-                        <tbody className={styles.tbodyBox}>
-                            {ocorrencias.map((ocorrencia, index) => (
-                                <tr key={index} className={styles.trBox}>
-                                    <td className={styles.tdBox}>{new Date(ocorrencia.data).toLocaleDateString()}</td>
-                                    <td className={styles.tdBox}>{ocorrencia.motivo}</td>
-                                    <td className={styles.tdBox}>{ocorrencia.address}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </>
+                        ))}
+                    </tbody>
+                </table>
             )}
 
             {currentStep === 'informacao' && (
@@ -270,7 +304,7 @@ export default function PoliceSettings (){
                     <div className={styles.boxEmail}>
                         <button
                             type='button'
-                            onClick={() => handleStepChange('password')}
+                            onClick={() => handleStepChange('senha')}
                             className={styles.boxNavigation}
                         >
                             <p className={styles.navigationText}>Alterar senha</p>
@@ -286,7 +320,6 @@ export default function PoliceSettings (){
             {currentStep === 'email' && (
                 <>
                 <form onSubmit={handleEmailChange}>
-                    <p className={styles.boxOption}>Alterar email</p>
                     <label className={styles.changeInfo}>Digite o email atual: </label>
                     <input 
                         type="email"
@@ -296,7 +329,7 @@ export default function PoliceSettings (){
                         onChange={(e) => setCurrentEmail(e.target.value)}
                         required
                     />
-                    
+
                     <label className={styles.changeInfo}>Digite o novo email: </label>
                     <input 
                         type="email"
@@ -315,10 +348,10 @@ export default function PoliceSettings (){
             )}
 
             {currentStep === 'senha' && (
-                <> 
+                <>
                     <form onSubmit={handleSubmit(handlePasswordChange)}>
                         <p className={styles.boxOption}>Alterar a senha</p>
-
+            
                         <label className={styles.changeInfo}>Confirme o seu CPF: </label>
                         <MaskedInput
                             mask={Masks.cpf}
@@ -331,24 +364,24 @@ export default function PoliceSettings (){
                         />
 
                         <label className={styles.changeInfo}>Digite a nova senha: </label>
-                            <input 
-                                type="password"
-                                placeholder="Nova senha"
-                                id="newPassword"
-                                name="newPassword"
-                                className={styles.inputChange}
-                                {...register('newPassword', {required: "Nova senha é obrigatoria"})}
-                            />
+                        <input 
+                            type="password"
+                            placeholder="Nova senha"
+                            id="newPassword"
+                            name="newPassword"
+                            className={styles.inputChange}
+                            {...register('newPassword', {required: "Nova senha é obrigatória"})}
+                        />
 
                         <label className={styles.changeInfo}>Confirme a nova senha: </label>
-                            <input 
-                                type="password" 
-                                placeholder="Nova senha"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                className={styles.inputChange}
-                                {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
-                            />
+                        <input 
+                            type="password" 
+                            placeholder="Nova senha"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            className={styles.inputChange}
+                            {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
+                        />
 
                         <button type="submit">Atualizar senha</button>
                     </form>
@@ -358,35 +391,32 @@ export default function PoliceSettings (){
             {currentStep == 'termosUsuario' && (
                 <>
                     <p className={styles.boxOptionTitle}> Termos de Uso - Red Line Call</p>
-                    <p className={styles.userTermsText}><p>1. Definições e Descrição do Serviço</p>
-                        O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e
-                        viaturas policiais, oferecendo serviços como visualização da localização das
-                        viaturas, envio de solicitações de ajuda, notificação de ocorrências em tempo real,
-                        etc. Nosso objetivo é promover  a segurança pública e a eficiência 
-                        no atendimento emergencial, por meio da interação direta com a polícia.
+                    <div className={styles.userTermsText}>
+                        <span className={styles.boxOptionTitle}>1. Definições e Descrição do Serviço</span>
+                        O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e viaturas policiais...
+                    </div>
                     <p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>    
-                    <p className={styles.userTermsText}>Ao acessar, navegar ou usar qualquer 
-                        funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
+                    <div className={styles.userTermsText}>
+                        Ao acessar, navegar ou usar qualquer funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
                         vinculado a estes termos de uso. Caso não concorde com algum item, você não 
                         deverá utilizar o site.
-                    </p>
+                    </div>
                     <p className={styles.boxOptionTitle}>3. </p>
-                    <p className={styles.userTermsText}> XDDD XDDDD XDDDD </p>
-                    </p>
+                    <div className={styles.userTermsText}> XDDD XDDDD XDDDD </div>
                 </>
             )}
 
-            {currentStep == 'desconectar' && (
+            {currentStep === 'desconectar' && (
                 <>
-                    <p className={styles.boxOption}> Deseja desconectar?</p>
+                    <p className={styles.boxOption}>Deseja desconectar?</p>
                     <button
                         type="button"
                         onClick={initialButton}
                         className={styles.desconectButtonOne}
                     >
-                    <p className={styles.desconectText}>Cancelar</p>
+                        <p className={styles.desconectText}>Cancelar</p>
                     </button>
-                
+
                     <button className={styles.desconectButtonTwo}>
                         <LogoutButton />
                     </button>

@@ -18,7 +18,7 @@ const publicRoutes = [
 
 const restrictedRoutes = {
     'A': ['/admControl', '/admCrud', '/api/getUsersCrud', '/api/getCopsCrud'],
-    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/api/cancelOcorrence'],
+    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/api/cancelOcorrence', '/api/getCop'],
     'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS', '/api/updateLocation', '/api/getUsersLocation', '/api/getVehicles', '/api/sosButton', '/api/updateUserStatus', '/api/getUser']
 };
 
