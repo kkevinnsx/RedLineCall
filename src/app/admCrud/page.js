@@ -20,7 +20,7 @@ function useDebounce(value, delay) {
         const handler = setTimeout(() => {
             setDebouncedValue(value);
         }, delay);
-
+ 
         return () => {
             clearTimeout(handler);
         };
@@ -35,6 +35,9 @@ export default function AdmCrud (){
     const [users, setUsers]                       = useState([]);
     const [cop, setCop]                           = useState([]);
     const [copNumber, setCopNumber]               = useState("");
+    const [loading, setLoading]                   = useState("");
+    const [ocorrencias, setOcorrencias]           = useState([]);
+    const [enderecos, setEnderecos]               = useState([]);
     const [numeroViatura, setNumeroViatura]       = useState("");
     const [modeloViatura, setModeloViatura]       = useState("");
     const [placaViatura, setPlacaViatura]         = useState("");
@@ -119,34 +122,82 @@ export default function AdmCrud (){
         }
     };
 
+    const fetchAdressFromCep = async (cep) => {
+        if (!cep) {
+            return "CEP não disponível";
+        }
+    
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await response.json();
+    
+            if (data.erro) {
+                return "CEP inválido ou não encontrado";
+            }
+    
+            const { logradouro, bairro, localidade, uf } = data;
+            return `${logradouro || ""}, ${bairro || ""}, ${localidade || ""} - ${uf || ""}`.trim();
+        } catch (error) {
+            console.error("Erro ao buscar endereço pelo CEP:", error);
+            return "Erro ao obter endereço";
+        }
+    };
+    
+
     useEffect(() => {
         const fetchUsersByCpf = async () => {
-          if (cpf.length >= 11) { 
-            try {
-              const response = await fetch("/api/getUsersCrud", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ cpf }),
-              });
-    
-              if (response.ok) {
-                const data = await response.json();
-                setUsers(data.users);
-              } else {
+            if (cpf.length >= 11) {
+                try {
+                    const response = await fetch("/api/getUsersCrud", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cpf }),
+                    });
+        
+                    if (response.ok) {
+                        const data = await response.json();
+                        setUsers(data.users);
+        
+                        const ocorrencias = data.users.flatMap(user => user.ocorrencias || []);
+                        setOcorrencias(ocorrencias);
+                    } else {
+                        setUsers([]);
+                        setOcorrencias([]); 
+                    }
+                } catch (error) {
+                    console.error("Erro ao buscar usuários pelo CPF:", error);
+                    toast.error("Erro ao buscar usuários.");
+                }
+            } else {
                 setUsers([]);
-              }
-            } catch (error) {
-              console.error("Erro ao buscar usuários pelo CPF:", error);
-              toast.error("Erro ao buscar usuários.");
+                setOcorrencias([]);
             }
-          } else {
-            setUsers([]);
-          }
         };
     
         fetchUsersByCpf();
       }, [cpf]);
 
+      useEffect(() => {
+        const loadEnderecos = async () => {
+            setLoading(true);
+    
+            const novosEnderecos = await Promise.all(
+                users.map(async (user) => {
+                    const endereco = await fetchAdressFromCep(user.cep);
+                    return { cpf: user.cpf, endereco };
+                })
+            );
+    
+            setEnderecos(novosEnderecos); 
+            setLoading(false);
+        };
+    
+        if (users.length > 0) {
+            loadEnderecos();
+        }
+    }, [users]);
+    
+    
     return (
     <> 
         <ToastContainer />
@@ -183,7 +234,7 @@ export default function AdmCrud (){
                     <div className={styles.boxCircle}>
                         <GrUserPolice className={styles.optionsIcons} />
                         <p className={styles.optionsText}>
-                            Verificar policiais
+                            Verificar Policiais
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -195,7 +246,7 @@ export default function AdmCrud (){
         <div className={styles.rightContainer}>
             {currentStep === 'inicial' && (
                 <>
-                    <p className={styles.optionsInitial}>Selecione uma opção</p>
+                    <p className={styles.optionsInitial}>Selecione uma Opção</p>
                     <div className={styles.lockCircle}>
                         <FaLock className={styles.boxLock} />
                     </div>
@@ -209,7 +260,7 @@ export default function AdmCrud (){
                         <thead>
                             <tr>
                                 <th className={styles.tableTitle}>
-                                  Pesquisar usuário:
+                                  Pesquisar Usuário:
                                   <MaskedInput
                                     mask={Masks.cpf}
                                     className={styles.inputChange}
@@ -227,34 +278,39 @@ export default function AdmCrud (){
                                 <th>Nome:                   </th>
                                 <th>Email:                  </th>
                                 <th>Endereço:               </th>
-                                <th>Motivo das ocorrências: </th>
+                                <th>Motivo das Ocorrências: </th>
                                 <th>Ações                   </th>
                             </tr>
                         </thead>
                         <tbody className={styles.tbodyBox}>
-                            {users.map((user) => (
-                                <tr key={user.cpf}>
-                                    <td>{user.cpf}                </td>
-                                    <td>{user.fullName}           </td>
-                                    <td>{user.email}              </td>
-                                    <td>{user.cep} - {user.number}</td>
+                            {users.map((user, index) => {
+                                const endereco = enderecos.find((end) => end.cpf === user.cpf)?.endereco || "Carregando                             endereço...";
+                            
+                                return (
+                                  <tr key={user.cpf}>
+                                    <td>{user.cpf}</td>
+                                    <td>{user.fullName}</td>
+                                    <td>{user.email}</td>
+                                    <td>{endereco}</td>
                                     <td>
-                                        {user.ocorrencias.map((ocorrencia, index) => (
-                                            <p key={index}>{ocorrencia.motivo}</p>
-                                        ))}
+                                      {user.ocorrencias.map((ocorrencia, ocorrenciaIndex) => (
+                                        <p key={ocorrenciaIndex}>{ocorrencia.motivo}</p>
+                                      ))}
                                     </td>
                                     <td>
-                                        <button
-                                            type='button'
-                                            className={styles.deleteButton}
-                                            onclick={() => handleDeleteUser(user.cpf)}
-                                        >
+                                      <button
+                                        type="button"
+                                        className={styles.deleteButton}
+                                        onClick={() => handleDeleteUser(user.cpf)}
+                                      >
                                         <p className={styles.deleteText}>Deletar Usuário</p>
-                                        </button>
+                                      </button>
                                     </td>
-                                </tr>
-                            ))}
-                        </tbody>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+
                     </table>
                 </>
             )}

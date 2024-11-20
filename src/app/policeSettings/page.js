@@ -249,8 +249,8 @@ export default function PoliceSettings (){
             <ToastContainer />
             {currentStep === 'Inicial' && (
                 <>
-                    <p className={styles.boxOptionInitial}>Selecione uma opção</p>
-                    <p className={styles.boxOptionSecond}>Para desbloquear a página</p>
+                    <p className={styles.boxOptionInitial}>Selecione uma Opção</p>
+                    <p className={styles.boxOptionSecond}>Para Desbloquear a Página</p>
                     <div className={styles.lockCircle}>
                         <FaLock className={styles.boxLock}/>
                     </div>
@@ -261,14 +261,14 @@ export default function PoliceSettings (){
                 <table>
                     <thead>
                         <tr>
-                            <th>Últimas ocorrências</th>
+                            <th>Últimas Ocorrências</th>
                         </tr>
                         <tr>
                             <th>Data:</th>
                             <th>Motivo:</th>
                             <th>Localização:</th>
-                            <th>Nome do Socorrido:</th>
-                            <th>CPF do Socorrido:</th>
+                            <th>Nome do Auxiliado:</th>
+                            <th>CPF do Auxiliado:</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -276,9 +276,9 @@ export default function PoliceSettings (){
                             <tr key={index}>
                                 <td>{new Date(ocorrencia.data).toLocaleDateString()}</td>
                                 <td>{ocorrencia.motivo}</td>
-                                <td>{enderecos[index] || 'Carregando endereço...'}</td>
-                                <td>{ocorrencia.user?.fullName || 'Nome não disponível'}</td>
-                                <td>{ocorrencia.user?.cpf || 'CPF não disponível'}</td>
+                                <td>{enderecos[index] || 'Carregando Endereço...'}</td>
+                                <td>{ocorrencia.user?.fullName || 'Nome não Disponível'}</td>
+                                <td>{ocorrencia.user?.cpf || 'CPF não Disponível'}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -287,14 +287,14 @@ export default function PoliceSettings (){
 
             {currentStep === 'informacao' && (
                 <>
-                    <p className={styles.boxOption}>Alterar informações pessoais</p>
+                    <p className={styles.boxOption}>Alterar Informações Pessoais</p>
                     <div className={styles.boxEmail}>
                         <button
                             type='button'
                             onClick={() => handleStepChange('email')}
                             className={styles.boxNavigation}
                         >
-                            <p className={styles.navigationText}>Alterar email</p>
+                            <p className={styles.navigationText}>Alterar Email</p>
                             <div className={styles.navigationCircle}>
                                     <AiOutlineMail className={styles.navigationIcons}/>
                             </div>
@@ -307,7 +307,7 @@ export default function PoliceSettings (){
                             onClick={() => handleStepChange('senha')}
                             className={styles.boxNavigation}
                         >
-                            <p className={styles.navigationText}>Alterar senha</p>
+                            <p className={styles.navigationText}>Alterar Senha</p>
                             <div className={styles.navigationCircle}>
                                 <AiOutlineMail className={styles.navigationIcons}/>
                             </div>
@@ -320,27 +320,27 @@ export default function PoliceSettings (){
             {currentStep === 'email' && (
                 <>
                 <form onSubmit={handleEmailChange}>
-                    <label className={styles.changeInfo}>Digite o email atual: </label>
+                    <label className={styles.changeInfo}>Digite o Email Atual: </label>
                     <input 
                         type="email"
-                        placeholder="Email atual"
+                        placeholder="Email Atual"
                         className={styles.inputChange}
                         value={currentEmail}
                         onChange={(e) => setCurrentEmail(e.target.value)}
                         required
                     />
 
-                    <label className={styles.changeInfo}>Digite o novo email: </label>
+                    <label className={styles.changeInfo}>Digite o Novo Email: </label>
                     <input 
                         type="email"
-                        placeholder="Novo email"
+                        placeholder="Novo Email"
                         className={styles.inputChange}
                         value={newEmail}
                         onChange={(e) => setNewEmail(e.target.value)}
                         required
                     />
 
-                    <button type="submit" className={styles.submitButton}>Atualizar o email</button>
+                    <button type="submit" className={styles.submitButton}>Atualizar o Email</button>
                 </form>
 
                 {message && <p className={styles.message}>{message}</p>}
@@ -363,27 +363,27 @@ export default function PoliceSettings (){
                             required={true}
                         />
 
-                        <label className={styles.changeInfo}>Digite a nova senha: </label>
+                        <label className={styles.changeInfo}>Digite a Nova Senha: </label>
                         <input 
                             type="password"
-                            placeholder="Nova senha"
+                            placeholder="Nova Senha"
                             id="newPassword"
                             name="newPassword"
                             className={styles.inputChange}
                             {...register('newPassword', {required: "Nova senha é obrigatória"})}
                         />
 
-                        <label className={styles.changeInfo}>Confirme a nova senha: </label>
+                        <label className={styles.changeInfo}>Confirme a Nova Senha: </label>
                         <input 
                             type="password" 
-                            placeholder="Nova senha"
+                            placeholder="Confirme a Nova Senha"
                             id="confirmPassword"
                             name="confirmPassword"
                             className={styles.inputChange}
                             {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
                         />
 
-                        <button type="submit">Atualizar senha</button>
+                        <button type="submit">Atualizar Senha</button>
                     </form>
                 </>
             )}
@@ -408,7 +408,7 @@ export default function PoliceSettings (){
 
             {currentStep === 'desconectar' && (
                 <>
-                    <p className={styles.boxOption}>Deseja desconectar?</p>
+                    <p className={styles.boxOption}>Deseja Desconectar?</p>
                     <button
                         type="button"
                         onClick={initialButton}

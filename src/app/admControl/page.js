@@ -75,7 +75,7 @@ export default function AdmControl () {
                     <div className={styles.boxCircle}>
                         <GrUserPolice className={styles.optionsIcons} />
                         <p className={styles.optionsText}>
-                            Cadastrar policial
+                            Cadastrar Policial
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -92,7 +92,7 @@ export default function AdmControl () {
                     <div className={styles.boxCircle}>
                         <RiPoliceCarFill className={styles.optionsIcons} />
                         <p className={styles.optionsText}>
-                            Cadastrar viatura
+                            Cadastrar Viatura
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -103,7 +103,7 @@ export default function AdmControl () {
         <div className={styles.rightContainer}>
             {currentStep === 'inicial' && (
                 <>
-                    <p className={styles.boxOptionInitial}>Selecione uma opção</p>
+                    <p className={styles.boxOptionInitial}>Selecione uma Opção</p>
                     <div className={styles.lockCircle}>
                         <FaLock className={styles.boxLock}/>
                     </div>
@@ -117,7 +117,7 @@ export default function AdmControl () {
             {currentStep === 'copRegistration' && (
             <>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <p className={styles.copOption}>Cadastrar policial</p>
+                    <p className={styles.copOption}>Cadastrar Policial</p>
                     <label className={styles.changeInfo}>Nome: </label>
                     <input 
                         type="text"
@@ -138,7 +138,7 @@ export default function AdmControl () {
                         {...register('cpf', { required: "CPF é exigido" })}
                     />
 
-                    <label className={styles.changeInfo}>Data de nascimento:</label>
+                    <label className={styles.changeInfo}>Data de Nascimento:</label>
                     <input
                         type="date"
                         className={styles.inputChange}
@@ -164,7 +164,7 @@ export default function AdmControl () {
                         }}
                     />
 
-                    <label className={styles.changeInfo}>Número do endereço:</label>
+                    <label className={styles.changeInfo}>Número do Endereço:</label>
                     <input 
                         type="number"
                         placeholder="Número do endereço"
@@ -194,7 +194,7 @@ export default function AdmControl () {
                         {...register('password', {required: "Senha é exigida"})}
                     />
 
-                    <button type="submit">Cadastrar policial</button>
+                    <button type="submit">Cadastrar Policial</button>
                 </form>
             </>
             )}

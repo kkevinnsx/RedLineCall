@@ -3,6 +3,7 @@
 import styles from '../styles/cancelButton.module.css'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { IoExitOutline } from "react-icons/io5";
 
 const LogoutButton = () => {
     const router = useRouter();
@@ -27,8 +28,7 @@ const LogoutButton = () => {
     };
 
     return (
-        <button onClick={handleLogout} disabled={loading} className={styles.desconectBase}>
-            {loading ? 'Saindo...' : 'LogOut'}
+        <button onClick={handleLogout}>
         </button>
     );
 };

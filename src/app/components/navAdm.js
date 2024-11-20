@@ -7,12 +7,32 @@ import { RxExit } from "react-icons/rx";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; 
 import { useState, useEffect } from 'react';
-import LogoutButton from "./LogoutButton";
+import { useRouter } from 'next/navigation';
+import { IoExitOutline } from "react-icons/io5";
 
 const NavBar = () => {
     const pathname = usePathname(); 
+    const router = useRouter();
     const isActive = (path) => pathname === path;
+    const [loading, setLoading] = useState(false);
     const [activeClass, setActiveClass] = useState(""); 
+
+    const handleLogout = async () => {
+        setLoading(true); 
+        try {
+            const response = await fetch('/api/logout', { method: 'POST' }); 
+            
+            if (!response.ok) {
+                throw new Error('Erro ao fazer logout. Tente novamente.'); 
+            }
+             router.push('/LogIn'); 
+        } catch (error) {
+            console.error("Erro ao fazer logout:", error);
+            alert(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <nav className={styles.navBar}>
@@ -31,7 +51,9 @@ const NavBar = () => {
                     </Link>
 
                     <div className={`${styles.iconContainer} ${styles.iconBackground}`}>
-                    <LogoutButton />
+                        <button onClick={handleLogout} className={styles.exitContainer}>
+                            <IoExitOutline className={styles.icons}/>
+                        </button>
                     </div>
                 </div>
             </div>   

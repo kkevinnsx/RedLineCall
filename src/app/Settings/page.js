@@ -276,7 +276,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiHistory className={styles.boxIcons} />
                         <p className={styles.boxText}>
-                            Histórico de ocorrências
+                            Histórico de Ocorrências
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -293,7 +293,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiSolidInfoCircle className={styles.boxIcons}/>
                         <p className={styles.boxText}>
-                            Editar informações pessoais
+                            Editar Informações Pessoais
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -310,7 +310,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiSolidUserCircle className={styles.boxIcons}/>
                         <p className={styles.boxText}>
-                            Termos de uso
+                            Termos de Uso
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -344,7 +344,7 @@ return (
                     <div className={styles.boxCircle}>
                         <BiSolidTrash className={styles.boxIcons}/>
                         <p className={styles.boxText}>
-                            Apagar a conta
+                            Apagar a Conta
                         </p>
                         <IoIosArrowForward className={styles.boxArrow} />
                     </div>
@@ -355,8 +355,8 @@ return (
     <div className={styles.rightContainer}>
         {currentStep === 'inicial' && (
             <>
-                <p className={styles.boxOptionInitial}>Selecione uma opção</p>
-                <p className={styles.boxOptionSecond}>Para desbloquear a página</p>
+                <p className={styles.boxOptionInitial}>Selecione uma Opção</p>
+                <p className={styles.boxOptionSecond}>Para Desbloquear a Página</p>
                 <div className={styles.lockCircle}>
                     <FaLock className={styles.boxLock}/>
                 </div>
@@ -365,11 +365,11 @@ return (
 
         {currentStep === 'historico' && (
             <>
-                <p className={styles.boxOption}>Histórico de ocorrêncais</p>
+                <p className={styles.boxOption}>Histórico de Ocorrências</p>
                 <table className={styles.tableHistory}>
                     <thead>
                         <tr>
-                            <th className={styles.tableTitle}>Últimas ocorrências</th>
+                            <th className={styles.tableTitle}>Últimas Ocorrências</th>
                         </tr>
                         <tr className={styles.trBox}>
                             <th>Data:        </th>
@@ -392,14 +392,14 @@ return (
 
         {currentStep === 'informacao' && (
             <>
-                <p className={styles.boxOption}>Alterar informações pessoais</p>
+                <p className={styles.boxOption}>Alterar Informações Pessoais</p>
                 <div className={styles.boxEmail}>
                     <button
                         type='button'
                         onClick={changeEmail}
                         className={styles.boxNavigation}
                     >
-                        <p className={styles.navigationText}>Alterar email</p>
+                        <p className={styles.navigationText}>Alterar Email</p>
                         <div className={styles.navigationCircle}>
                             <AiOutlineMail className={styles.navigationIcons}/>
                         </div>
@@ -412,7 +412,7 @@ return (
                         onClick={changePassword}
                         className={styles.boxNavigation}
                     >
-                        <p className={styles.navigationText}>Alterar senha</p>
+                        <p className={styles.navigationText}>Alterar Senha</p>
                         <div className={styles.navigationCircle}>
                             <AiOutlineMail className={styles.navigationIcons}/>
                         </div>
@@ -425,7 +425,7 @@ return (
                         onClick={changeAdress}
                         className={styles.boxNavigation}
                     >
-                        <p className={styles.navigationText}>Alterar endereço</p>
+                        <p className={styles.navigationText}>Alterar Endereço</p>
                         <div className={styles.navigationCircle}>
                             <AiOutlineMail className={styles.navigationIcons}/>
                         </div>
@@ -438,28 +438,28 @@ return (
             <>
                 <ToastContainer />
                 <form onSubmit={handleEmailChange}>
-                    <p className={styles.boxOption}>Alterar email</p>
-                    <label className={styles.changeInfo}>Digite o email atual: </label>
+                    <p className={styles.boxOption}>Alterar Email</p>
+                    <label className={styles.changeInfo}>Digite o Email Atual: </label>
                     <input 
                         type="email"
-                        placeholder="Email atual"
+                        placeholder="Email Atual"
                         className={styles.inputChange}
                         value={currentEmail}
                         onChange={(e) => setCurrentEmail(e.target.value)}
                         required
                     />
                     
-                    <label className={styles.changeInfo}>Digite o novo email: </label>
+                    <label className={styles.changeInfo}>Digite o Novo Email: </label>
                     <input 
                         type="email"
-                        placeholder="Novo email"
+                        placeholder="Novo Email"
                         className={styles.inputChange}
                         value={newEmail}
                         onChange={(e) => setNewEmail(e.target.value)}
                         required
                     />
 
-                    <button type="submit" className={styles.submitButton}>Atualizar o email</button>
+                    <button type="submit" className={styles.submitButton}>Atualizar o Email</button>
                 </form>
 
                 {message && <p className={styles.message}>{message}</p>}
@@ -470,7 +470,7 @@ return (
             <>
                 <ToastContainer />
                 <form onSubmit={handleSubmit(handlePasswordChange)}>
-                    <p className={styles.boxOption}>Alterar a senha</p>
+                    <p className={styles.boxOption}>Alterar a Senha</p>
 
                     <label className={styles.changeInfo}>Confirme o seu CPF: </label>
                     <MaskedInput
@@ -483,27 +483,27 @@ return (
                         required={true}
                     />
 
-                    <label className={styles.changeInfo}>Digite a nova senha: </label>
+                    <label className={styles.changeInfo}>Digite a Nova Senha: </label>
                         <input 
                             type="password"
-                            placeholder="Nova senha"
+                            placeholder="Nova Senha"
                             id="newPassword"
                             name="newPassword"
                             className={styles.inputChange}
                             {...register('newPassword', {required: "Nova senha é obrigatoria"})}
                         />
                     
-                    <label className={styles.changeInfo}>Confirme a nova senha: </label>
+                    <label className={styles.changeInfo}>Confirme a Nova Senha: </label>
                         <input 
                             type="password" 
-                            placeholder="Nova senha"
+                            placeholder="Confirme a Nova Senha"
                             id="confirmPassword"
                             name="confirmPassword"
                             className={styles.inputChange}
                             {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
                         />
 
-                    <button type="submit">Atualizar senha</button>
+                    <button type="submit">Atualizar Senha</button>
                 </form>
             </>
         )}
@@ -512,7 +512,7 @@ return (
             <>
             <ToastContainer />
             <form onSubmit={handleAddressChange}>
-                <p className={styles.boxOption}>Alterar o endereço</p>
+                <p className={styles.boxOption}>Alterar o Endereço</p>
                     <label className={styles.changeInfo}>CEP</label>
                         <MaskedInput
                             mask={Masks.cep}
@@ -561,7 +561,7 @@ return (
                             readOnly
                             required={true}
                         />
-                        <label className={styles.changeInfo}>Número da casa</label>
+                        <label className={styles.changeInfo}>Número da Casa</label>
                         <input
                             type="text"
                             className={styles.inputChange}
@@ -572,7 +572,7 @@ return (
                             required={true}
                         />
 
-                        <button type="submit">Atualizar endereço</button>
+                        <button type="submit">Atualizar Endereço</button>
             </form>
             </>
         )}
@@ -600,7 +600,7 @@ return (
 
         {currentStep == 'desconectar' && (
             <>
-                <p className={styles.boxOption}> Deseja desconectar?</p>
+                <p className={styles.boxOption}> Deseja Desconectar?</p>
                 <button
                     type="button"
                     onClick={initialButton}
@@ -632,7 +632,7 @@ return (
                     onClick={handleDeleteAccount}
                     className={styles.desconectButtonTwo}
                 >
-                <p className={styles.desconectText}>Deletar a conta</p>
+                <p className={styles.desconectText}>Apagar a Conta</p>
                 </button>
             </>
         )}

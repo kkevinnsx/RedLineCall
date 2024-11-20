@@ -14,6 +14,7 @@ export async function POST(req) {
                     cpf: true,
                     fullName: true,
                     email: true,
+                    cep: true,
                     ocorrencias: {
                         orderBy: { data: 'desc' },
                         take: 3,

@@ -45,13 +45,11 @@ export default function PoliceHomePage() {
         }));
     };
 
-    // Função que será chamada ao cancelar a ocorrência
     const handleCancel = () => {
         setViatura((prevViatura) => ({
             ...prevViatura,
             statusChat: false,
         }));
-        // Aqui você pode adicionar a lógica para limpar a rota do mapa
     };
 
     const loadingMessage = "Carregando informações da viatura...";
