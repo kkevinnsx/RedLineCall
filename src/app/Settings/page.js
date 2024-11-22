@@ -259,7 +259,7 @@ return (
     <div className={styles.leftContainer}>
         <div className={styles.headerContainer}>
             <h1 className={styles.headerText}>
-                {error ? error : `Usuario: ${userFullName}`}
+                {error ? error : `Bem vindo, ${userFullName}`}
             </h1>
             <BiUserCircle className={styles.headerIcon} /> 
         </div>
@@ -366,70 +366,71 @@ return (
         {currentStep === 'historico' && (
             <>
                 <p className={styles.boxOption}>Histórico de Ocorrências</p>
-                <table className={styles.tableHistory}>
-                    <thead>
-                        <tr>
-                            <th className={styles.tableTitle}>Últimas Ocorrências</th>
-                        </tr>
-                        <tr className={styles.trBox}>
-                            <th>Data:        </th>
-                            <th>Motivo:      </th>
-                            <th>Localização: </th>
-                        </tr>
-                    </thead>
-                    <tbody className={styles.tbodyBox}>
-                        {ocorrencias.map((ocorrencia, index) => (
-                            <tr key={index} className={styles.trBox}>
-                                <td className={styles.tdBox}>{new Date(ocorrencia.data).toLocaleDateString()}</td>
-                                <td className={styles.tdBox}>{ocorrencia.motivo}</td>
-                                <td className={styles.tdBox}>{ocorrencia.address}</td>
+                <div className={styles.tableContainer}>
+                    <table className={styles.tableHistory}>
+                        <thead>
+                            <tr className={styles.trBox}>
+                                <th>Data:        </th>
+                                <th>Motivo:      </th>
+                                <th>Localização: </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className={styles.tbodyBox}>
+                            {ocorrencias.map((ocorrencia, index) => (
+                                <tr key={index} className={styles.trBox}>
+                                    <td className={styles.tdBox}>{new Date(ocorrencia.data).toLocaleDateString()}</td>
+                                    <td className={styles.tdBox}>{ocorrencia.motivo}</td>
+                                    <td className={styles.tdBox}>{ocorrencia.address}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </>
         )}
 
         {currentStep === 'informacao' && (
             <>
                 <p className={styles.boxOption}>Alterar Informações Pessoais</p>
-                <div className={styles.boxEmail}>
-                    <button
-                        type='button'
-                        onClick={changeEmail}
-                        className={styles.boxNavigation}
-                    >
-                        <p className={styles.navigationText}>Alterar Email</p>
-                        <div className={styles.navigationCircle}>
-                            <AiOutlineMail className={styles.navigationIcons}/>
-                        </div>
-                    </button>
-                </div>
+                <div className={styles.setInfoBox}>
+                    <div className={styles.boxEmail}>
+                        <button
+                            type='button'
+                            onClick={changeEmail}
+                            className={styles.boxNavigation}
+                        >
+                            <div className={styles.navigationCircle}>
+                                <p className={styles.navigationText}>Alterar Email</p>
+                                <AiOutlineMail className={styles.navigationIcons}/>
+                            </div>
+                        </button>
+                    </div>
 
-                <div className={styles.boxEmail}>
-                    <button
-                        type='button'
-                        onClick={changePassword}
-                        className={styles.boxNavigation}
-                    >
-                        <p className={styles.navigationText}>Alterar Senha</p>
-                        <div className={styles.navigationCircle}>
-                            <AiOutlineMail className={styles.navigationIcons}/>
-                        </div>
-                    </button>
-                </div>
+                    <div className={styles.passwordBox}>
+                        <button
+                            type='button'
+                            onClick={changePassword}
+                            className={styles.boxNavigation}
+                        >
+                            <div className={styles.navigationCircle}>
+                                <p className={styles.navigationText}>Alterar Senha</p>
+                                <AiOutlineMail className={styles.navigationIcons}/>
+                            </div>
+                        </button>
+                    </div>
 
-                <div className={styles.boxEmail}>
-                    <button
-                        type='button'
-                        onClick={changeAdress}
-                        className={styles.boxNavigation}
-                    >
-                        <p className={styles.navigationText}>Alterar Endereço</p>
-                        <div className={styles.navigationCircle}>
-                            <AiOutlineMail className={styles.navigationIcons}/>
-                        </div>
-                    </button>
+                    <div className={styles.addressBox}>
+                        <button
+                            type='button'
+                            onClick={changeAdress}
+                            className={styles.boxNavigation}
+                        >
+                            <div className={styles.navigationCircle}>
+                                <p className={styles.navigationText}>Alterar Endereço</p>
+                                <AiOutlineMail className={styles.navigationIcons}/>
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </>
         )}

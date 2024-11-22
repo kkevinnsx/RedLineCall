@@ -85,7 +85,8 @@
 .leftContainer{
     height: 100%;
     width: 40%;
-    position: absolute;
+    position: fixed;
+    overflow: hidden;
     left: 0;
     top: 0;
     box-shadow: 0 0 .2rem #0f0f0f6c;
@@ -147,14 +148,152 @@
     font-size: 3.5rem;
 
 }
-
+  
 .boxOption {
-    font-size: 3rem;
+    font-size: 2rem;
+    width: 100%;
     font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    color: #c0041d;
+}
+
+.tableContainer {
+    max-height: 80%;
+    overflow-y: auto;
+    margin: 0 auto; 
+}
+
+.tableContainer::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+    background-color: #c0041d; 
+    border-radius: 10px; 
+}
+
+.tableContainer::-webkit-scrollbar-track {
+    background-color: #f1f1f1; 
+}
+
+
+.tableHistory {
+    width: 85%;
+    border-collapse: collapse;
+    margin: 25px auto;
+    font-size: 1.2em;
+    min-width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+}
+
+.tableHistory::-webkit-scrollbar {
+    color: #E90322;
+}
+
+.tableHistory thead {
+    background-color: #E90322;
+    box-shadow: inset 1.75rem 1rem 2rem #880B0B;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.tableHistory th,
+.tableHistory td {
+    padding: 12px 15px;
+}
+
+.tableHistory tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.tableHistory tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.tableHistory tbody tr:last-of-type {
+    border-bottom: 2px solid #880B0B;
+}
+
+.trBox {
+    text-align: left;
+}
+
+.tdBox {
+    font-size: 1em;
+    color: #333333;
+}
+
+.setInfoBox {
+    width: 50%;
     position: absolute;
-    top:10%;
+    top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+    flex-direction:column;
+}
+
+.boxNavigation{
+    width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    border: none;
+    background-color: #E90322;
+    box-shadow: inset 1.75rem 2rem 2rem #880B0B;
+    border-radius: 20px;
+    animation: ease-in 0s;
+}
+
+.boxNavigation:hover{
+    transform: scale(1);
+}
+
+.boxEmail{
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.passwordBox{
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addressBox{
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navigationText{
+    color: #f1f1f1;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 1.2rem;
+}
+
+.navigationCircle{
+    display: flex;
+    align-items: center; 
+}
+
+.navigationIcons{
+    color: #E90322;
+    border-radius: 50%;
+    margin-right: 0;
+    background-color: #f1f1f1;
+    margin-right: 1.2rem;
+    font-size: 2rem;
+    padding: .5rem;
 }
 
 .desconectButtonOne{
