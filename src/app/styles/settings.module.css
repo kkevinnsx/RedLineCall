@@ -234,11 +234,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-direction:column;
 }
 
 .boxNavigation{
+    cursor: pointer;
     width: 100%;
     padding-right: 1rem;
     padding-left: 1rem;
@@ -246,75 +247,210 @@
     background-color: #E90322;
     box-shadow: inset 1.75rem 2rem 2rem #880B0B;
     border-radius: 20px;
+    outline: none;
+    transition: 300ms ease-in-out;
     animation: ease-in 0s;
 }
 
 .boxNavigation:hover{
-    transform: scale(1);
+    transform: scale(1.05);
 }
 
 .boxEmail{
     padding: .5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .passwordBox{
     padding: .5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .addressBox{
     padding: .5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .navigationText{
     color: #f1f1f1;
     font-weight: bold;
     font-size: 1.2rem;
-    margin-right: 1.2rem;
+    margin: 0;
 }
 
 .navigationCircle{
     display: flex;
-    align-items: center; 
+    padding: 0.35rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .navigationIcons{
     color: #E90322;
     border-radius: 50%;
-    margin-right: 0;
     background-color: #f1f1f1;
-    margin-right: 1.2rem;
     font-size: 2rem;
     padding: .5rem;
+    margin: 2px;
 }
 
-.desconectButtonOne{
+.inputChange{
+    background-color: #f8f8f8bd;
+    backdrop-filter: blur(50%);
+    width: 50%;
+    text-align: center;
+    height: 3rem;
+    color: #000;
+    border: 1px solid #919191;
+    box-shadow: inset -2rem .1rem 2.3rem #D8DBE2;
+    border-radius: .45rem;
+    outline: none;
+    transition: 300ms ease-in-out;
+    font-size: 1.15rem;
+}
+
+.inputChange:focus{
+    background-color: #f1f1f1;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+.changeInfoGrid{
     position: absolute;
     top: 40%;
-    left: 30%;
+    left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    width: 80%;
+    height: 80%;
+    row-gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.desconectButtonTwo{
-    position: absolute;
-    width: 20%;
-    top: 40%;
-    left: 70%;
+.changeInfo{
+    font-size: 1.30em;
+    font-weight: bold;
+    
+}
+
+.submitButton {
+    width: 50%;
     border: none;
-    color: #EBEBEB;
-    transform: translate(-50%, -50%);
-    background-color: #E90322;
-    box-shadow: inset 1.75rem 1rem 2rem #880B0B;
+    height: 3.5rem;
+    margin-top:15px;
+    cursor: pointer;
+    color: #f1f1f1;
+    font-size: 1.25em;
+    font-weight: bold;
+    border-radius: 15px;
+    transition: ease-in .2s;
+    background-color: #FF101F;
+    box-shadow: inset -2rem .1rem 2.85rem #880B0B;
 }
 
+.submitButton:hover{
+    background-color: #880B0B;
+    transform: scale(1.05);
+}
+
+.actionsGrid {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    width: 80%;
+    height: 80%;
+    flex-direction:row;
+    align-items: center;
+    justify-content: center;
+}
+
+.desconectButtonTwo {
+    width: 25%;
+    margin: 30px;
+    border: none;
+    height: 3.5rem;
+    cursor: pointer;
+    text-align: center;
+    color: #f1f1f1;
+    font-size: 1.25em;
+    font-weight: bold;
+    border-radius: 15px;
+    transition: ease-in .2s;
+    background-color: #FF101F;
+    box-shadow: inset -2rem .1rem 2.85rem #880B0B;
+}
+
+.desconectButtonTwo:hover{
+    background-color: #880B0B;
+    transform: scale(1.05);
+}
+
+.desconectButtonOne {
+    width: 25%;
+    margin: 30px;
+    border: none;
+    height: 3.5rem;
+    cursor: pointer;
+    text-align: center;
+    color: #f1f1f1;
+    font-size: 1.25em;
+    font-weight: bold;
+    border-radius: 15px;
+    transition: ease-in .2s;
+    background-color: #16425B;
+    box-shadow: inset -2rem .1rem 2.85rem #0b2738;
+}
+
+.boxSubTitle{
+    top: 25%;
+    left: 50%;
+    font-size: large;
+    font-weight: bold;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.desconectButtonOne:hover{
+    background-color: #0b2738;
+    transform: scale(1.05);
+}
+
+.userTermsGrid {
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    row-gap: -5px;
+    display: flex;
+    position: absolute;
+    text-align: justify;
+    flex-direction: column;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+}
+
+.boxOptionTitle {
+    font-weight: bold;
+    font-size: large;
+}
+
+.userTermsText {
+    font-size: large;
+    font-weight: 400;
+}
 
 @media screen and
 (min-width: 300px) and (max-width: 400px){

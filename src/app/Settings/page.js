@@ -11,26 +11,48 @@ import { BiUserCircle } from "react-icons/bi";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { FaHouseUser } from "react-icons/fa";
 import LogoutButton from "../components/LogoutButton";
 import { useForm, useFormContext } from 'react-hook-form';
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 import MaskedInput, { Masks } from "../masks/maskedInputs";
 import axios from "axios";
 
 export default  function Settings (){
     let [currentStep, setCurrentStep] = useState('inicial');
+    const router = useRouter();
     const [userFullName, setUserFullName] = useState(null);
     const [currentEmail, setCurrentEmail] = useState("");
     const [newEmail, setNewEmail] = useState("");
     const [message, setMessage]   = useState(""); 
     const [cep, setCep]           = useState("");
     const [number, setNumber]     = useState("");
+    const [loading, setLoading]   = useState("");
     const [error, setError]       = useState(null);
     const [ocorrencias, setOcorrencias] = useState([]);
     const { register, handleSubmit, getValues, setValue, formState: { errors, isValid }, trigger } = useForm({ mode: 'onChange' });
         
+    const handleLogout = async () => {
+        setLoading(true);
+        try{
+            const response = await fetch('/api/logout', { method: 'POST'});
+            
+            if(!response.ok) {
+                throw new Error('Erro ao fazer logout. Tente Novamente.');
+            }
+            router.push('/LogIn');
+        } catch (error) {
+            console.error('Erro ao fazer logout:', error);
+            toast.error('Erro ao fazer desconectar')
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleDeleteAccount = async () => {
         try{
             const res = await fetch("/api/getUser", {
@@ -414,7 +436,7 @@ return (
                         >
                             <div className={styles.navigationCircle}>
                                 <p className={styles.navigationText}>Alterar Senha</p>
-                                <AiOutlineMail className={styles.navigationIcons}/>
+                                <RiLockPasswordFill className={styles.navigationIcons}/>
                             </div>
                         </button>
                     </div>
@@ -427,7 +449,7 @@ return (
                         >
                             <div className={styles.navigationCircle}>
                                 <p className={styles.navigationText}>Alterar Endereço</p>
-                                <AiOutlineMail className={styles.navigationIcons}/>
+                                <FaHouseUser  className={styles.navigationIcons}/>
                             </div>
                         </button>
                     </div>
@@ -439,28 +461,30 @@ return (
             <>
                 <ToastContainer />
                 <form onSubmit={handleEmailChange}>
-                    <p className={styles.boxOption}>Alterar Email</p>
-                    <label className={styles.changeInfo}>Digite o Email Atual: </label>
-                    <input 
-                        type="email"
-                        placeholder="Email Atual"
-                        className={styles.inputChange}
-                        value={currentEmail}
-                        onChange={(e) => setCurrentEmail(e.target.value)}
-                        required
-                    />
-                    
-                    <label className={styles.changeInfo}>Digite o Novo Email: </label>
-                    <input 
-                        type="email"
-                        placeholder="Novo Email"
-                        className={styles.inputChange}
-                        value={newEmail}
-                        onChange={(e) => setNewEmail(e.target.value)}
-                        required
-                    />
+                    <div className={styles.changeInfoGrid}>
+                        <p className={styles.boxOption}>Alterar Email</p>
+                        <label className={styles.changeInfo}>Digite o Email Atual: </label>
+                        <input 
+                            type="email"
+                            placeholder="Email Atual"
+                            className={styles.inputChange}
+                            value={currentEmail}
+                            onChange={(e) => setCurrentEmail(e.target.value)}
+                            required
+                        />
 
-                    <button type="submit" className={styles.submitButton}>Atualizar o Email</button>
+                        <label className={styles.changeInfo}>Digite o Novo Email: </label>
+                        <input 
+                            type="email"
+                            placeholder="Novo Email"
+                            className={styles.inputChange}
+                            value={newEmail}
+                            onChange={(e) => setNewEmail(e.target.value)}
+                            required
+                        />
+
+                        <button type="submit" className={styles.submitButton}>Atualizar o Email</button>
+                    </div>
                 </form>
 
                 {message && <p className={styles.message}>{message}</p>}
@@ -471,40 +495,41 @@ return (
             <>
                 <ToastContainer />
                 <form onSubmit={handleSubmit(handlePasswordChange)}>
-                    <p className={styles.boxOption}>Alterar a Senha</p>
-
-                    <label className={styles.changeInfo}>Confirme o seu CPF: </label>
-                    <MaskedInput
-                        mask={Masks.cpf}
-                        className={styles.inputChange}
-                        placeholder='Digite o seu CPF'
-                        id="cpf"
-                        name="cpf"
-                        {...register('cpf', { required: "CPF is required" })}
-                        required={true}
-                    />
-
-                    <label className={styles.changeInfo}>Digite a Nova Senha: </label>
-                        <input 
-                            type="password"
-                            placeholder="Nova Senha"
-                            id="newPassword"
-                            name="newPassword"
+                    <div className={styles.changeInfoGrid}>
+                        <p className={styles.boxOption}>Alterar a Senha</p>
+                        <label className={styles.changeInfo}>Confirme o seu CPF: </label>
+                        <MaskedInput
+                            mask={Masks.cpf}
                             className={styles.inputChange}
-                            {...register('newPassword', {required: "Nova senha é obrigatoria"})}
-                        />
-                    
-                    <label className={styles.changeInfo}>Confirme a Nova Senha: </label>
-                        <input 
-                            type="password" 
-                            placeholder="Confirme a Nova Senha"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            className={styles.inputChange}
-                            {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
+                            placeholder='Digite o seu CPF'
+                            id="cpf"
+                            name="cpf"
+                            {...register('cpf', { required: "CPF is required" })}
+                            required={true}
                         />
 
-                    <button type="submit">Atualizar Senha</button>
+                        <label className={styles.changeInfo}>Digite a Nova Senha: </label>
+                            <input 
+                                type="password"
+                                placeholder="Nova Senha"
+                                id="newPassword"
+                                name="newPassword"
+                                className={styles.inputChange}
+                                {...register('newPassword', {required: "Nova senha é obrigatoria"})}
+                            />
+
+                        <label className={styles.changeInfo}>Confirme a Nova Senha: </label>
+                            <input 
+                                type="password" 
+                                placeholder="Confirme a Nova Senha"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                className={styles.inputChange}
+                                {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
+                            />
+
+                        <button type="submit" className={styles.submitButton}>Atualizar Senha</button>
+                    </div>
                 </form>
             </>
         )}
@@ -512,9 +537,10 @@ return (
         {currentStep === 'endereco' && (
             <>
             <ToastContainer />
-            <form onSubmit={handleAddressChange}>
-                <p className={styles.boxOption}>Alterar o Endereço</p>
-                    <label className={styles.changeInfo}>CEP</label>
+                <form onSubmit={handleAddressChange}>
+                    <div className={styles.changeInfoGrid}>
+                    <p className={styles.boxOption}>Alterar o Endereço</p>
+                        <label className={styles.changeInfo}>CEP</label>
                         <MaskedInput
                             mask={Masks.cep}
                             className={styles.inputChange}
@@ -572,47 +598,67 @@ return (
                             {...register("number", { required: "number is required" })}
                             required={true}
                         />
-
-                        <button type="submit">Atualizar Endereço</button>
+                    <button type="submit" className={styles.submitButton}>Atualizar Endereço</button>
+                </div>
             </form>
             </>
         )}
 
         {currentStep == 'termosUsuario' && (
             <>
-                <p className={styles.boxOptionTitle}> Termos de Uso - Red Line Call</p>
-                <p className={styles.userTermsText}><p>1. Definições e Descrição do Serviço</p>
-                    O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e
-                    viaturas policiais, oferecendo serviços como visualização da localização das
-                    viaturas, envio de solicitações de ajuda, notificação de ocorrências em tempo real,
-                    etc. Nosso objetivo é promover  a segurança pública e a eficiência 
-                    no atendimento emergencial, por meio da interação direta com a polícia.
-                <p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>    
-                <p className={styles.userTermsText}>Ao acessar, navegar ou usar qualquer 
-                    funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
-                    vinculado a estes termos de uso. Caso não concorde com algum item, você não 
-                    deverá utilizar o site.
-                </p>
-                <p className={styles.boxOptionTitle}>3. </p>
-                <p className={styles.userTermsText}> XDDD XDDDD XDDDD </p>
-                </p>
+                <p className={styles.boxOption}> Termos de Uso - Red Line Call</p>
+                <div className={styles.userTermsGrid}>
+                    <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>1. Definições e Descrição do Serviço</p>
+                            O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e
+                        viaturas policiais, oferecendo serviços como visualização da localização das
+                        viaturas, envio de solicitações de ajuda, notificação de ocorrências em tempo real,
+                        etc. Nosso objetivo é promover  a segurança pública e a eficiência 
+                        no atendimento emergencial, por meio da interação direta com a polícia.
+                    </p>
+                    <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>
+                            Ao acessar, navegar ou usar qualquer 
+                        funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
+                        vinculado a estes termos de uso. Caso não concorde com algum item, você não 
+                        deverá utilizar o site.
+                    </p>
+                    <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>3. Lorem Ipsum </p>
+                        Lorem ipsum dolor sit amet. Non dolore molestiae est sequi esse ut voluptatibus dignissimos.
+                        Ea rerum rerum ea neque possimus id molestiae molestiae eum sunt voluptas.
+                        Ut aperiam fugit est repudiandae dolorem cum minus consequatur rem soluta facere vel voluptatibus
+                        quaerat aut quaerat neque ut delectus inventore. Et sunt cupiditate cum quasi nemo
+                         hic quod aspernatur et illum accusamus cum magni repellendus.
+                    </p>
+                    <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>4. Lorem Ipsum </p>
+                        Lorem ipsum dolor sit amet. Non dolore molestiae est sequi esse ut voluptatibus dignissimos.
+                        Ea rerum rerum ea neque possimus id molestiae molestiae eum sunt voluptas.
+                        Ut aperiam fugit est repudiandae dolorem cum minus consequatur rem soluta facere vel voluptatibus
+                        quaerat aut quaerat neque ut delectus inventore. Et sunt cupiditate cum quasi nemo
+                         hic quod aspernatur et illum accusamus cum magni repellendus.
+                    </p>
+                </div>
             </>
         )}
 
         {currentStep == 'desconectar' && (
             <>
                 <p className={styles.boxOption}> Deseja Desconectar?</p>
-                <button
-                    type="button"
-                    onClick={initialButton}
-                    className={styles.desconectButtonOne}
-                >
-                <p className={styles.desconectText}>Cancelar</p>
-                </button>
+                <div className={styles.actionsGrid}>
+                    <button
+                        type="button"
+                        onClick={initialButton}
+                        className={styles.desconectButtonOne}
+                    >
+                        <p className={styles.desconectText}>Cancelar</p>
+                    </button>
 
-                <button className={styles.desconectButtonTwo}>
-                    <LogoutButton />
-                </button>
+                    <button 
+                        type="button"
+                        onClick={handleLogout}
+                        className={styles.desconectButtonTwo}
+                    >
+                        <p className={styles.desconectText}>Desconectar</p>
+                    </button>
+                </div>
             </>
         )}
 
@@ -620,21 +666,23 @@ return (
             <>
                 <p className={styles.boxOption}>Tem certeza que deseja apagar a conta?</p>
                 <p className={styles.boxSubTitle}>Seus dados não poderão ser recuperados depois!</p>
-                <button
-                    type="button"
-                    onClick={initialButton}
-                    className={styles.desconectButtonOne}
-                >
-                <p className={styles.desconectText}>Cancelar</p>
-                </button>
-                
-                <button
-                    type="button"
-                    onClick={handleDeleteAccount}
-                    className={styles.desconectButtonTwo}
-                >
-                <p className={styles.desconectText}>Apagar a Conta</p>
-                </button>
+                <div className={styles.actionsGrid}>
+                    <button
+                        type="button"
+                        onClick={initialButton}
+                        className={styles.desconectButtonOne}
+                    >
+                    <p className={styles.desconectText}>Cancelar</p>
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={handleDeleteAccount}
+                        className={styles.desconectButtonTwo}
+                    >
+                    <p className={styles.desconectText}>Apagar a Conta</p>
+                    </button>
+                </div>
             </>
         )}
     </div>
