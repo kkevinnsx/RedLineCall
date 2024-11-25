@@ -204,49 +204,51 @@ export default function AdmCrud (){
         <div className={styles.leftContainer}>
             <div className={styles.headerContainer}>
                 <h1 className={styles.headerText}>ADMINISTRAÇÃO</h1>
-                <RiAdminFill className={styles.headerIcons}/>
+                <RiAdminFill className={styles.headerIcon}/>
             </div>
 
             <div className={styles.admOptions}>
-                <button
-                    type='button'
-                    onClick={() => handleStepChange('usersCrud')}
-                    disabled={currentStep === 'usersCrud'}
-                    className={styles.navigationButton}
-                >
-                    <div className={styles.boxCircle}>
-                        <HiOutlineUserGroup className={styles.optionsIcons} />
-                        <p className={styles.optionsText}>
-                            Verificar Usuários
-                        </p>
-                        <IoIosArrowForward className={styles.boxArrow} />
-                    </div>
-                </button>
-            </div>
+                <div className={styles.userBox}>
+                    <button
+                        type='button'
+                        onClick={() => handleStepChange('usersCrud')}
+                        disabled={currentStep === 'usersCrud'}
+                        className={styles.navigationButton}
+                    >
+                        <div className={styles.boxCircle}>
+                            <HiOutlineUserGroup className={styles.boxIcons} />
+                            <p className={styles.boxText}>
+                                Verificar Usuários
+                            </p>
+                            <IoIosArrowForward className={styles.boxArrow} />
+                        </div>
+                    </button>
+                </div>
 
-            <div className={styles.admOptions}>
-                <button
-                    type='button'
-                    onClick={() => handleStepChange('policesCrud')}
-                    disabled={currentStep === 'policesCrud'}
-                    className={styles.navigationButton}
-                >
-                    <div className={styles.boxCircle}>
-                        <GrUserPolice className={styles.optionsIcons} />
-                        <p className={styles.optionsText}>
-                            Verificar Policiais
-                        </p>
-                        <IoIosArrowForward className={styles.boxArrow} />
-                    </div>
-                </button>
+                <div className={styles.policeBox}>
+                    <button
+                        type='button'
+                        onClick={() => handleStepChange('policesCrud')}
+                        disabled={currentStep === 'policesCrud'}
+                        className={styles.navigationButton}
+                    >
+                        <div className={styles.boxCircle}>
+                            <GrUserPolice className={styles.boxIcons} />
+                            <p className={styles.boxText}>
+                                Verificar Policiais
+                            </p>
+                            <IoIosArrowForward className={styles.boxArrow} />
+                        </div>
+                    </button>
+                </div>
             </div>
-
         </div>
 
         <div className={styles.rightContainer}>
             {currentStep === 'inicial' && (
                 <>
-                    <p className={styles.optionsInitial}>Selecione uma Opção</p>
+                    <p className={styles.boxOptionInitial}>Selecione uma Opção</p>
+                    <p className={styles.boxOptionSecond}>Para Desbloquear a Página</p>
                     <div className={styles.lockCircle}>
                         <FaLock className={styles.boxLock} />
                     </div>
@@ -255,63 +257,66 @@ export default function AdmCrud (){
 
             {currentStep === 'usersCrud' && (
                 <>
-                    <p className={styles.boxOptions}> Lista de Usuários</p>
-                    <table className={styles.tableUsers}>
-                        <thead>
-                            <tr>
-                                <th className={styles.tableTitle}>
-                                  Pesquisar Usuário:
-                                  <MaskedInput
-                                    mask={Masks.cpf}
-                                    className={styles.inputChange}
-                                    placeholder="Pesquise por CPF:"
-                                    id="searchUser"
-                                    name="searchUser"
-                                    value={cpf}
-                                    onChange={(e) => setCpf(e.target.value)}
-                                    required={true}
-                                  />
-                                </th>
-                            </tr>
-                            <tr className={styles.trBox}>
-                                <th>CPF:                    </th>
-                                <th>Nome:                   </th>
-                                <th>Email:                  </th>
-                                <th>Endereço:               </th>
-                                <th>Motivo das Ocorrências: </th>
-                                <th>Ações                   </th>
-                            </tr>
-                        </thead>
-                        <tbody className={styles.tbodyBox}>
-                            {users.map((user, index) => {
-                                const endereco = enderecos.find((end) => end.cpf === user.cpf)?.endereco || "Carregando                             endereço...";
-                            
-                                return (
-                                  <tr key={user.cpf}>
-                                    <td>{user.cpf}</td>
-                                    <td>{user.fullName}</td>
-                                    <td>{user.email}</td>
-                                    <td>{endereco}</td>
-                                    <td>
-                                      {user.ocorrencias.map((ocorrencia, ocorrenciaIndex) => (
-                                        <p key={ocorrenciaIndex}>{ocorrencia.motivo}</p>
-                                      ))}
-                                    </td>
-                                    <td>
-                                      <button
-                                        type="button"
-                                        className={styles.deleteButton}
-                                        onClick={() => handleDeleteUser(user.cpf)}
-                                      >
-                                        <p className={styles.deleteText}>Deletar Usuário</p>
-                                      </button>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
+                    <p className={styles.boxOption}>Lista de Usuários</p>
+                    <div className={styles.tableContainer}>
+                        <table className={styles.tableOccurrences}>
+                            <thead>
+                                <tr>
+                                    <th className={styles.searchLabel}>Pesquisar Usuário:</th>
+                                    <th>
+                                        <MaskedInput
+                                            mask={Masks.cpf}
+                                            className={styles.inputChange}
+                                            placeholder="Pesquise por CPF:"
+                                            id="searchUser"
+                                            name="searchUser"
+                                            value={cpf}
+                                            onChange={(e) => setCpf(e.target.value)}
+                                            required={true}
+                                        />
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>CPF:</th>
+                                    <th>Nome:</th>
+                                    <th>Email:</th>
+                                    <th>Endereço:</th>
+                                    <th>Motivo das Ocorrências:</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody className={styles.tbodyBox}>
+                                {users.map((user, index) => {
+                                    const endereco =
+                                        enderecos.find((end) => end.cpf === user.cpf)?.endereco ||
+                                        "Carregando endereço...";
+                                
+                                    return (
+                                        <tr key={user.cpf} className={styles.trBox}>
+                                            <td className={styles.tdBox}>{user.cpf}</td>
+                                            <td className={styles.tdBox}>{user.fullName}</td>
+                                            <td className={styles.tdBox}>{user.email}</td>
+                                            <td className={styles.tdBox}>{endereco}</td>
+                                            <td className={styles.tdBox}>
+                                                {user.ocorrencias.map((ocorrencia, ocorrenciaIndex) => (
+                                                    <p key={ocorrenciaIndex}>{ocorrencia.motivo}</p>
+                                                ))}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className={styles.deleteButton}
+                                                    onClick={() => handleDeleteUser(user.cpf)}
+                                                >
+                                                    <p className={styles.deleteText}>Deletar Usuário</p>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
-
-                    </table>
+                        </table>
+                    </div>
                 </>
             )}
 

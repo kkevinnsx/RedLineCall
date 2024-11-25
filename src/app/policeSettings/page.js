@@ -17,10 +17,13 @@ import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import MaskedInput, { Masks } from "../masks/maskedInputs";
+import { useRouter } from 'next/navigation';
+import { RiLockPasswordFill } from "react-icons/ri";
 import axios from "axios";
 
 export default function PoliceSettings (){
     let [currentStep, setCurrentStep] = useState('Inicial');
+    const router = useRouter();
     const [userFullName, setUserFullName] = useState(null);
     const [error, setError]       = useState(null);
     const [enderecos, setEnderecos] = useState([]);
@@ -37,6 +40,23 @@ export default function PoliceSettings (){
 
     const handleStepChange = (newStep) => {
         setCurrentStep(newStep);
+    }
+
+    const handleLogout = async () => {
+        setLoading(true);
+        try{
+            const response = await fetch('/api/logout', { method: 'POST'});
+            
+            if(!response.ok) {
+                throw new Error('Erro ao fazer logout. Tente Novamente.');
+            }
+            router.push('/LogIn');
+        } catch (error) {
+            console.error('Erro ao fazer logout:', error);
+            toast.error('Erro ao fazer desconectar')
+        } finally {
+            setLoading(false);
+        }
     }
 
     const handlePasswordChange = async (data) => {
@@ -169,7 +189,7 @@ export default function PoliceSettings (){
       <div className={styles.leftContainer}>
         <div className={styles.headerContainer}>
               <h1 className={styles.headerText}>
-                  {error ? error : `Usuario: ${userFullName}`}
+                  {error ? error : `Bem vindo, ${userFullName}`}
               </h1>
               <BiUserCircle className={styles.headerIcon} /> 
           </div>
@@ -258,91 +278,95 @@ export default function PoliceSettings (){
             )}
 
             {currentStep === 'historico' && (
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Últimas Ocorrências</th>
-                        </tr>
-                        <tr>
-                            <th>Data:</th>
-                            <th>Motivo:</th>
-                            <th>Localização:</th>
-                            <th>Nome do Auxiliado:</th>
-                            <th>CPF do Auxiliado:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {ocorrencias.map((ocorrencia, index) => (
-                            <tr key={index}>
-                                <td>{new Date(ocorrencia.data).toLocaleDateString()}</td>
-                                <td>{ocorrencia.motivo}</td>
-                                <td>{enderecos[index] || 'Carregando Endereço...'}</td>
-                                <td>{ocorrencia.user?.fullName || 'Nome não Disponível'}</td>
-                                <td>{ocorrencia.user?.cpf || 'CPF não Disponível'}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <>
+                    <p className={styles.boxOption}>Histórico de Ocorrências</p>
+                    <div className={styles.tableContainer}>
+                        <table className={styles.tableHistory}>
+                            <thead>
+                                <tr className={styles.trBox}>
+                                    <th>Data:</th>
+                                    <th>Motivo:</th>
+                                    <th>Localização:</th>
+                                    <th>Nome do Auxiliado:</th>
+                                    <th>CPF do Auxiliado:</th>
+                                </tr>
+                            </thead>
+                            <tbody className={styles.tbodyBox}>
+                                {ocorrencias.map((ocorrencia, index) => (
+                                    <tr key={index} className={styles.trBox}>
+                                        <td className={styles.tdBox}>{new Date(ocorrencia.data).toLocaleDateString()}</td>
+                                        <td className={styles.tdBox}>{ocorrencia.motivo}</td>
+                                        <td className={styles.tdBox}>{enderecos[index] || 'Carregando Endereço...'}</td>
+                                        <td className={styles.tdBox}>{ocorrencia.user?.fullName || 'Nome não Disponível'}</td>
+                                        <td className={styles.tdBox}>{ocorrencia.user?.cpf || 'CPF não Disponível'}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
             )}
 
             {currentStep === 'informacao' && (
                 <>
                     <p className={styles.boxOption}>Alterar Informações Pessoais</p>
-                    <div className={styles.boxEmail}>
-                        <button
-                            type='button'
-                            onClick={() => handleStepChange('email')}
-                            className={styles.boxNavigation}
-                        >
-                            <p className={styles.navigationText}>Alterar Email</p>
-                            <div className={styles.navigationCircle}>
-                                    <AiOutlineMail className={styles.navigationIcons}/>
+                        <div className={styles.setInfoBox}>
+                            <div className={styles.boxEmail}>
+                                <button
+                                    type='button'
+                                    onClick={() => handleStepChange('email')}
+                                    className={styles.boxNavigation}
+                                >
+                                    <div className={styles.navigationCircle}>
+                                        <p className={styles.navigationText}>Alterar Email</p>
+                                        <AiOutlineMail className={styles.navigationIcons}/>
+                                    </div>
+                                </button>
                             </div>
-                        </button>
-                    </div>
 
-                    <div className={styles.boxEmail}>
-                        <button
-                            type='button'
-                            onClick={() => handleStepChange('senha')}
-                            className={styles.boxNavigation}
-                        >
-                            <p className={styles.navigationText}>Alterar Senha</p>
-                            <div className={styles.navigationCircle}>
-                                <AiOutlineMail className={styles.navigationIcons}/>
+                            <div className={styles.boxEmail}>
+                                <button
+                                    type='button'
+                                    onClick={() => handleStepChange('senha')}
+                                    className={styles.boxNavigation}
+                                >
+                                    <div className={styles.navigationCircle}>
+                                        <p className={styles.navigationText}>Alterar Senha</p>
+                                        <RiLockPasswordFill className={styles.navigationIcons}/>
+                                    </div>
+                                </button>
                             </div>
-                        </button>
                     </div>
-
                 </>
             )}
 
             {currentStep === 'email' && (
                 <>
-                <form onSubmit={handleEmailChange}>
-                    <label className={styles.changeInfo}>Digite o Email Atual: </label>
-                    <input 
-                        type="email"
-                        placeholder="Email Atual"
-                        className={styles.inputChange}
-                        value={currentEmail}
-                        onChange={(e) => setCurrentEmail(e.target.value)}
-                        required
-                    />
+                    <form onSubmit={handleEmailChange}>
+                        <div className={styles.changeInfoGrid}>
+                            <p className={styles.boxOption}>Alterar Email</p>
+                            <label className={styles.changeInfo}>Digite o Email Atual: </label>
+                            <input 
+                                type="email"
+                                placeholder="Email Atual"
+                                className={styles.inputChange}
+                                value={currentEmail}
+                                onChange={(e) => setCurrentEmail(e.target.value)}
+                                required
+                            />
 
-                    <label className={styles.changeInfo}>Digite o Novo Email: </label>
-                    <input 
-                        type="email"
-                        placeholder="Novo Email"
-                        className={styles.inputChange}
-                        value={newEmail}
-                        onChange={(e) => setNewEmail(e.target.value)}
-                        required
-                    />
-
-                    <button type="submit" className={styles.submitButton}>Atualizar o Email</button>
-                </form>
-
+                            <label className={styles.changeInfo}>Digite o Novo Email: </label>
+                            <input 
+                                type="email"
+                                placeholder="Novo Email"
+                                className={styles.inputChange}
+                                value={newEmail}
+                                onChange={(e) => setNewEmail(e.target.value)}
+                                required
+                            />
+                        <button type="submit" className={styles.submitButton}>Atualizar o Email</button>
+                        </div>
+                    </form>
                 {message && <p className={styles.message}>{message}</p>}
                 </>
             )}
@@ -350,76 +374,101 @@ export default function PoliceSettings (){
             {currentStep === 'senha' && (
                 <>
                     <form onSubmit={handleSubmit(handlePasswordChange)}>
-                        <p className={styles.boxOption}>Alterar a senha</p>
-            
-                        <label className={styles.changeInfo}>Confirme o seu CPF: </label>
-                        <MaskedInput
-                            mask={Masks.cpf}
-                            className={styles.inputChange}
-                            placeholder='Digite o seu CPF'
-                            id="cpf"
-                            name="cpf"
-                            {...register('cpf', { required: "CPF is required" })}
-                            required={true}
-                        />
+                        <div className={styles.changeInfoGrid}>
+                            <p className={styles.boxOption}>Alterar a senha</p>
+                
+                            <label className={styles.changeInfo}>Confirme o seu CPF: </label>
+                            <MaskedInput
+                                mask={Masks.cpf}
+                                className={styles.inputChange}
+                                placeholder='Digite o seu CPF'
+                                id="cpf"
+                                name="cpf"
+                                {...register('cpf', { required: "CPF is required" })}
+                                required={true}
+                            />
 
-                        <label className={styles.changeInfo}>Digite a Nova Senha: </label>
-                        <input 
-                            type="password"
-                            placeholder="Nova Senha"
-                            id="newPassword"
-                            name="newPassword"
-                            className={styles.inputChange}
-                            {...register('newPassword', {required: "Nova senha é obrigatória"})}
-                        />
+                            <label className={styles.changeInfo}>Digite a Nova Senha: </label>
+                            <input 
+                                type="password"
+                                placeholder="Nova Senha"
+                                id="newPassword"
+                                name="newPassword"
+                                className={styles.inputChange}
+                                {...register('newPassword', {required: "Nova senha é obrigatória"})}
+                            />
 
-                        <label className={styles.changeInfo}>Confirme a Nova Senha: </label>
-                        <input 
-                            type="password" 
-                            placeholder="Confirme a Nova Senha"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            className={styles.inputChange}
-                            {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
-                        />
+                            <label className={styles.changeInfo}>Confirme a Nova Senha: </label>
+                            <input 
+                                type="password" 
+                                placeholder="Confirme a Nova Senha"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                className={styles.inputChange}
+                                {...register('confirmPassword', {required: "Confirmação de senha é obrigatória"})}
+                            />
 
-                        <button type="submit">Atualizar Senha</button>
+                            <button type="submit" className={styles.submitButton}>Atualizar Senha</button>
+                        </div>
                     </form>
                 </>
             )}
 
             {currentStep == 'termosUsuario' && (
                 <>
-                    <p className={styles.boxOptionTitle}> Termos de Uso - Red Line Call</p>
-                    <div className={styles.userTermsText}>
-                        <span className={styles.boxOptionTitle}>1. Definições e Descrição do Serviço</span>
-                        O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e viaturas policiais...
+                    <p className={styles.boxOption}> Termos de Uso - Red Line Call</p>
+                    <div className={styles.userTermsGrid}>
+                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>1. Definições e Descrição do Serviço</p>
+                                O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e
+                            viaturas policiais, oferecendo serviços como visualização da localização das
+                            viaturas, envio de solicitações de ajuda, notificação de ocorrências em tempo real,
+                            etc. Nosso objetivo é promover  a segurança pública e a eficiência 
+                            no atendimento emergencial, por meio da interação direta com a polícia.
+                        </p>
+                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>
+                                Ao acessar, navegar ou usar qualquer 
+                            funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
+                            vinculado a estes termos de uso. Caso não concorde com algum item, você não 
+                            deverá utilizar o site.
+                        </p>
+                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>3. Lorem Ipsum </p>
+                            Lorem ipsum dolor sit amet. Non dolore molestiae est sequi esse ut voluptatibus dignissimos.
+                            Ea rerum rerum ea neque possimus id molestiae molestiae eum sunt voluptas.
+                            Ut aperiam fugit est repudiandae dolorem cum minus consequatur rem soluta facere vel voluptatibus
+                            quaerat aut quaerat neque ut delectus inventore. Et sunt cupiditate cum quasi nemo
+                             hic quod aspernatur et illum accusamus cum magni repellendus.
+                        </p>
+                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>4. Lorem Ipsum </p>
+                            Lorem ipsum dolor sit amet. Non dolore molestiae est sequi esse ut voluptatibus dignissimos.
+                            Ea rerum rerum ea neque possimus id molestiae molestiae eum sunt voluptas.
+                            Ut aperiam fugit est repudiandae dolorem cum minus consequatur rem soluta facere vel voluptatibus
+                            quaerat aut quaerat neque ut delectus inventore. Et sunt cupiditate cum quasi nemo
+                             hic quod aspernatur et illum accusamus cum magni repellendus.
+                        </p>
                     </div>
-                    <p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>    
-                    <div className={styles.userTermsText}>
-                        Ao acessar, navegar ou usar qualquer funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
-                        vinculado a estes termos de uso. Caso não concorde com algum item, você não 
-                        deverá utilizar o site.
-                    </div>
-                    <p className={styles.boxOptionTitle}>3. </p>
-                    <div className={styles.userTermsText}> XDDD XDDDD XDDDD </div>
                 </>
             )}
 
             {currentStep === 'desconectar' && (
                 <>
                     <p className={styles.boxOption}>Deseja Desconectar?</p>
-                    <button
-                        type="button"
-                        onClick={initialButton}
-                        className={styles.desconectButtonOne}
-                    >
-                        <p className={styles.desconectText}>Cancelar</p>
-                    </button>
+                    <div className={styles.actionsGrid}>
+                        <button
+                            type="button"
+                            onClick={initialButton}
+                            className={styles.desconectButtonOne}
+                        >
+                            <p className={styles.desconectText}>Cancelar</p>
+                        </button>
 
-                    <button className={styles.desconectButtonTwo}>
-                        <LogoutButton />
-                    </button>
+                        <button 
+                            type="button"
+                            onClick={handleLogout}
+                            className={styles.desconectButtonTwo}
+                        >
+                            <p className={styles.desconectText}>Desconectar</p>
+                        </button>
+                    </div>
                 </>
             )}
         </div>

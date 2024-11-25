@@ -63,19 +63,19 @@ export default function PoliceForm() {
     return (
         <div>
             <ToastContainer />
-            <h1 className={styles.text}>ADMINISTRAÇÃO</h1>
+            <h1 className={styles.copOption}>Cadastrar Viatura</h1>
             <form onSubmit={handleSubmit(onSubmit)} className={styles.formCad}>
-                <label className={styles.cadText}>CEP da Delegacia</label>
+                <label className={styles.changeInfo}>CEP da Delegacia</label>
                 <MaskedInput
                     mask={Masks.cep}
-                    className={styles.cadInputs}
+                    className={styles.inputChange}
                     placeholder='Código Postal'
                     id="cepDP"
                     name="cepDP"
                     {...register('cepDP')}
                     required={true}
                 />
-                <label className={styles.cadText}>Número da Delegacia</label>
+                <label className={styles.changeInfo}>Número da Delegacia</label>
                 <input 
                     type='text' 
                     placeholder="Número da Delegacia"
@@ -85,7 +85,7 @@ export default function PoliceForm() {
                     {...register('numeroDP')}
                     required={true}
                 />
-                <label className={styles.cadText}>Número da Viatura</label>
+                <label className={styles.changeInfo}>Número da Viatura</label>
                 <input 
                     type='text' 
                     id="numeroViatura"
@@ -95,7 +95,7 @@ export default function PoliceForm() {
                     className={styles.cadInputs}
                     required={true}
                 />
-                <label className={styles.cadText}>Modelo da Viatura</label>
+                <label className={styles.changeInfo}>Modelo da Viatura</label>
                 <input 
                     type='text' 
                     id="modeloViatura"
@@ -105,7 +105,7 @@ export default function PoliceForm() {
                     className={styles.cadInputs}
                     required={true}
                 />
-                <label className={styles.cadText}>Placa da Viatura</label>
+                <label className={styles.changeInfo}>Placa da Viatura</label>
                 <input 
                     type='text'
                     id="placaViatura"
@@ -115,7 +115,7 @@ export default function PoliceForm() {
                     className={styles.cadInputs}
                     required={true}
                 />
-                <label className={styles.cadText}>Qual o Policial Responsável?</label>
+                <label className={styles.changeInfo}>Qual o Policial Responsável?</label>
                 <select {...register("policeList")} className={styles.cadInputs}> 
                     <option value="">Selecione um Policial</option>
                     {policeList.map(police => (

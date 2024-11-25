@@ -62,41 +62,43 @@ export default function AdmControl () {
         <div className={styles.leftContainer}>
             <div className={styles.headerContainer}>
                 <h1 className={styles.headerText}>ADMINISTRAÇÃO</h1>
-                <RiAdminFill className={styles.headerIcons}/>
+                <RiAdminFill className={styles.headerIcon}/>
             </div>
 
             <div className={styles.admOptions}>
-                <button
-                    type='button'
-                    onClick={() => handleStepChange('copRegistration')}
-                    disabled={currentStep === 'copRegistration'}
-                    className={styles.navigationButton}
-                >
-                    <div className={styles.boxCircle}>
-                        <GrUserPolice className={styles.optionsIcons} />
-                        <p className={styles.optionsText}>
-                            Cadastrar Policial
-                        </p>
-                        <IoIosArrowForward className={styles.boxArrow} />
-                    </div>
-                </button>
-            </div>
+                <div className={styles.policeBox}>
+                    <button
+                        type='button'
+                        onClick={() => handleStepChange('copRegistration')}
+                        disabled={currentStep === 'copRegistration'}
+                        className={styles.navigationButton}
+                    >
+                        <div className={styles.boxCircle}>
+                            <GrUserPolice className={styles.boxIcons} />
+                            <p className={styles.boxText}>
+                                Cadastrar Policial
+                            </p>
+                            <IoIosArrowForward className={styles.boxArrow} />
+                        </div>
+                    </button>
+                </div>
 
-            <div className={styles.admOptions}>
-                <button
-                    type='button'
-                    onClick={() => handleStepChange('carRegistration')}
-                    disabled={currentStep === 'carRegistration'}
-                    className={styles.navigationButton}
-                >
-                    <div className={styles.boxCircle}>
-                        <RiPoliceCarFill className={styles.optionsIcons} />
-                        <p className={styles.optionsText}>
-                            Cadastrar Viatura
-                        </p>
-                        <IoIosArrowForward className={styles.boxArrow} />
-                    </div>
-                </button>
+                <div className={styles.carBox}>
+                    <button
+                        type='button'
+                        onClick={() => handleStepChange('carRegistration')}
+                        disabled={currentStep === 'carRegistration'}
+                        className={styles.navigationButton}
+                    >
+                        <div className={styles.boxCircle}>
+                            <RiPoliceCarFill className={styles.boxIcons} />
+                            <p className={styles.boxText}>
+                                Cadastrar Viatura
+                            </p>
+                            <IoIosArrowForward className={styles.boxArrow} />
+                        </div>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -104,6 +106,7 @@ export default function AdmControl () {
             {currentStep === 'inicial' && (
                 <>
                     <p className={styles.boxOptionInitial}>Selecione uma Opção</p>
+                    <p className={styles.boxOptionSecond}>Para Desbloquear a Página</p>
                     <div className={styles.lockCircle}>
                         <FaLock className={styles.boxLock}/>
                     </div>
@@ -118,83 +121,85 @@ export default function AdmControl () {
             <>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <p className={styles.copOption}>Cadastrar Policial</p>
-                    <label className={styles.changeInfo}>Nome: </label>
-                    <input 
-                        type="text"
-                        placeholder="Nome completo"
-                        id="fullName"
-                        name="fullName"
-                        className={styles.inputChange}
-                        {...register('fullName', {required: "Nome completo é exigido"})}
-                    />
+                    <div className={styles.changeInfoGrid}>
+                        <label className={styles.changeInfo}>Nome: </label>
+                        <input 
+                            type="text"
+                            placeholder="Nome completo"
+                            id="fullName"
+                            name="fullName"
+                            className={styles.inputChange}
+                            {...register('fullName', {required: "Nome completo é exigido"})}
+                        />
 
-                    <label className={styles.changeInfo}>CPF:</label>
-                    <MaskedInput
-                        mask={Masks.cpf}
-                        className={styles.inputChange}
-                        placeholder='CPF'
-                        id="cpf"
-                        name="cpf"
-                        {...register('cpf', { required: "CPF é exigido" })}
-                    />
+                        <label className={styles.changeInfo}>CPF:</label>
+                        <MaskedInput
+                            mask={Masks.cpf}
+                            className={styles.inputChange}
+                            placeholder='CPF'
+                            id="cpf"
+                            name="cpf"
+                            {...register('cpf', { required: "CPF é exigido" })}
+                        />
 
-                    <label className={styles.changeInfo}>Data de Nascimento:</label>
-                    <input
-                        type="date"
-                        className={styles.inputChange}
-                        id="birthDay"
-                        name="birthDay"
-                        {...register("birthDay", { required: "Data de nascimento é exigida" })}
-                    />
+                        <label className={styles.changeInfo}>Data de Nascimento:</label>
+                        <input
+                            type="date"
+                            className={styles.inputChange}
+                            id="birthDay"
+                            name="birthDay"
+                            {...register("birthDay", { required: "Data de nascimento é exigida" })}
+                        />
 
-                    <label className={styles.changeInfo}>CEP:</label>
-                    <MaskedInput
-                        mask={Masks.cep}
-                        className={styles.inputChange}
-                        placeholder='Código Postal'
-                        id="cep"
-                        name="cep"
-                        {...register('cep', { required: "CEP é exigido" })}
-                        onChange={(e) => {
-                            const cep = e.target.value.replace(/\D/g, '');
-                            setValue('cep', e.target.value);
-                            if (cep.length === 8) { 
-                                adressByCep(cep);
-                            }
-                        }}
-                    />
+                        <label className={styles.changeInfo}>CEP:</label>
+                        <MaskedInput
+                            mask={Masks.cep}
+                            className={styles.inputChange}
+                            placeholder='Código Postal'
+                            id="cep"
+                            name="cep"
+                            {...register('cep', { required: "CEP é exigido" })}
+                            onChange={(e) => {
+                                const cep = e.target.value.replace(/\D/g, '');
+                                setValue('cep', e.target.value);
+                                if (cep.length === 8) { 
+                                    adressByCep(cep);
+                                }
+                            }}
+                        />
 
-                    <label className={styles.changeInfo}>Número do Endereço:</label>
-                    <input 
-                        type="number"
-                        placeholder="Número do endereço"
-                        id="number"
-                        name="number"
-                        className={styles.inputChange}
-                        {...register('number', {required: "Número da casa é exigido"})}
-                    />
+                        <label className={styles.changeInfo}>Número do Endereço:</label>
+                        <input 
+                            type="number"
+                            placeholder="Número do endereço"
+                            id="number"
+                            name="number"
+                            className={styles.inputChange}
+                            {...register('number', {required: "Número da casa é exigido"})}
+                        />
 
-                    <label className={styles.changeInfo}>Email: </label>
-                    <input 
-                        type="email" 
-                        placeholder="Email"
-                        id="email"
-                        name="email"
-                        className={styles.inputChange}
-                        {...register('email', {required: "Email é exigido"})}
-                    />
+                        <label className={styles.changeInfo}>Email: </label>
+                        <input 
+                            type="email" 
+                            placeholder="Email"
+                            id="email"
+                            name="email"
+                            className={styles.inputChange}
+                            {...register('email', {required: "Email é exigido"})}
+                        />
 
-                    <label className={styles.changeInfo}>Senha: </label>
-                    <input 
-                        type="password"
-                        placeholder="Nova senha"
-                        id="password"
-                        name="password"
-                        className={styles.inputChange}
-                        {...register('password', {required: "Senha é exigida"})}
-                    />
+                        <label className={styles.changeInfo}>Senha: </label>
+                        <input 
+                            type="password"
+                            placeholder="Nova senha"
+                            id="password"
+                            name="password"
+                            className={styles.inputChange}
+                            {...register('password', {required: "Senha é exigida"})}
+                        />
 
-                    <button type="submit">Cadastrar Policial</button>
+                        <button type="submit" className={styles.submitButton}>Cadastrar Policial</button>
+                    </div>
                 </form>
             </>
             )}
