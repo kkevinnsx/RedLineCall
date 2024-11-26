@@ -5,7 +5,7 @@
 .locationContainer{
     z-index: 888;
     position: absolute;
-    top: 5%;
+    top: 15%;
     left: 28%;
     transform: translate(-50%, -50%);
     width: 50%; 

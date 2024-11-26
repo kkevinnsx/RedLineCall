@@ -1,6 +1,5 @@
 .text{
     margin-top: 2%;
-    font-family: "JetBrains Mono", monospace;
     font-weight: bold;
     color: #000000;
     text-shadow: 0 .2rem .2rem #8d8d8d9d;
@@ -80,7 +79,6 @@
 .Alert {
     color: #FF101F;
     font-size: 2.75rem;
-    font-family: "JetBrains Mono", monospace;
     font-weight: bold;
     position: absolute;
     top: 40%;
@@ -90,7 +88,6 @@
 
 .AlertText{
     color: #000000;
-    font-family: "JetBrains Mono", monospace;
     text-align: center;
     font-size: 1.45rem;
     width: 20%;

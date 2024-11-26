@@ -1,6 +1,22 @@
+.leftContainer{
+    height: 100%;
+    width: 40%;
+    position: fixed;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 .2rem #0f0f0f6c;}
+
+.rightContainer{
+    height: 100%;
+    width: 60%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 .text{
-    margin-top: 2%;
-    font-family: "JetBrains Mono", monospace;
+    margin-top: 5%;
     font-weight: bold;
     color: #000000;
     text-shadow: 0 .2rem .2rem #8d8d8d9d;

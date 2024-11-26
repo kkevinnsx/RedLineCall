@@ -6,7 +6,7 @@ export const watchLocation = (setError, updateLocation) => {
             (position) => {
                 const { latitude, longitude } = position.coords;
                 const expirationDate = new Date();
-                expirationDate.setDate(expirationDate.getDate() + 1); // 1 dia de expiração
+                expirationDate.setDate(expirationDate.getDate() + 1); 
                 
                 setCookie('latitude', latitude, { expires: expirationDate });
                 setCookie('longitude', longitude, { expires: expirationDate });
@@ -24,7 +24,7 @@ export const watchLocation = (setError, updateLocation) => {
             }
         );
         
-        return watchId; // Retorna o ID do watch
+        return watchId; 
     } else {
         setError('Geolocalização não é suportada pelo navegador.');
     }
@@ -36,12 +36,11 @@ export const setInitialLocation = async (setError, updateLocation) => {
             async (position) => {
                 const { latitude, longitude } = position.coords;
                 const expirationDate = new Date();
-                expirationDate.setDate(expirationDate.getDate() + 1); // 1 dia de expiração
+                expirationDate.setDate(expirationDate.getDate() + 1); 
                 
                 setCookie('latitude', latitude, { expires: expirationDate });
                 setCookie('longitude', longitude, { expires: expirationDate });
 
-                // Atualiza localização inicial no banco de dados
                 await updateLocation({ latitude, longitude });
             },
             (error) => {

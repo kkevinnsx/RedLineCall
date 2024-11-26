@@ -3,19 +3,33 @@
 import { useState, useCallback } from "react";
 
 const sendLocation = async ({ latitude, longitude }) => {
-    try { 
-        await fetch('/api/updateLocation', {
+    try {
+        // Verifique se os valores são válidos
+        if (!latitude || !longitude) {
+            console.error('Latitude ou longitude inválidas:', { latitude, longitude });
+            return; // Não envie requisição com valores inválidos
+        }
+
+        console.log('Enviando localização:', { latitude, longitude }); // Debug
+        const response = await fetch('/api/updateLocation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ latitude, longitude }),
         });
-        console.log(`Localização enviada: Latitude ${latitude}, Longitude ${longitude}`);
+
+        if (!response.ok) {
+            console.error('Erro ao enviar localização:', await response.json());
+            throw new Error('Falha ao enviar localização.');
+        }
+
+        console.log('Localização enviada com sucesso.');
     } catch (error) {
-        console.error('Erro ao enviar localização', error);
+        console.error('Erro ao enviar localização:', error);
     }
 };
+
 
 const useSendLocation = () => {
     const [location, setLocation] = useState({ latitude: null, longitude: null });
@@ -26,7 +40,14 @@ const useSendLocation = () => {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    setLocation({ latitude, longitude });
+    
+                    if (!latitude || !longitude) {
+                        console.error('Coordenadas inválidas recebidas:', { latitude, longitude });
+                        return;
+                    }
+    
+                    console.log('Localização atual obtida:', { latitude, longitude }); // Debug
+                    setLocation({ latitude, longitude }); // Salva no estado
                 },
                 (error) => {
                     console.error('Erro ao obter localização:', error);
@@ -37,13 +58,16 @@ const useSendLocation = () => {
                     maximumAge: 0,
                 }
             );
+        } else {
+            console.error('Geolocalização não é suportada pelo navegador.');
         }
     }, []);
+    
 
     const startSendingLocation = useCallback(() => {
         if (!intervalId) {
             const id = setInterval(async () => {
-                await updateLocation(); // Atualiza localização antes de enviar
+                await updateLocation(); 
                 sendLocation(location);
             }, 5000);
             setIntervalId(id);

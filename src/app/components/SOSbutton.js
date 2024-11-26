@@ -9,53 +9,71 @@ export default function SOSbutton() {
     const [loading, setLoading] = useState(false);
     const [statusChat, setStatusChat] = useState(false);
     const [userLocation, setUserLocation] = useState(null);
+    const [message, setMessage] = useState("");
     const { startSendingLocation, stopSendingLocation } = useSendLocation();
 
     const fetchLocation = () => {
         if (!navigator.geolocation) {
-            toast.error("Geolocalização não suportada pelo navegador.");
+            const errorMsg = "Geolocalização não suportada pelo navegador.";
+            setMessage(errorMsg);
+            toast.error(errorMsg);
             return;
         }
+    
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                setUserLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                });
+                const { latitude, longitude } = position.coords;
+                if (latitude && longitude) {
+                    setUserLocation({ latitude, longitude });
+                    console.log('Localização obtida:', { latitude, longitude });
+                } else {
+                    console.error("Latitude ou longitude inválidas:", { latitude, longitude });
+                }
             },
             (error) => {
                 console.error("Erro ao obter localização:", error);
-                toast.error("Erro ao obter localização.");
+                const errorMsg = "Erro ao obter localização. Verifique as permissões.";
+                setMessage(errorMsg);
+                toast.error(errorMsg);
             }
         );
     };
+    
 
     const sendInitialLocation = async () => {
-        if (!userLocation) return;
-
+        if (!userLocation || !userLocation.latitude || !userLocation.longitude) {
+            const errorMsg = "Localização indisponível. Verifique permissões.";
+            setMessage(errorMsg);
+            toast.error(errorMsg);
+            return;
+        }
+    
         try {
             await fetch('/api/updateLocation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userLocation),
             });
-            console.log(`Localização inicial enviada: Latitude ${userLocation.latitude}, Longitude ${userLocation.longitude}`);
         } catch (error) {
             console.error('Erro ao enviar localização inicial', error);
-            toast.error('Erro ao enviar localização inicial');
+            const errorMsg = "Erro ao enviar localização inicial.";
+            setMessage(errorMsg);
+            toast.error(errorMsg);
         }
     };
 
     const UserActiveSOS = async () => {
         setLoading(true);
+        setMessage(""); 
         try {
-            if (!userLocation?.latitude || !userLocation?.longitude) {
-                toast.error("Localização não disponível. Verifique as permissões.");
+            if (!userLocation || userLocation.latitude === null || userLocation.longitude === null) {
+                const errorMsg = "Localização indisponível. Verifique permissões.";
+                setMessage(errorMsg);
+                toast.error(errorMsg);
                 return;
-            }
+            }            
 
             await sendInitialLocation();
-            console.log("Chamando APIs para buscar viaturas e status do chat");
 
             const response = await fetch('/api/sosButton', {
                 method: 'POST',
@@ -63,56 +81,52 @@ export default function SOSbutton() {
                 body: JSON.stringify(userLocation),
             });
 
-            const text = await response.text();
-            if (!response.ok) throw new Error(`HTTP ERROR! status: ${response.status}`);
+            const data = await response.json();
 
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch (error) {
-                throw new Error('Resposta não é JSON');
-            }
-
-            if (data.statusChat !== undefined) {
-                toast.success('Status do chat atualizado com sucesso!');
-                setStatusChat(data.statusChat);
+            if (response.ok) {
+                const successMsg = data.message || "SOS enviado com sucesso!";
+                setMessage(successMsg);
+                toast.success(successMsg);
+                if (successMsg === "SOS enviado com sucesso!") {
+                    setStatusChat(true);
+                    startSendingLocation();
+                }
             } else {
-                throw new Error('Status não retornado pela API');
-            }
-
-            if (data.statusChat) {
-                startSendingLocation();
-            } else {
-                stopSendingLocation();
+                const errorMsg = data.message || `Erro: ${response.status}`;
+                setMessage(errorMsg);
+                toast.error(errorMsg);
             }
         } catch (error) {
             console.error("Erro ao ativar SOS:", error.message);
-            toast.error('Erro ao ativar o SOS!');
+            const errorMsg = "Erro ao ativar o SOS!";
+            setMessage(errorMsg);
+            toast.error(errorMsg);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchLocation();
-    }, []);
-
-    const handleClickSOS = async () => {
-        await UserActiveSOS();
-    };
-
+        if (userLocation) {
+            sendInitialLocation();
+        }
+    }, [userLocation]);
+    
     return (
         <div>
             <button
                 type="button"
                 className={styles.sosButton}
-                onClick={handleClickSOS}
+                onClick={UserActiveSOS}
                 disabled={loading}
             >
                 <h1 className={styles.sosText}>
-                    {loading ? "....." : "S.O.S"}
+                    {loading ? "Carregando..." : "S.O.S"}
                 </h1>
             </button>
+            <div className={styles.messageContainer}>
+                {message && <p>{message}</p>}
+            </div>
         </div>
     );
 }
