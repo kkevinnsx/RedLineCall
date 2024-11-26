@@ -259,23 +259,21 @@ export default function AdmCrud (){
                 <>
                     <p className={styles.boxOption}>Lista de Usuários</p>
                     <div className={styles.tableContainer}>
+                        <div className={styles.headContainer}>
+                            <label className={styles.searchLabel}>Pesquisar Usuário:</label>
+                            <MaskedInput
+                                mask={Masks.cpf}
+                                className={styles.inputChange}
+                                placeholder="Pesquise por CPF:"
+                                id="searchUser"
+                                name="searchUser"
+                                value={cpf}
+                                onChange={(e) => setCpf(e.target.value)}
+                                required={true}
+                            />
+                        </div>
                         <table className={styles.tableOccurrences}>
                             <thead>
-                                <tr>
-                                    <th className={styles.searchLabel}>Pesquisar Usuário:</th>
-                                    <th>
-                                        <MaskedInput
-                                            mask={Masks.cpf}
-                                            className={styles.inputChange}
-                                            placeholder="Pesquise por CPF:"
-                                            id="searchUser"
-                                            name="searchUser"
-                                            value={cpf}
-                                            onChange={(e) => setCpf(e.target.value)}
-                                            required={true}
-                                        />
-                                    </th>
-                                </tr>
                                 <tr>
                                     <th>CPF:</th>
                                     <th>Nome:</th>
@@ -321,126 +319,137 @@ export default function AdmCrud (){
             )}
 
             {currentStep === 'policesCrud' && (
-              <>
-                <p className="boxOption">Lista de Viaturas</p>
-                    <table className="tableCops">
-                      <thead>
-                        <tr>
-                          <th className="tableTitle">
-                            Pesquisar Viaturas
-                            <input
-                              type="text"
-                              className="inputChange"
-                              placeholder="Pesquise pelo número da viatura"
-                              id="searchCop"
-                              name="searchCop"
-                              value={copNumber}
-                              onChange={(e) => setCopNumber(e.target.value)}
-                              required
-                            />
-                          </th>
-                        </tr>
-                        <tr className="trBox">
-                          <th>Nome:</th>
-                          <th>CPF:</th>
-                          <th>Email:</th>
-                          <th>Motivo das Ocorrências:</th>
-                          <th>Número da Viatura:</th>
-                          <th>Modelo da Viatura:</th>
-                          <th>Placa da Viatura:</th>
-                          <th>Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody className="tbodyBox">
-                        {cop.length > 0 ? (
-                            cop.map((viatura) => (
-                                <tr key={viatura.numeroViatura}>
-                                    <td>
+                <>
+                    <p className={styles.copBoxOption}>Lista de Viaturas</p>
+                    <div className={styles.copTableContainer}>
+                        <table className={styles.copTable}>
+                            <thead>
+                                <tr className={styles.copSearchRow}>
+                                    <th colSpan="8" className={styles.copSearchHeader}>
+                                        <span className={styles.copSearchLabel}>Pesquisar Viaturas:</span>
                                         <input
                                             type="text"
-                                            value={responsavelNome}
-                                            onChange={(e) => setResponsavelNome(e.target.value)}
+                                            className={styles.copInputChange}
+                                            placeholder="Pesquise pelo número da viatura"
+                                            id="searchCop"
+                                            name="searchCop"
+                                            value={copNumber}
+                                            onChange={(e) => setCopNumber(e.target.value)}
+                                            required
                                         />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={responsavelCpf}
-                                            onChange={(e) => setResponsavelCpf(e.target.value)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={responsavelEmail}
-                                            onChange={(e) => setResponsavelEmail(e.target.value)}
-                                        />
-                                    </td>
-                                    <td>
-                                        {viatura.ocorrencias && viatura.ocorrencias.length > 0 ? (
-                                            viatura.ocorrencias.slice(0, 3).map((ocorrencia, index) => (
-                                                <input
-                                                    key={ocorrencia.id}
-                                                    type="text"
-                                                    value={ocorrencia.motivo}
-                                                    onChange={(e) => {
-                                                        const updatedOcorrencias = [...viatura.ocorrencias];
-                                                        updatedOcorrencias[index].motivo = e.target.value;
-                                                        setCop([{ ...viatura, ocorrencias: updatedOcorrencias }]);
-                                                    }}
-                                                />
-                                            ))
-                                        ) : (
-                                            <p>Nenhuma ocorrência encontrada</p>
-                                        )}
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={numeroViatura}
-                                            onChange={(e) => setNumeroViatura(e.target.value)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={modeloViatura}
-                                            onChange={(e) => setModeloViatura(e.target.value)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={placaViatura}
-                                            onChange={(e) => setPlacaViatura(e.target.value)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            className="deleteButton"
-                                            onClick={() => handleDeleteUser(viatura.numeroViatura)}
-                                        >
-                                            <p className="deleteText">Deletar a Viatura</p>
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            className="updateButton"
-                                            onClick={handleUpdateCopData}
-                                        >
-                                            <p className="updateText">Atualizar os Dados</p>
-                                        </button>
-                                    </td>
+                                    </th>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr><td colSpan="8">Nenhuma viatura encontrada.</td></tr>
-                        )}
-                      </tbody>
-                    </table>
-              </>
+                                <tr className={styles.copTableHeaderRow}>
+                                    <th>Nome:</th>
+                                    <th>CPF:</th>
+                                    <th>Email:</th>
+                                    <th>Motivo das Ocorrências:</th>
+                                    <th>Número da Viatura:</th>
+                                    <th>Modelo da Viatura:</th>
+                                    <th>Placa da Viatura:</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody className={styles.copTableBody}>
+                                {cop.length > 0 ? (
+                                    cop.map((viatura) => (
+                                        <tr key={viatura.numeroViatura} className={styles.copTableRow}>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className={styles.copDynamicInput}
+                                                    value={responsavelNome}
+                                                    onChange={(e) => setResponsavelNome(e.target.value)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className={styles.copDynamicInput}
+                                                    value={responsavelCpf}
+                                                    onChange={(e) => setResponsavelCpf(e.target.value)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className={styles.copDynamicInput}
+                                                    value={responsavelEmail}
+                                                    onChange={(e) => setResponsavelEmail(e.target.value)}
+                                                />
+                                            </td>
+                                            <td>
+                                                {viatura.ocorrencias && viatura.ocorrencias.length > 0 ? (
+                                                    viatura.ocorrencias.slice(0, 3).map((ocorrencia, index) => (
+                                                        <input
+                                                            key={index}
+                                                            type="text"
+                                                            className={styles.copDynamicInput}
+                                                            value={ocorrencia.motivo}
+                                                            onChange={(e) => {
+                                                                const updatedOcorrencias = [...viatura.ocorrencias];
+                                                                updatedOcorrencias[index].motivo = e.target.value;
+                                                                setCop([{ ...viatura, ocorrencias: updatedOcorrencias }]);
+                                                            }}
+                                                        />
+                                                    ))
+                                                ) : (
+                                                    <p className={styles.copNoData}>Nenhuma ocorrência encontrada</p>
+                                                )}
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className={styles.copDynamicInput}
+                                                    value={numeroViatura}
+                                                    onChange={(e) => setNumeroViatura(e.target.value)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className={styles.copDynamicInput}
+                                                    value={modeloViatura}
+                                                    onChange={(e) => setModeloViatura(e.target.value)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className={styles.copDynamicInput}
+                                                    value={placaViatura}
+                                                    onChange={(e) => setPlacaViatura(e.target.value)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className={styles.copDeleteButton}
+                                                    onClick={() => handleDeleteUser(viatura.numeroViatura)}
+                                                >
+                                                    Deletar a Viatura
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.copUpdateButton}
+                                                    onClick={handleUpdateCopData}
+                                                >
+                                                    Atualizar os Dados
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="8" className={styles.copNoData}>
+                                            Nenhuma viatura encontrada.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
             )}
         </div>
         <NavBar/>

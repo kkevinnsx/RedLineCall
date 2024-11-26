@@ -165,17 +165,61 @@
     margin: 20px 0;
     color: #c0041d;
 }
+
+.headContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #c0041d;
+    padding: 12px;
+    position: sticky;
+    top: 0; 
+    z-index: 10; 
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.searchLabel {
+    width: 50%;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.inputChange {
+    width: 45%;
+    margin-right: 20px;
+    height: 3rem;
+    text-align: center;
+    border: 1px solid #919191;
+    border-radius: 0.45rem;
+    outline: none;
+    transition: 300ms ease-in-out;
+    font-size: 1.15rem;
+    background-color: #f8f8f8ea;
+    box-shadow: inset -2rem 0.1rem 2.3rem #d8dbe2;
+}
+
+.inputChange:focus {
+    background-color: #f1f1f1;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
 .tableContainer {
     max-height: 80%;
-    overflow-y: auto;
+    overflow-y: auto; 
+    overflow-x: auto;
     margin: 0 auto;
     width: 90%;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .tableContainer::-webkit-scrollbar {
-    width: 8px;
+    height: 8px;
+    background-color: #f1f1f1;
 }
 
 .tableContainer::-webkit-scrollbar-thumb {
@@ -183,20 +227,13 @@
     border-radius: 10px;
 }
 
-.tableContainer::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}
-
 .tableOccurrences {
     width: 100%;
+    min-width: 900px; 
     border-collapse: collapse;
     font-size: 1rem;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    border-radius: 10px 10px 0 0;
-    min-width: 600px;
     background-color: #f1f1f1;
-    border: none; /* Remove bordas */
+    border: none;
 }
 
 .tableOccurrences thead {
@@ -209,6 +246,8 @@
 .tableOccurrences td {
     padding: 10px;
     text-align: left;
+    white-space: normal; 
+    word-wrap: break-word;
 }
 
 .tableOccurrences tbody tr:nth-of-type(even) {
@@ -219,32 +258,148 @@
     background-color: #f1f1f1;
 }
 
-.searchLabel {
-    width: 50%; /* Metade da largura */
-    text-align: center;
-    padding: 12px;
-    color: #fff;
+.copBoxOption {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #c0041d;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.copTableContainer {
+    max-height: 80%;
+    overflow-x: auto; 
+    overflow-y: auto;
+    margin: 0 auto;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.copTableContainer::-webkit-scrollbar {
+    height: 8px;
+}
+
+.copTableContainer::-webkit-scrollbar-thumb {
+    background-color: #c0041d;
+    border-radius: 4px;
+}
+
+.copTableContainer::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.copTable {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    font-size: 1rem;
+    background-color: #f1f1f1;
+}
+
+.copTable td:nth-child(4) {
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.copTable th, .copTable td {
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap;
+    position: relative;
+}
+
+.copTableHeaderRow {
+    background-color: #c0041d;
+    color: #fff;
+}
+
+.copTableHeaderRow th {
+    padding: 10px;
+    text-align: left;
+}
+
+.copTableRow:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+
+.copTableRow:hover {
+    background-color: #f1f1f1;
+}
+
+.copSearchRow {
+    background-color: #c0041d;
+    text-align: left;
+    align-items: left;
+}
+
+.copSearchHeader {
+    padding: 10px;
+    text-align: left;
     background-color: #c0041d;
 }
 
-.inputChange{
-    background-color: #f8f8f8bd;
-    backdrop-filter: blur(50%);
-    width: 50%;
-    text-align: center;
+.copSearchLabel {
+    font-weight: bold;
+    color: #f1f1f1;
+    margin-right: 15px;
+}
+
+.copInputChange {
+    width: 20rem;
     height: 3rem;
-    color: #000;
+    text-align: center;
     border: 1px solid #919191;
-    box-shadow: inset -2rem .1rem 2.3rem #D8DBE2;
-    border-radius: .45rem;
+    border-radius: 0.45rem;
     outline: none;
     transition: 300ms ease-in-out;
     font-size: 1.15rem;
+    background-color: #f8f8f8ea;
+    box-shadow: inset -2rem 0.1rem 2.3rem #d8dbe2;
 }
 
-.inputChange:focus{
+.copInputChange:focus {
     background-color: #f1f1f1;
     font-weight: bold;
-    transform: scale(1.05);
+    transform: scale(1.02);
+}
+
+.copDynamicInput {
+    width: 13rem;
+    padding: 6px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 2px;
+    margin-bottom: 5px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+}
+
+.copDeleteButton,
+.copUpdateButton {
+    padding: 8px 12px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.copDeleteButton {
+    background-color: #c0041d;
+    margin-right: 4px;
+}
+
+.copUpdateButton {
+    background-color: #0284c7;
+}
+
+.copNoData {
+    text-align: center;
+    font-size: 1rem;
+    color: #888;
+    padding: 20px;
 }
