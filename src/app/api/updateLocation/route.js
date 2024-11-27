@@ -3,35 +3,37 @@ import { getUserProfile } from '../../../modules/auth/services/userService';
 
 export async function POST(req) {
     try {
-        const { latitude, longitude } = await req.json();
-
-        if (!latitude || !longitude) {
-            console.error("Latitude ou longitude ausentes ou inválidas:", { latitude, longitude });
-            return new Response(
-                JSON.stringify({ error: 'Latitude e longitude são obrigatórios.' }),
-                { status: 400 }
-            );
-        }
-
-        const userId = await getUserIdFromToken(req); // Função para obter ID do usuário pelo token
-
-        if (!userId) {
+        console.log('Iniciando atualização de localização');
+        
+        const userProfile = await getUserProfile(req);
+        
+        if (!userProfile) {
+            console.log('Usuário não autenticado');
             return new Response(
                 JSON.stringify({ error: 'Usuário não autenticado.' }),
                 { status: 401 }
             );
         }
 
-        // Atualização no banco de dados
+        const { latitude, longitude } = await req.json();
+
+        if (!latitude || !longitude) {
+            console.log('Latitude ou longitude ausente');
+            return new Response(
+                JSON.stringify({ error: 'Latitude e longitude são obrigatórios.' }),
+                { status: 400 }
+            );
+        }
+
+        console.log('Atualizando localização no banco de dados...');
+        
         await prisma.user.update({
-            where: { id: userId },
-            data: {
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude),
-            },
+            where: { id: userProfile.id },
+            data: { latitude, longitude },
         });
 
-        console.log('Localização atualizada com sucesso para o usuário:', userId);
+        console.log('Localização atualizada com sucesso para o usuário:', userProfile.id);
+
         return new Response(
             JSON.stringify({ message: 'Localização atualizada com sucesso.' }),
             { status: 200 }

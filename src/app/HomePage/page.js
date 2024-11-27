@@ -8,9 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 export default function HomePage() {
   return (
     <>
+      <Location />
       <ToastContainer />
       <div className={styles.leftContainer}>
-        <Location />
         <div>
             <h1 className={styles.text}>SISTEMA DE OCORRÊNCIAS E DENÚNCIAS</h1>
         </div>

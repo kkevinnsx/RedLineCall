@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/SOSbutton.module.css";
 import { toast } from "react-toastify";
-import useSendLocation from "../utils/sendLocation";
+import useSendLocation from "../utils/sendLocation"; 
 
 export default function SOSbutton() {
     const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export default function SOSbutton() {
             toast.error(errorMsg);
             return;
         }
-    
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
@@ -38,7 +38,6 @@ export default function SOSbutton() {
             }
         );
     };
-    
 
     const sendInitialLocation = async () => {
         if (!userLocation || !userLocation.latitude || !userLocation.longitude) {
@@ -47,13 +46,22 @@ export default function SOSbutton() {
             toast.error(errorMsg);
             return;
         }
-    
+
         try {
-            await fetch('/api/updateLocation', {
+            const response = await fetch('/api/updateLocation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userLocation),
             });
+
+            if (!response.ok) {
+                const errorMsg = `Erro ao atualizar localização: ${response.status}`;
+                setMessage(errorMsg);
+                toast.error(errorMsg);
+            } else {
+                const data = await response.json();
+                console.log('Localização atualizada com sucesso:', data);
+            }
         } catch (error) {
             console.error('Erro ao enviar localização inicial', error);
             const errorMsg = "Erro ao enviar localização inicial.";
@@ -64,14 +72,15 @@ export default function SOSbutton() {
 
     const UserActiveSOS = async () => {
         setLoading(true);
-        setMessage(""); 
+        setMessage("");
+
         try {
             if (!userLocation || userLocation.latitude === null || userLocation.longitude === null) {
                 const errorMsg = "Localização indisponível. Verifique permissões.";
                 setMessage(errorMsg);
                 toast.error(errorMsg);
                 return;
-            }            
+            }
 
             await sendInitialLocation();
 
@@ -87,6 +96,7 @@ export default function SOSbutton() {
                 const successMsg = data.message || "SOS enviado com sucesso!";
                 setMessage(successMsg);
                 toast.success(successMsg);
+
                 if (successMsg === "SOS enviado com sucesso!") {
                     setStatusChat(true);
                     startSendingLocation();
@@ -111,7 +121,11 @@ export default function SOSbutton() {
             sendInitialLocation();
         }
     }, [userLocation]);
-    
+
+    useEffect(() => {
+        fetchLocation();
+    }, []);
+
     return (
         <div>
             <button
