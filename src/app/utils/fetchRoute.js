@@ -1,42 +1,34 @@
 import { toast } from 'react-toastify';
-import Pusher from '../../modules/auth/services/pusher';
+import Pusher from '../lib/pusher';
+import prisma from '../lib/prisma'; 
+import { getViaturaAndUserCoordinates, getRoute } from '../utils/osrmService';
+import { fetchFromAPI } from './fetchRouteId'; 
 
-/**
-@param { number } vehicleLatitude
-@param { number } vehicleLongitude 
-@param { number } userLatitude
-@param { number } userLongitude
-@returns {Promise<object>}
-*/
-export async function fetchRoute(vehicleLatitude, vehicleLongitude, userLatitude, userLongitude) {
-    const baseUrl = `http://router.project-osrm.org/route/v1/driving/`;
-    const coordinates = `${vehicleLongitude},${vehicleLatitude};${userLongitude},${userLatitude}`;
-    const url = `${baseUrl}${coordinates}?overview=full&geometries=geojson`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar rota. Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.routes && data.routes.length > 0) {
-            const route = data.routes[0];
-
-            // Atualiza a rota no Pusher
-            fetch('/api/updateRoute', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ route }), // Envia a nova rota
-            });
-
-            return route;
-        } else {
-            throw new Error('Nenhuma rota encontrada.');
-        }
-    } catch (error) {
-        console.error('Erro ao buscar a rota', error);
-        toast.error('Erro ao buscar a rota. Por favor, tente novamente.');
-        return null;
+export async function fetchRouteData(userId) {
+    if (!userId) {
+      throw new Error("ID do usuário é obrigatório para buscar dados da rota");
     }
-}
+  
+    try {
+      const userData = await fetchFromAPI(`/api/users/${userId}`);
+      if (!userData || !userData.viatura) {
+        throw new Error("Viatura não encontrada para o usuário.");
+      }
+  
+      const { viatura } = userData;
+      const { id: idViatura } = viatura;
+  
+      const { viaturaCoordinates, userCoordinates } = await getViaturaAndUserCoordinates(idViatura, userId);
+  
+      if (!viaturaCoordinates || !userCoordinates) {
+        throw new Error("Coordenadas ausentes para traçar a rota.");
+      }
+  
+      const route = await getRoute(viaturaCoordinates, userCoordinates);
+      return route;
+    } catch (error) {
+      console.error("Erro ao buscar os dados de rota:", error);
+      toast.error("Erro ao buscar os dados de rota.");
+      return null;
+    }
+  }

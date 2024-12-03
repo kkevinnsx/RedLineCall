@@ -8,14 +8,14 @@
 }
 
 .userElement {
-    background-color: blue;
+    background-color: rgba(26, 110, 219, 0.699);
     width: 30px;
     height: 30px;
     border-radius: 50%;
   }
 
 .viaturaElement{
-    background-color: red;
+    background-color: blue;
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -23,6 +23,23 @@
     background-size: contain;
 }
 
+.viaturaMarker {
+    width: 30px;
+    height: 30px;
+    background-color: blue;
+    border-radius: 50%;
+    border: 2px solid blue;
+  }
+  
+  .userMarker {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  
+  
 @media screen and
 (min-width: 300px) and (max-width: 400px){
     .map{

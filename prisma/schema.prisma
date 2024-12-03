@@ -1,96 +1,98 @@
-generator client {
-  provider = "prisma-client-js"
-}
+  generator client {
+    provider = "prisma-client-js"
+  }
 
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
+  datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+  }
 
-model user {
-  id          Int          @id @default(autoincrement())
-  cpf         String       @unique
-  fullName    String
-  password    String
-  email       String       @unique
-  cep         String
-  number      String
-  idPerfil    String       @db.VarChar(1)
-  birthDay    DateTime
-  statusChat  Boolean
-  statusOcor  Boolean
-  latitude    Float?
-  longitude   Float?
-  chats       chat[]
-  ocorrencias ocorrencia[]
-  viaturas    viatura[]
-}
+  model user {
+    id          Int          @id @default(autoincrement())
+    cpf         String       @unique
+    fullName    String
+    password    String
+    email       String       @unique
+    cep         String
+    number      String
+    idPerfil    String       @db.VarChar(1)
+    birthDay    DateTime
+    statusChat  Boolean
+    statusOcor  Boolean
+    latitude    Float?
+    longitude   Float?
+    alert       Int?
+    chats       chat[]
+    ocorrencias ocorrencia[]
+    viaturas    viatura[]
+  }
 
-model viatura {
-  id            Int          @id @default(autoincrement())
-  numeroViatura Int
-  modeloViatura String
-  placaViatura  String       @unique
-  identificacao String?      @unique
-  status        Boolean
-  cepDP         String
-  numeroDP      String
-  responsavelId Int?
-  statusChat    Boolean
-  latitude      Float?
-  longitude     Float?
-  chats         chat[]
-  ocorrencias   ocorrencia[]
-  responsavel   user?        @relation(fields: [responsavelId], references: [id])
+  model viatura {
+    id            Int          @id @default(autoincrement())
+    numeroViatura Int
+    modeloViatura String
+    placaViatura  String       @unique
+    identificacao String?      @unique
+    status        Boolean
+    cepDP         String
+    numeroDP      String
+    responsavelId Int?
+    statusChat    Boolean
+    latitude      Float?
+    longitude     Float?
+    chats         chat[]
+    ocorrencias   ocorrencia[]
+    responsavel   user?        @relation(fields: [responsavelId], references: [id])
 
-  @@index([responsavelId], map: "viatura_responsavelId_fkey")
-}
+    @@index([responsavelId], map: "viatura_responsavelId_fkey")
+  }
 
-model localizacao {
-  id          Int          @id @default(autoincrement())
-  latitude    Float
-  longitude   Float
-  ocorrencias ocorrencia[]
-}
+  model localizacao {
+    id          Int          @id @default(autoincrement())
+    latitude    Float
+    longitude   Float
+    ocorrencias ocorrencia[]
+  }
 
-model ocorrencia {
-  id            Int         @id @default(autoincrement())
-  data          DateTime
-  motivo        String
-  idLocalizacao Int
-  idUsuario     Int
-  idViatura     Int
-  localizacao   localizacao @relation(fields: [idLocalizacao], references: [id])
-  user          user        @relation(fields: [idUsuario], references: [id])
-  viatura       viatura     @relation(fields: [idViatura], references: [id])
+  model ocorrencia {
+    id            Int         @id @default(autoincrement())
+    data          DateTime
+    motivo        String
+    idLocalizacao Int
+    idUsuario     Int
+    idViatura     Int
+    status        Boolean?
+    localizacao   localizacao @relation(fields: [idLocalizacao], references: [id])
+    user          user        @relation(fields: [idUsuario], references: [id])
+    viatura       viatura     @relation(fields: [idViatura], references: [id])
 
-  @@index([idLocalizacao], map: "ocorrencia_idLocalizacao_fkey")
-  @@index([idUsuario], map: "ocorrencia_idUsuario_fkey")
-  @@index([idViatura], map: "ocorrencia_idViatura_fkey")
-}
+    @@index([idLocalizacao], map: "ocorrencia_idLocalizacao_fkey")
+    @@index([idUsuario], map: "ocorrencia_idUsuario_fkey")
+    @@index([idViatura], map: "ocorrencia_idViatura_fkey")
+  }
 
-model chat {
-  id             Int        @id @default(autoincrement())
-  conteudo       String
-  data           DateTime
-  idUsuario      Int
-  idViatura      Int
-  statusLiberado Boolean
-  user           user       @relation(fields: [idUsuario], references: [id])
-  viatura        viatura    @relation(fields: [idViatura], references: [id])
-  mensagens      mensagem[]
+  model chat {
+    id             Int        @id @default(autoincrement())
+    conteudo       String
+    data           DateTime
+    idUsuario      Int
+    idViatura      Int
+    statusLiberado Boolean
+    user           user       @relation(fields: [idUsuario], references: [id])
+    viatura        viatura    @relation(fields: [idViatura], references: [id])
+    mensagens      mensagem[]
 
-  @@index([idUsuario], map: "chat_idUsuario_fkey")
-  @@index([idViatura], map: "chat_idViatura_fkey")
-}
+    @@index([idUsuario], map: "chat_idUsuario_fkey")
+    @@index([idViatura], map: "chat_idViatura_fkey")
+  }
 
-model mensagem {
-  id      Int    @id @default(autoincrement())
-  texto   String
-  audio   String
-  ligacao String
-  idChat  Int
-  chat    chat   @relation(fields: [idChat], references: [id])
+  model mensagem {
+    id      Int    @id @default(autoincrement())
+    texto   String
+    audio   String
+    ligacao String
+    idChat  Int
+    chat    chat   @relation(fields: [idChat], references: [id])
 
-  @@index([idChat], map: "mensagem_idChat_fkey")
-}
+    @@index([idChat], map: "mensagem_idChat_fkey")
+  }

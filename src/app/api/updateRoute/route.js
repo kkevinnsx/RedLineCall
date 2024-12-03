@@ -1,20 +1,46 @@
 import { NextResponse } from 'next/server';
 import { pusher } from '../../lib/pusher';
+import { getRoute } from '../../utils/osrmService';
+
+const MAX_PAYLOAD_SIZE = 10240;
+
+function splitRoute(route) {
+  const parts = [];
+  let currentPart = { type: 'Feature', geometry: { type: 'LineString', coordinates: [] }, properties: {} };
+
+  route.geometry.coordinates.forEach(coord => {
+    if (currentPart.geometry.coordinates.length >= 1000) {
+      parts.push(currentPart);
+      currentPart = { type: 'Feature', geometry: { type: 'LineString', coordinates: [] }, properties: {} };
+    }
+    currentPart.geometry.coordinates.push(coord);
+  });
+
+  if (currentPart.geometry.coordinates.length > 0) {
+    parts.push(currentPart);
+  }
+
+  return parts;
+}
 
 export async function POST(request) {
   try {
-    const { route } = await request.json();
-    console.log('Tentando atualizar a rota:', route);
+    const { viatura, usuario } = await request.json();
 
-    if (!route) {
-      throw new Error('A rota não foi fornecida.');
+    if (!viatura || !usuario) {
+      throw new Error("Dados insuficientes para traçar a rota.");
     }
 
-    await pusher.trigger('vehicle-location', 'update-route', { newRoute: route });
-    console.log('Rota atualizada com sucesso!');
-    return NextResponse.json({ message: 'Rota atualizada com sucesso!' });
+    const route = await getRoute(viatura, usuario);
+    const routeParts = splitRoute(route);
+
+    for (const part of routeParts) {
+      await pusher.trigger("vehicle-location", "update-route", { newRoute: part });
+    }
+
+    return NextResponse.json({ message: "Rota traçada com sucesso!" });
   } catch (error) {
-    console.error('Erro ao atualizar a rota:', error);
-    return NextResponse.json({ error: 'Erro ao atualizar a rota', details: error.message }, { status: 500 });
+    console.error("Erro ao atualizar a rota:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

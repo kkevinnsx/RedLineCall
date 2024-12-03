@@ -89,6 +89,7 @@ export async function POST(request) {
                 idLocalizacao: novaLocalizacao.id,
                 idUsuario: userProfile.id,
                 idViatura: viaturaMaisProxima.id,
+                status: true,
             },
         });
 
