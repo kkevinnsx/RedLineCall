@@ -11,6 +11,7 @@
     height: 100%;
     width: 60%;
     position: absolute;
+    overflow: hidden;
     right: 0;
     top: 0;
 }
@@ -74,6 +75,51 @@
     background-color: #16425B;
     box-shadow: inset 0 0 1.2rem #032333;
 }
+
+.loadingCircle {
+    position: absolute;
+    left: 43%;
+    top: 40%;
+    width: 25rem;
+    height: 25rem;
+    border: 3rem solid rgba(255, 255, 255, 0.1);
+    border-top-color: #09d;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }    
+  }
+  
+  .alertLoading {
+    top: 60%;
+    left: 75%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 75rem;
+    height: 50rem;
+  }
+
+  .alertTitle {
+    top: 10%;
+    left: 50%;
+    font-size: 2.5rem;
+    font-weight: bold;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+
+  .alertSubtitle {
+    top: 18%;
+    left: 50%;
+    font-size: 1.75rem;
+    font-weight: bold;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
 
 @media screen and
 (min-width: 300px) and (max-width: 400px){
