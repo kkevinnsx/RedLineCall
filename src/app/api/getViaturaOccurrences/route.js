@@ -3,7 +3,6 @@ import { getUserProfile } from "../../../modules/auth/services/userService";
 
 export async function GET(req) {
     try {
-        // Obtém o perfil do usuário a partir do request
         const user = await getUserProfile(req);
 
         if (!user) {
@@ -13,7 +12,6 @@ export async function GET(req) {
             );
         }
 
-        // Busca a viatura associada ao usuário
         const viatura = await prisma.viatura.findFirst({
             where: {
                 responsavelId: user.id,
@@ -27,11 +25,10 @@ export async function GET(req) {
             );
         }
 
-        // Verifica se há ocorrência ativa associada à viatura
         const ocorrencia = await prisma.ocorrencia.findFirst({
             where: {
                 idViatura: viatura.id,
-                status: true, // Ocorrências ativas
+                status: true, 
             },
         });
 
@@ -42,7 +39,6 @@ export async function GET(req) {
             );
         }
 
-        // Verifica ou cria um chat associado à ocorrência
         let chat = await prisma.chat.findFirst({
             where: {
                 idViatura: ocorrencia.idViatura,
@@ -55,17 +51,20 @@ export async function GET(req) {
                 data: {
                     idUsuario: user.id,
                     idViatura: ocorrencia.idViatura,
-                    statusLiberado: true,   
+                    statusLiberado: true,
                     conteudo: "Chat inicializado",
                     data: new Date(),
                 },
             });
         }
 
+        const userName = user.fullName;
+
         return new Response(
             JSON.stringify({
                 message: "Ocorrência ativa encontrada",
                 idChat: chat.id,
+                userName: userName, 
             }),
             { status: 200 }
         );

@@ -1,4 +1,4 @@
-import prisma from "../../lib/prisma"; // Ajuste o caminho
+import prisma from "../../lib/prisma";
 import { getUserProfile } from "../../../modules/auth/services/userService";
 
 export async function GET(req) {
@@ -18,7 +18,7 @@ export async function GET(req) {
             where: { idChat: Number(idChat) },
             orderBy: { createdAt: "asc" },
             include: {
-                user: { // Inclui os dados do usuário associado à mensagem
+                user: {
                     select: {
                         id: true,
                         fullName: true,

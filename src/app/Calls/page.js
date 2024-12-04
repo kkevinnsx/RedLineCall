@@ -61,8 +61,8 @@ export default function Calls() {
                     const response = await fetch(`/api/getMessages?idChat=${idChat}`);
                     if (response.ok) {
                         const data = await response.json();
-                        setMessages(data); // Carrega as mensagens existentes
-                        localStorage.setItem("messages", JSON.stringify(data)); // Armazena no localStorage
+                        setMessages(data); 
+                        localStorage.setItem("messages", JSON.stringify(data)); 
                     } else {
                         console.error("Erro ao buscar mensagens:", response.statusText);
                     }
@@ -79,12 +79,10 @@ export default function Calls() {
             const channel = pusher.subscribe(`chat-${idChat}`);
             channel.bind("nova-mensagem", (data) => {
                 setMessages((prev) => {
-                    // Filtra para evitar duplicação
                     const updatedMessages = prev.some((msg) => msg.id === data.id)
                         ? prev
                         : [...prev, data];
     
-                    // Atualiza o localStorage
                     localStorage.setItem("messages", JSON.stringify(updatedMessages));
     
                     return updatedMessages;
@@ -121,18 +119,16 @@ export default function Calls() {
                 }
     
                 setMessages((prev) => {
-                    // Verifica e adiciona a mensagem sem duplicação
                     const updatedMessages = prev.some((msg) => msg.id === data.novaMensagem.id)
                         ? prev
                         : [...prev, data.novaMensagem];
     
-                    // Atualiza o localStorage
                     localStorage.setItem("messages", JSON.stringify(updatedMessages));
     
                     return updatedMessages;
                 });
     
-                setInput(""); // Limpa o campo de entrada
+                setInput(""); 
             } catch (error) {
                 console.error("Erro ao enviar mensagem:", error.message);
             }

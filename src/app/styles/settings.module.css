@@ -22,15 +22,6 @@
     font-size: 3rem;
 }
 
-.settingBox {
-    position: absolute;
-    top: 47%;
-    left: 42%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-}
-
 .historyBox {
     padding: .5rem;
     display: flex;
@@ -85,7 +76,6 @@
     height: 100%;
     width: 40%;
     position: fixed;
-    overflow: hidden;
     left: 0;
     top: 0;
     box-shadow: 0 0 .2rem #0f0f0f6c;
@@ -224,6 +214,15 @@
 .tdBox {
     font-size: 1em;
     color: #333333;
+}
+
+.settingBox {
+    position: absolute;
+    top: 47%;
+    left: 42%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction:column;
 }
 
 .setInfoBox {
@@ -481,13 +480,12 @@
     }
 
     .settingBox {
-        width: 80%;
         position: absolute;
-        top: 45%;
-        left: 50%;
+        top: 47%;
+        left: 42%;
         transform: translate(-50%, -50%);
         display: flex;
-        flex-direction: column;
+        flex-direction:column;
     }
 
     .boxIcons {
@@ -547,10 +545,9 @@
     }
 
     .settingBox {
-        width: 80%;
         position: absolute;
-        top: 45%;
-        left: 50%;
+        top: 47%;
+        left: 42%;
         transform: translate(-50%, -50%);
         display: flex;
         flex-direction: column;

@@ -1,81 +1,153 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import styles from "../styles/Calls.module.css";
 import NavBar from "../components/navPolice";
 import { BiError } from "react-icons/bi";
+import Location from "../components/locationComponent";
 import { IoIosArrowForward } from "react-icons/io";
 import { GiPoliceCar } from "react-icons/gi";
-import Location from "../components/locationComponent";
+import Pusher from "pusher-js";
+import { useState, useEffect } from "react";
 
 export default function PoliceChat() {
     const [currentStep, setCurrentStep] = useState("Inicial");
     const [numeroViatura, setNumeroViatura] = useState(null);
-    const [idViatura, setIdViatura] = useState(null); // ID da viatura logada
-    const [idChat, setIdChat] = useState(null);
+    const [userName, setUserName] = useState(""); 
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
+    const [idChat, setIdChat] = useState(null);
 
-    // Função para buscar ocorrência e chat da viatura
+    useEffect(() => {
+        const savedMessages = localStorage.getItem("messages");
+        if (savedMessages) {
+            setMessages(JSON.parse(savedMessages));
+        }
+    }, []);
+
     useEffect(() => {
         async function fetchOccurrences() {
             try {
-                const response = await fetch("/api/getViaturaOccurrences");
-                const data = await response.json();
-
+                const response = await fetch("/api/getViaturaOccurrences", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+    
                 if (response.ok) {
-                    setCurrentStep("chatLiberado");
-                    setNumeroViatura(data.numeroViatura);
-                    setIdChat(data.idChat);
-                    setIdViatura(data.idViatura); // Define o ID da viatura logada
+                    const data = await response.json();
+    
+                    if (data.idChat) {
+                        setCurrentStep("chatLiberado");
+                        setNumeroViatura(data.numeroViatura || null);
+                        setIdChat(data.idChat);
+                        
+                        if (data.idChat) {
+                            const userResponse = await fetch(`/api/getUserName?idChat=${data.idChat}`);
+                            if (userResponse.ok) {
+                                const userData = await userResponse.json();
+                                console.log("Nome do usuário:", userData.fullName); 
+                                setUserName(userData.fullName || "Usuário desconhecido");
+                            } else {
+                                console.error("Erro ao buscar nome do usuário");
+                                setUserName("Usuário desconhecido");
+                            }
+                        }
+                    } else {
+                        setCurrentStep("Inicial");
+                    }
                 } else {
-                    setCurrentStep("Inicial");
+                    console.error("Falha ao buscar ocorrências:", response.statusText);
                 }
             } catch (error) {
-                console.error("Erro ao buscar ocorrência:", error);
+                console.error("Erro ao buscar ocorrência ativa:", error);
             }
         }
-
+    
         fetchOccurrences();
     }, []);
+    
 
-    // Função para buscar mensagens
     useEffect(() => {
         if (idChat) {
-            async function fetchMessages() {
+            const fetchMessages = async () => {
                 try {
                     const response = await fetch(`/api/getMessages?idChat=${idChat}`);
-                    const data = await response.json();
-                    if (response.ok) setMessages(data);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setMessages(data);
+                        localStorage.setItem("messages", JSON.stringify(data));
+                    } else {
+                        console.error("Erro ao buscar mensagens:", response.statusText);
+                    }
                 } catch (error) {
                     console.error("Erro ao buscar mensagens:", error);
                 }
-            }
-
+            };
             fetchMessages();
+
+            const pusher = new Pusher("aa4c044f44f54ec4ab00", {
+                cluster: "sa1",
+            });
+
+            const channel = pusher.subscribe(`chat-${idChat}`);
+            channel.bind("nova-mensagem", (data) => {
+                setMessages((prev) => {
+                    const updatedMessages = prev.some((msg) => msg.id === data.id)
+                        ? prev
+                        : [...prev, data];
+
+                    localStorage.setItem("messages", JSON.stringify(updatedMessages));
+
+                    return updatedMessages;
+                });
+            });
+
+            return () => {
+                pusher.unsubscribe(`chat-${idChat}`);
+            };
         }
     }, [idChat]);
 
-    // Função para enviar mensagem
-    async function sendMessage() {
-        if (!input.trim()) return;
-
-        try {
-            const response = await fetch("/api/sendMessage", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ texto: input, idChat }),
-            });
-
-            if (response.ok) {
-                const { novaMensagem } = await response.json();
-                setMessages((prevMessages) => [...prevMessages, novaMensagem]);
-                setInput("");
-            }
-        } catch (error) {
-            console.error("Erro ao enviar mensagem:", error);
+    const sendMessage = async () => {
+        if (!idChat) {
+            console.error("idChat não definido. Verifique a lógica anterior.");
+            return;
         }
-    }
+
+        if (input.trim()) {
+            try {
+                const response = await fetch("/api/sendMessage", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ idChat, texto: input }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error("Erro ao enviar mensagem:", data.message);
+                    return;
+                }
+
+                setMessages((prev) => {
+                    const updatedMessages = prev.some((msg) => msg.id === data.novaMensagem.id)
+                        ? prev
+                        : [...prev, data.novaMensagem];
+
+                    localStorage.setItem("messages", JSON.stringify(updatedMessages));
+
+                    return updatedMessages;
+                });
+
+                setInput("");
+            } catch (error) {
+                console.error("Erro ao enviar mensagem:", error.message);
+            }
+        }
+    };
 
     return (
         <div>
@@ -89,7 +161,9 @@ export default function PoliceChat() {
                             <div className={styles.boxCircle}>
                                 <GiPoliceCar className={styles.boxIcons} />
                                 <p className={styles.boxText}>
-                                    {numeroViatura ? `Viatura ${numeroViatura}` : "Viatura não pareada"}
+                                    {userName && userName !== "Usuário desconhecido"
+                                        ? `Usuário: ${userName}` 
+                                        : "Usuário não pareado"}
                                 </p>
                                 <IoIosArrowForward className={styles.boxArrow} />
                             </div>
@@ -114,23 +188,26 @@ export default function PoliceChat() {
                 {currentStep === "chatLiberado" && (
                     <>
                         <div className={styles.chatBox}>
-                        {messages.map((msg, index) => (
-                            <div
-                                key={index}
-                                className={
-                                    (msg.user?.id === idChat ? styles.sentMessage : styles.receivedMessage) ||
-                                    (msg.viatura?.id === numeroViatura ? styles.receivedMessage : styles.sentMessage)
-                                }
-                            >
-                                <div className={styles.messageAuthor}>
-                                    {msg.user?.fullName || msg.viatura?.numeroViatura || "Autor desconhecido"}
-                                </div>
-                                <div className={styles.messageContent}>{msg.texto}</div>
-                            </div>
-                        ))}
+                            {messages.map((msg, index) => {
+                                const isUserMessage = String(msg.idViatura) !== String(numeroViatura);
 
+                                return (
+                                    <div
+                                        key={index}
+                                        className={
+                                            isUserMessage
+                                                ? styles.sentMessage
+                                                : styles.receivedMessage
+                                        }
+                                    >
+                                        <div className={styles.messageAuthor}>
+                                            {msg.viatura?.modeloViatura || msg.user?.fullName || "Desconhecido"}
+                                        </div>
+                                        <div className={styles.messageContent}>{msg.texto}</div>
+                                    </div>
+                                );
+                            })}
                         </div>
-
                         <div className={styles.inputContainer}>
                             <input
                                 value={input}

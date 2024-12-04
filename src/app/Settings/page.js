@@ -280,14 +280,14 @@ return (
     <>
     <div className={styles.leftContainer}>
         <div className={styles.headerContainer}>
-            <h1 className={styles.headerText}>
-                {error ? error : `Bem vindo, ${userFullName}`}
-            </h1>
-            <BiUserCircle className={styles.headerIcon} /> 
+              <h1 className={styles.headerText}>
+                  {error ? error : `Bem vindo, ${userFullName}`}
+              </h1>
+              <BiUserCircle className={styles.headerIcon} /> 
         </div>
+        
 
         <div className={styles.settingBox}>
-
             <div className={styles.historyBox}>
                 <button
                     type='button'
@@ -672,6 +672,7 @@ return (
                         e o funcionamento das viaturas, e pode não estar disponível em determinadas situações.
                         </p>
 
+                        <p className={styles.boxOptionTitle}>9. Suspensão ou Cancelamento de Acesso</p>
                         <p className={styles.userTermsText}>
                         O site Red Line Call reserva-se o direito de suspender ou cancelar o acesso do usuário à plataforma caso identifique comportamentos 
                         indevidos, violação dos Termos de Uso, ou atividades que comprometam a segurança da plataforma ou a integridade dos dados.

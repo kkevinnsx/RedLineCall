@@ -418,33 +418,82 @@ export default function PoliceSettings (){
                 <>
                     <p className={styles.boxOption}> Termos de Uso - Red Line Call</p>
                     <div className={styles.userTermsGrid}>
-                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>1. Definições e Descrição do Serviço</p>
-                                O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e
-                            viaturas policiais, oferecendo serviços como visualização da localização das
-                            viaturas, envio de solicitações de ajuda, notificação de ocorrências em tempo real,
-                            etc. Nosso objetivo é promover  a segurança pública e a eficiência 
-                            no atendimento emergencial, por meio da interação direta com a polícia.
-                        </p>
-                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>
-                                Ao acessar, navegar ou usar qualquer 
-                            funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
-                            vinculado a estes termos de uso. Caso não concorde com algum item, você não 
-                            deverá utilizar o site.
-                        </p>
-                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>3. Lorem Ipsum </p>
-                            Lorem ipsum dolor sit amet. Non dolore molestiae est sequi esse ut voluptatibus dignissimos.
-                            Ea rerum rerum ea neque possimus id molestiae molestiae eum sunt voluptas.
-                            Ut aperiam fugit est repudiandae dolorem cum minus consequatur rem soluta facere vel voluptatibus
-                            quaerat aut quaerat neque ut delectus inventore. Et sunt cupiditate cum quasi nemo
-                             hic quod aspernatur et illum accusamus cum magni repellendus.
-                        </p>
-                        <p className={styles.userTermsText}><p className={styles.boxOptionTitle}>4. Lorem Ipsum </p>
-                            Lorem ipsum dolor sit amet. Non dolore molestiae est sequi esse ut voluptatibus dignissimos.
-                            Ea rerum rerum ea neque possimus id molestiae molestiae eum sunt voluptas.
-                            Ut aperiam fugit est repudiandae dolorem cum minus consequatur rem soluta facere vel voluptatibus
-                            quaerat aut quaerat neque ut delectus inventore. Et sunt cupiditate cum quasi nemo
-                             hic quod aspernatur et illum accusamus cum magni repellendus.
-                        </p>
+                        <div className={styles.userTermsLayout}>
+                            <p className={styles.boxOptionTitle}>1. Definições e Descrição do Serviço</p>
+                            <p className={styles.userTermsText}>
+                                    O Red Line Call é uma plataforma digital que permite a interação entre cidadãos e
+                                viaturas policiais, oferecendo serviços como visualização da localização das
+                                viaturas, envio de solicitações de ajuda, notificação de ocorrências em tempo real,
+                                etc. Nosso objetivo é promover  a segurança pública e a eficiência 
+                                no atendimento emergencial, por meio da interação direta com a polícia.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>2. Aceitação dos termos</p>
+                            <p className={styles.userTermsText}>
+                                    Ao acessar, navegar ou usar qualquer 
+                                funcionalidade do site, você reconhece que leu, entendeu e concorda em estar
+                                vinculado a estes termos de uso. Caso não concorde com algum item, você não 
+                                deverá utilizar o site.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>3. Responsabilidades do Usuário</p>
+                            <p className={styles.userTermsText}>
+                                    O Usuário compromete-se a:
+                                <br />● Utilizar o site de maneira responsável e conforme a legislação vigente.
+                                <br />● Fornecer informações verdadeiras e precisas durante o processo de interação com as viaturas policiais.
+                                <br />● Não utilizar o serviço para fins ilegais, prejudiciais, ou qualquer outro uso que possa afetar negativamente 
+                                a segurança e a integridade da plataforma ou de outros usuários.
+                                <br />● Não enviar mensagens ou solicitações falsas ou fraudulentas.
+                                <br />● Manter a confidencialidade de informações pessoais, quando solicitado.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>4. Responsabilidades da Viatura Policial</p>
+                            <p className={styles.userTermsText}>
+                                    As viaturas policiais comprometem-se a:
+                                <br />● Responder de forma adequada e no tempo hábil às interações enviadas pelos cidadãos, dentro da capacidade operacional.
+                                <br />● Manter o sigilo de informações pessoais dos cidadãos e não divulgar dados obtidos durante a interação, salvo quando exigido por lei.
+                                <br />● Seguir as normas de conduta e o protocolo de segurança pública ao utilizar a plataforma.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>5. Propriedade Intelectual</p>
+                            <p className={styles.userTermsText}>
+                                    Todo o conteúdo do site, incluindo textos, imagens, logotipos, gráficos, marcas, códigos fonte e outros materiais relacionados, 
+                                são de propriedade exclusiva do site Red Line Call ou de seus licenciadores. O uso de qualquer conteúdo do site sem autorização 
+                                prévia é estritamente proibido.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>6. Privacidade e Proteção de Dados Pessoais</p>
+                            <p className={styles.userTermsText}>
+                                O site Red Line Call respeita a privacidade dos usuários e está comprometido em proteger os dados pessoais de acordo com as leis de proteção 
+                            de dados aplicáveis (como a Lei Geral de Proteção de Dados Pessoais - LGPD no Brasil). Para mais informações, consulte nossa Política de Privacidade.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>7. Proibição de Uso Indevido</p>
+                            <p className={styles.userTermsText}>
+                                <br />● Usar o serviço para transmitir conteúdos difamatórios, ameaçadores, discriminatórios, ou ilegais.
+                            Interferir ou interromper o funcionamento do site ou da plataforma.
+                            <br />● Usar o site para atividades que possam prejudicar o bom funcionamento do serviço ou comprometer a segurança pública.
+                            </p> 
+
+                            <p className={styles.boxOptionTitle}>8. Limitação de Responsabilidade</p>
+                            <p className={styles.userTermsText}>
+                                O site Red Line Call não será responsável por quaisquer danos, perdas ou prejuízos resultantes da utilização do site, 
+                            exceto nos casos de dolo ou negligência grave. O serviço depende de fatores técnicos, como a conectividade à internet 
+                            e o funcionamento das viaturas, e pode não estar disponível em determinadas situações.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>9. Suspensão ou Cancelamento de Acesso</p>
+                            <p className={styles.userTermsText}>
+                            O site Red Line Call reserva-se o direito de suspender ou cancelar o acesso do usuário à plataforma caso identifique comportamentos 
+                            indevidos, violação dos Termos de Uso, ou atividades que comprometam a segurança da plataforma ou a integridade dos dados.
+                            </p>
+
+                            <p className={styles.boxOptionTitle}>10. Modificações no Serviço</p>
+                            <p className={styles.userTermsText}>
+                            O site Red Line Call poderá modificar ou descontinuar seus serviços a qualquer momento, a seu exclusivo critério. 
+                            Nenhuma modificação do serviço resultará em qualquer obrigação para o Red Line Call, exceto quando previsto em contrato específico.
+                            </p>
+                        </div>
                     </div>
                 </>
             )}

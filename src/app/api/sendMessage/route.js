@@ -1,6 +1,6 @@
-import prisma from "../../lib/prisma"; // Ajuste o caminho
-import { getUserProfile } from "../../../modules/auth/services/userService"; // Ajuste o caminho
-import { triggerEvent } from "../../lib/pusher"; // Ajuste o caminho
+import prisma from "../../lib/prisma"; 
+import { getUserProfile } from "../../../modules/auth/services/userService"; 
+import { triggerEvent } from "../../lib/pusher"; 
 
 export async function POST(req) {
     try {
@@ -16,7 +16,6 @@ export async function POST(req) {
             );
         }
 
-        // Obtém o perfil do usuário autenticado
         const user = await getUserProfile(req);
         if (!user) {
             return new Response(
@@ -25,23 +24,32 @@ export async function POST(req) {
             );
         }
 
-        // Insere a mensagem no banco de dados
+        let idViatura = null;
+        if (user.idPerfil === 'B') {
+            const viatura = await prisma.viatura.findFirst({
+                where: { responsavelId: user.id },
+            });
+            if (viatura) {
+                idViatura = viatura.id;
+            }
+        }
+
         const novaMensagem = await prisma.mensagem.create({
             data: {
                 texto,
-                audio: "", // Valor padrão
-                ligacao: "", // Valor padrão
+                audio: "", 
+                ligacao: "", 
                 idChat,
-                idUsuario: user.id, // Inclui o ID do usuário na mensagem
+                idUsuario: user.id, 
+                idViatura, 
             },
             include: {
-                user: true, // Inclui os dados do usuário (nome, etc.)
+                user: true,
             },
         });
 
         console.log("Mensagem criada com sucesso:", novaMensagem);
 
-        // Dispara evento para o frontend
         triggerEvent(`chat-${idChat}`, "nova-mensagem", novaMensagem);
 
         return new Response(JSON.stringify({
