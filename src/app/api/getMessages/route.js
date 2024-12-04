@@ -17,6 +17,14 @@ export async function GET(req) {
         const mensagens = await prisma.mensagem.findMany({
             where: { idChat: Number(idChat) },
             orderBy: { createdAt: "asc" },
+            include: {
+                user: { // Inclui os dados do usuário associado à mensagem
+                    select: {
+                        id: true,
+                        fullName: true,
+                    },
+                },
+            },
         });
 
         return new Response(JSON.stringify(mensagens), { status: 200 });
@@ -28,4 +36,3 @@ export async function GET(req) {
         );
     }
 }
-

@@ -165,43 +165,60 @@
 .chatBox {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    gap: 10px;
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.messageAuthor {
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.messageContent {
+    font-size: 14px;
     padding: 10px;
-    height: 400px;
+    border-radius: 10px;
+    max-width: 60%;
 }
 
 .sentMessage {
     align-self: flex-end;
-    background-color: #dcf8c6;
-    padding: 8px 15px;
-    border-radius: 10px;
-    margin: 5px 0;
-    max-width: 70%;
+    background-color: #d1f4ff;
 }
 
 .receivedMessage {
     align-self: flex-start;
-    background-color: #f1f0f0;
-    padding: 8px 15px;
-    border-radius: 10px;
-    margin: 5px 0;
-    max-width: 70%;
+    background-color: #f1f1f1;
+}
+
+.inputContainer {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
 }
 
 .messageInput {
-    width: 80%;
+    flex-grow: 1;
     padding: 10px;
-    border-radius: 20px;
     border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .sendButton {
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     cursor: pointer;
+}
+
+.sendButton:hover {
+    background-color: #0056b3;
 }
 
 

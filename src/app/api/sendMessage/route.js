@@ -16,6 +16,7 @@ export async function POST(req) {
             );
         }
 
+        // Obtém o perfil do usuário autenticado
         const user = await getUserProfile(req);
         if (!user) {
             return new Response(
@@ -28,19 +29,25 @@ export async function POST(req) {
         const novaMensagem = await prisma.mensagem.create({
             data: {
                 texto,
-                audio: "", // Adiciona um valor padrão para evitar erro
-                ligacao: "",
+                audio: "", // Valor padrão
+                ligacao: "", // Valor padrão
                 idChat,
+                idUsuario: user.id, // Inclui o ID do usuário na mensagem
+            },
+            include: {
+                user: true, // Inclui os dados do usuário (nome, etc.)
             },
         });
 
         console.log("Mensagem criada com sucesso:", novaMensagem);
 
+        // Dispara evento para o frontend
         triggerEvent(`chat-${idChat}`, "nova-mensagem", novaMensagem);
 
-        return new Response(JSON.stringify({ message: "Mensagem enviada com sucesso", novaMensagem }), {
-            status: 200,
-        });
+        return new Response(JSON.stringify({
+            message: "Mensagem enviada com sucesso",
+            novaMensagem,
+        }), { status: 200 });
     } catch (error) {
         console.error("Erro ao enviar mensagem:", error);
         return new Response(

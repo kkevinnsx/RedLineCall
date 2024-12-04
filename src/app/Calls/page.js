@@ -16,7 +16,6 @@ export default function Calls() {
     const [input, setInput] = useState("");
     const [idChat, setIdChat] = useState(null);
 
-    // Carregar as mensagens do localStorage ao montar o componente
     useEffect(() => {
         const savedMessages = localStorage.getItem("messages");
         if (savedMessages) {
@@ -24,7 +23,6 @@ export default function Calls() {
         }
     }, []);
 
-    // Buscar ocorrências e mensagens existentes
     useEffect(() => {
         async function fetchOccurrences() {
             try {
@@ -37,14 +35,12 @@ export default function Calls() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Dados recebidos:", data);
 
                     if (data.idChat) {
                         setCurrentStep("chatLiberado");
                         setNumeroViatura(data.numeroViatura || null);
-                        setIdChat(data.idChat); // Atualiza o estado com o valor correto
+                        setIdChat(data.idChat);
                     } else {
-                        console.error("idChat ausente na resposta da API");
                         setCurrentStep("Inicial");
                     }
                 } else {
@@ -58,7 +54,6 @@ export default function Calls() {
         fetchOccurrences();
     }, []);
 
-    // Buscar mensagens do chat ao definir idChat
     useEffect(() => {
         if (idChat) {
             const fetchMessages = async () => {
@@ -76,20 +71,26 @@ export default function Calls() {
                 }
             };
             fetchMessages();
-
+    
             const pusher = new Pusher('aa4c044f44f54ec4ab00', {
                 cluster: 'sa1',
             });
-
+    
             const channel = pusher.subscribe(`chat-${idChat}`);
             channel.bind("nova-mensagem", (data) => {
                 setMessages((prev) => {
-                    const updatedMessages = [...prev, data];
-                    localStorage.setItem("messages", JSON.stringify(updatedMessages)); // Atualiza o localStorage
+                    // Filtra para evitar duplicação
+                    const updatedMessages = prev.some((msg) => msg.id === data.id)
+                        ? prev
+                        : [...prev, data];
+    
+                    // Atualiza o localStorage
+                    localStorage.setItem("messages", JSON.stringify(updatedMessages));
+    
                     return updatedMessages;
                 });
             });
-
+    
             return () => {
                 pusher.unsubscribe(`chat-${idChat}`);
             };
@@ -101,7 +102,7 @@ export default function Calls() {
             console.error("idChat não definido. Verifique a lógica anterior.");
             return;
         }
-
+    
         if (input.trim()) {
             try {
                 const response = await fetch("/api/sendMessage", {
@@ -111,20 +112,26 @@ export default function Calls() {
                     },
                     body: JSON.stringify({ idChat, texto: input }),
                 });
-
+    
                 const data = await response.json();
-
+    
                 if (!response.ok) {
                     console.error("Erro ao enviar mensagem:", data.message);
                     return;
                 }
-
+    
                 setMessages((prev) => {
-                    const updatedMessages = [...prev, data];
-                    localStorage.setItem("messages", JSON.stringify(updatedMessages)); // Atualiza no localStorage
+                    // Verifica e adiciona a mensagem sem duplicação
+                    const updatedMessages = prev.some((msg) => msg.id === data.novaMensagem.id)
+                        ? prev
+                        : [...prev, data.novaMensagem];
+    
+                    // Atualiza o localStorage
+                    localStorage.setItem("messages", JSON.stringify(updatedMessages));
+    
                     return updatedMessages;
                 });
-
+    
                 setInput(""); // Limpa o campo de entrada
             } catch (error) {
                 console.error("Erro ao enviar mensagem:", error.message);
@@ -144,9 +151,7 @@ export default function Calls() {
                             <div className={styles.boxCircle}>
                                 <GiPoliceCar className={styles.boxIcons} />
                                 <p className={styles.boxText}>
-                                    {numeroViatura
-                                        ? `Viatura ${numeroViatura}`
-                                        : "Viatura não pareada"}
+                                    {numeroViatura ? `Viatura ${numeroViatura}` : "Viatura não pareada"}
                                 </p>
                                 <IoIosArrowForward className={styles.boxArrow} />
                             </div>
@@ -170,17 +175,32 @@ export default function Calls() {
 
                 {currentStep === "chatLiberado" && (
                     <>
-                        <div>
-                            {messages.map((msg, index) => (
-                                <div key={index}>{msg.texto}</div>
-                            ))}
+                        <div className={styles.chatBox}>
+                        {messages.map((msg, index) => (
+                            <div
+                                key={index}
+                                className={
+                                    msg.user?.id === idChat
+                                        ? styles.sentMessage
+                                        : styles.receivedMessage
+                                }
+                            >
+                                <div className={styles.messageAuthor}>{msg.user?.fullName || "Usuário desconhecido"}</div>
+                                <div className={styles.messageContent}>{msg.texto}</div>
+                            </div>
+                        ))}
                         </div>
-                        <input
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Escreva sua mensagem"
-                        />
-                        <button onClick={sendMessage}>Enviar</button>
+                        <div className={styles.inputContainer}>
+                            <input
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="Escreva sua mensagem"
+                                className={styles.messageInput}
+                            />
+                            <button onClick={sendMessage} className={styles.sendButton}>
+                                Enviar
+                            </button>
+                        </div>
                     </>
                 )}
             </div>
