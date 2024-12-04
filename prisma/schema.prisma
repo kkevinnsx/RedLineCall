@@ -73,7 +73,7 @@
 
   model chat {
     id             Int        @id @default(autoincrement())
-    conteudo       String
+    conteudo       String?
     data           DateTime
     idUsuario      Int
     idViatura      Int
@@ -89,9 +89,10 @@
   model mensagem {
     id      Int    @id @default(autoincrement())
     texto   String
-    audio   String
-    ligacao String
+    audio   String?
+    ligacao String?
     idChat  Int
+    createdAt DateTime? @default(now())
     chat    chat   @relation(fields: [idChat], references: [id])
 
     @@index([idChat], map: "mensagem_idChat_fkey")

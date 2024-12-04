@@ -19,8 +19,8 @@ const publicRoutes = [
 
 const restrictedRoutes = {
     'A': ['/admControl', '/admCrud', '/api/getUsersCrud', '/api/getCopsCrud'],
-    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/api/cancelOcorrence', '/api/getCop', '/api/coordinates', '/api/ocorrencias', '/api/users'],
-    'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS', '/api/updateLocation', '/api/getUsersLocation', '/api/getVehicles', '/api/sosButton', '/api/updateUserStatus', '/api/getUser', '/api/cancelOcorrence', '/api/ocorrencias']
+    'B': ['/policeHomePage', '/policeCalls', '/policeSettings', '/api/startVigilance', '/api/getUsersLocation', '/api/cancelOcorrence', '/api/getCop', '/api/coordinates', '/api/ocorrencias', '/api/users', '/api/sendMessage', '/api/getChatMessages'],
+    'C': ['/HomePage', '/Calls', '/Settings', '/api/userActiveSOS', '/api/updateLocation', '/api/getUsersLocation', '/api/getVehicles', '/api/sosButton', '/api/updateUserStatus', '/api/getUser', '/api/cancelOcorrence', '/api/ocorrencias', '/api/getUserOccurrences', '/api/sendMessage', '/api/getChatMessages', '/api/getMessages']
 };
 
 export async function middleware(req) {

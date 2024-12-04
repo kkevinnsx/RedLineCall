@@ -5,7 +5,7 @@ export const pusher = new Pusher({
   key: 'aa4c044f44f54ec4ab00',
   secret: '45bae8664e3f87b0b509',
   cluster: 'sa1',
-  useTLS: false,
+  useTLS: true,
 });
 
 export const triggerEvent = (channel, event, data) => {
