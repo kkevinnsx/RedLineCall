@@ -10,6 +10,31 @@
     background-repeat: no-repeat;
 }
 
+.buttonDesconect{
+    background-color: #0050c7;
+    border: none;
+    box-shadow: inset -1rem .1rem 1.75rem #013F88;
+    filter: drop-shadow(.15rem .2rem .2rem #20202094);
+    color: #f1f1f1;
+    width: 15rem;
+    padding: .25rem;
+    border-radius: 14px;
+    position: absolute;
+    top: 60%;
+    left: 14%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+    outline: none;
+    font-size: large;
+    font-weight: bold;
+}
+
+.buttonDesconect:hover{
+    background-color: #013F88;
+    width: 15.5rem;
+    padding: .35rem;
+}
 
 @media screen and
 (min-width: 300px) and (max-width: 400px){
